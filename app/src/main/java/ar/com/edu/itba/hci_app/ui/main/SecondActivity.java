@@ -1,4 +1,4 @@
-package ar.com.edu.itba.hci_app;
+package ar.com.edu.itba.hci_app.ui.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +13,9 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.LinkedList;
+
+import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.SecondActivityBinding;
-import ar.com.edu.itba.hci_app.fragments.HomeFragment;
-import ar.com.edu.itba.hci_app.fragments.NotificationsFragment;
-import ar.com.edu.itba.hci_app.fragments.ProfileFragment;
-import ar.com.edu.itba.hci_app.fragments.SearchFragment;
-import ar.com.edu.itba.hci_app.fragments.StatisticsFragment;
 
 public class SecondActivity extends AppCompatActivity {
 

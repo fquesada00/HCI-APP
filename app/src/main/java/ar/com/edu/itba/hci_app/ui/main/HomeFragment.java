@@ -1,4 +1,4 @@
-package ar.com.edu.itba.hci_app.fragments;
+package ar.com.edu.itba.hci_app.ui.main;
 
 import android.os.Bundle;
 
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ar.com.edu.itba.hci_app.R;
+import ar.com.edu.itba.hci_app.databinding.FragmentHomeBinding;
+import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.UserRepository;
+import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
 /**
@@ -16,7 +20,7 @@ import ar.com.edu.itba.hci_app.R;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHomeBinding, UserRepository> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,9 +72,17 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    public Class<MainActivityViewModel> getViewModel() {
+        return MainActivityViewModel.class;
+    }
+
+    @Override
+    public FragmentHomeBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
+        return FragmentHomeBinding.inflate(inflater,container,false);
+    }
+
+    @Override
+    public UserRepository getFragmentRepository() {
+        return BaseRepository.getUserRepository(getContext());
     }
 }

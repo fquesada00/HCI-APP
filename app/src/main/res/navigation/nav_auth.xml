@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_auth"
+    app:startDestination="@id/fragment_login"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="ar.com.edu.itba.hci_app.ui.auth.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login"
+        />
+    <fragment
+        android:id="@+id/fragment_register"
+        android:name="ar.com.edu.itba.hci_app.ui.auth.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register"
+        />
+</navigation>

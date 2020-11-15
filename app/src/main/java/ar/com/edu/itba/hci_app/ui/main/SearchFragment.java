@@ -1,4 +1,4 @@
-package ar.com.edu.itba.hci_app.fragments;
+package ar.com.edu.itba.hci_app.ui.main;
 
 import android.os.Bundle;
 
@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ar.com.edu.itba.hci_app.R;
+import ar.com.edu.itba.hci_app.databinding.FragmentSearchBinding;
+import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.UserRepository;
+import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, UserRepository> {
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -66,5 +70,20 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    @Override
+    public Class<MainActivityViewModel> getViewModel() {
+        return MainActivityViewModel.class;
+    }
+
+    @Override
+    public FragmentSearchBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
+        return FragmentSearchBinding.inflate(inflater,container,false);
+    }
+
+    @Override
+    public UserRepository getFragmentRepository() {
+        return BaseRepository.getUserRepository(getContext());
     }
 }

@@ -9,4 +9,13 @@
     <color name="snow">#fffafa</color>
     <color name="black">#000000</color>
     <color name="white">#EEEEEE</color>
+
+    <color name="colorPrimaryDark">#2464AC</color>
+    <color name="colorAccent">#2e87eb</color>
+
+    <color name="colorTextDefault">#131313</color>
+    <color name="colorTextLabelDefault">#353535</color>
+    <color name="colorTextHintDefault">#434343</color>
+
+    <color name="colorTextWhite">#F3F3F3</color>
 </resources>
