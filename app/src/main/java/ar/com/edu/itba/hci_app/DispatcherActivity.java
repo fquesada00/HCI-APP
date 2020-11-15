@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import ar.com.edu.itba.hci_app.databinding.ActivityMainBinding;
 import ar.com.edu.itba.hci_app.ui.auth.AuthActivity;
-import ar.com.edu.itba.hci_app.ui.main.SecondActivity;
+import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 
 
 public class DispatcherActivity extends AppCompatActivity {
@@ -26,7 +26,7 @@ public class DispatcherActivity extends AppCompatActivity {
         Button secondActBtn = binding.secondActivityBtn;
         Button authActBtn = binding.authActivityBtn;
         secondActBtn.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), SecondActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         });
         authActBtn.setOnClickListener(v->{

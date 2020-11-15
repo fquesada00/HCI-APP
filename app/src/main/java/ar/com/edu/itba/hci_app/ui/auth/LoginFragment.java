@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import ar.com.edu.itba.hci_app.ui.main.SecondActivity;
+import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 import ar.com.edu.itba.hci_app.databinding.FragmentLoginBinding;
 import ar.com.edu.itba.hci_app.AppPreferences;
 
@@ -38,7 +38,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                         AppPreferences preferences = new AppPreferences(getContext());
                         preferences.setAuthToken(tokenResource.getData().getToken());
                         Toast.makeText(requireContext(), tokenResource.toString(), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), SecondActivity.class));
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
                         break;
                     case ERROR:

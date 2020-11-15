@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.SecondActivityBinding;
 
-public class SecondActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private static LinkedList<String> tags;
