@@ -1,12 +1,14 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 
@@ -15,13 +17,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.LinkedList;
 
 import ar.com.edu.itba.hci_app.R;
-import ar.com.edu.itba.hci_app.databinding.SecondActivityBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private static LinkedList<String> tags;
-    private SecondActivityBinding secondActivityBinding;
 
     private final BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -61,14 +61,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.second_activity);
+        setContentView(R.layout.activity_main);
 
 //        secondActivityBinding = SecondActivityBinding.inflate(getLayoutInflater());
 //        secondActivityBinding.bottomNavBar.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNavigationView = findViewById(R.id.bottom_nav_bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-
         tags = new LinkedList<>();
+
+        getSupportActionBar().setLogo(R.drawable.ic_baseline_home_24);
 
         //asi se conserva el fragmento al rotar la pantalla, etc
         if (savedInstanceState == null) {
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         int count = getSupportFragmentManager().getBackStackEntryCount();
 
         //aca vuelve para atras, hay que decirle que destruya el dispatcher
-        if (count == 0) {
+        if (count == 1) {
             finish();
             onDestroy();
         } else {
