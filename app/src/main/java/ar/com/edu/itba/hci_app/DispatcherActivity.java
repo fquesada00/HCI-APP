@@ -65,7 +65,7 @@ public class DispatcherActivity extends AppCompatActivity {
                         .observe(act, pagedListResource -> {
                             if (pagedListResource.getStatus() == Status.SUCCESS) {
                                 Toast.makeText(getApplicationContext(), pagedListResource.getData().getResults().toString(), Toast.LENGTH_SHORT).show();
-                            } else
+                            } else if(pagedListResource.getStatus() != Status.LOADING)
                                 Toast.makeText(getApplicationContext(), "GET FAILED", Toast.LENGTH_SHORT).show();
                         });
             }else if(tokenResource.getStatus() != Status.LOADING)

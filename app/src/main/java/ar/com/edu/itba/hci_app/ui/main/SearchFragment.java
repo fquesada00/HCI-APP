@@ -34,12 +34,16 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         // Required empty public constructor
     }
 
-
+    //TODO LO PARCHIE COMO PUDE JAJAJJA
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        final int[] val = {0};
         binding.button3.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), DisplayRoutineActivity.class));
+            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
+            intent.putExtras(getActivity().getIntent()).putExtra("color", val[0]);
+            val[0] = val[0] == 0?1:0;
+            startActivity(intent);
         });
     }
 

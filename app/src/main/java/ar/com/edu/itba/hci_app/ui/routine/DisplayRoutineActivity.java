@@ -14,7 +14,7 @@ import ar.com.edu.itba.hci_app.databinding.ActivityDisplayRoutineBinding;
 
 public class DisplayRoutineActivity extends AppCompatActivity {
 
-    private static ActivityDisplayRoutineBinding binding;
+    private ActivityDisplayRoutineBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,10 +27,10 @@ public class DisplayRoutineActivity extends AppCompatActivity {
 
         int id = getIntent().getExtras().getInt("color");
         switch (id){
-            case 1:
+            case 0:
                 button.setBackgroundColor(Color.WHITE);
                 break;
-            case 2:
+            case 1:
                 button.setBackgroundColor(Color.RED);
                 break;
         }
