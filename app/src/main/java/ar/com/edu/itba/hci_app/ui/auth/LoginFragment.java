@@ -24,6 +24,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         binding.buttonLogin.setOnClickListener(v -> {
             String username = binding.editTextTextEmailAddress.getText().toString().trim();
             String password = binding.editTextTextPassword.getText().toString().trim();

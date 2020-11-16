@@ -16,9 +16,7 @@ import ar.com.edu.itba.hci_app.network.api.model.Token;
 import ar.com.edu.itba.hci_app.network.api.model.User;
 
 public class UserRepository extends BaseRepository {
-
     private final ApiUserService apiService;
-
     public UserRepository(Context context) {
         this.apiService = ApiClient.create(context, ApiUserService.class);
     }
