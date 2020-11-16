@@ -42,16 +42,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHo
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.button1.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-            intent.putExtra("color", 1);
-            startActivity(intent);
-        });
-        binding.button2.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-            intent.putExtra("color", 2);
-            startActivity(intent);
-        });
+//        binding.button1.setOnClickListener(v -> {
+//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
+//            intent.putExtra("color", 1);
+//            startActivity(intent);
+//        });
+//        binding.button2.setOnClickListener(v -> {
+//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
+//            intent.putExtra("color", 2);
+//            startActivity(intent);
+//        });
 
     }
 
