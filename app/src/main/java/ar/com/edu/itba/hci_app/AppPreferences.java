@@ -1,30 +1,30 @@
 package ar.com.edu.itba.hci_app;
 
 import android.content.Context;
-
-import ar.com.edu.itba.hci_app.sharedPreferences.PreferenceManager;
-import ar.com.edu.itba.hci_app.sharedPreferences.SharedPreferenceLiveData;
+import android.content.SharedPreferences;
 
 public class AppPreferences {
     private final String AUTH_TOKEN = "auth_token";
 
-    private PreferenceManager preferenceManager;
-    private Context context;
+    private SharedPreferences sharedPreferences;
+
     public AppPreferences(Context context) {
-        preferenceManager = new PreferenceManager();
-        this.context = context;
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE);
     }
 
     public void setAuthToken(String token) {
-        preferenceManager.setSharedPreferences(AUTH_TOKEN,token,context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AUTH_TOKEN, token);
+        editor.apply();
     }
 
-    public SharedPreferenceLiveData<String> getAuthToken() {
-        setAuthToken(null);
-        return preferenceManager.getSharedPrefs().getStringLiveData(AUTH_TOKEN, null);
+    public void clear(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
-    public void clearToken(){
-        preferenceManager.setSharedPreferences(AUTH_TOKEN,null,context);
+    public String getAuthToken() {
+        return sharedPreferences.getString(AUTH_TOKEN, null);
     }
 }

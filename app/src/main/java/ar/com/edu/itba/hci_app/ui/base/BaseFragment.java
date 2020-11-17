@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.ui.main.MainActivityViewModel;
 
 public abstract class BaseFragment<VM extends ViewModel, B extends ViewBinding, R extends BaseRepository> extends Fragment {
 
@@ -23,7 +24,7 @@ public abstract class BaseFragment<VM extends ViewModel, B extends ViewBinding, 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = getFragmentBinding(inflater,container);
-        ViewModelProvider.NewInstanceFactory factory = new ViewModelFactory(getFragmentRepository());
+        ViewModelProvider.NewInstanceFactory factory = new ViewModelFactory(getFragmentRepository(),requireActivity().getApplication());
         viewModel = new ViewModelProvider(this,factory).get(getViewModel());
         return binding.getRoot();
     }

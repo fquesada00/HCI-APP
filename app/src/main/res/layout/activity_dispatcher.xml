@@ -30,4 +30,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.513" />
+
+    <Button
+        android:id="@+id/get_routines_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Routines"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/auth_activity_btn"
+        app:layout_constraintVertical_bias="0.34" />
+
+    <TextView
+        android:id="@+id/loggedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logged in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/get_routines_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

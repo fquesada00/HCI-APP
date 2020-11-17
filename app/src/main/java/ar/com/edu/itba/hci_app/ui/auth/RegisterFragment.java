@@ -1,66 +1,78 @@
 package ar.com.edu.itba.hci_app.ui.auth;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.ListAdapter;
 
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
 import ar.com.edu.itba.hci_app.R;
+import ar.com.edu.itba.hci_app.databinding.FragmentRegisterBinding;
+import ar.com.edu.itba.hci_app.network.Status;
+import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.UserRepository;
+import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends BaseFragment<AuthViewModel,FragmentRegisterBinding, UserRepository> {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.genders, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinner.setAdapter(adapter);
 
-    public RegisterFragment() {
-        // Required empty public constructor
-    }
+        binding.buttonRegister.setOnClickListener(v -> {
+            String username = binding.registerUsername.getText().toString();
+            String password = binding.registerPassword.getText().toString();
+            String fullName = binding.editTextTextPersonName.getText().toString();
+            String email = binding.editTextTextEmailAddress.getText().toString();
+            String gender = binding.spinner.getSelectedItem().toString();
+            Date birthdate = new Date();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RegisterFragment newInstance(String param1, String param2) {
-        RegisterFragment fragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+            viewModel.register(username,password,fullName,gender,birthdate,email).observe(requireActivity(),userResource->{
+                if (userResource.getStatus() == Status.SUCCESS)
+                {
+                    Toast.makeText(getContext(),"User created",Toast.LENGTH_SHORT).show();
+                }else if( userResource.getStatus() != Status.LOADING)
+                    Toast.makeText(getContext(),"Failed",Toast.LENGTH_SHORT).show();
+            });
+        });
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public Class<AuthViewModel> getViewModel() {
+        return AuthViewModel.class;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+    public FragmentRegisterBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
+        return FragmentRegisterBinding.inflate(inflater,container,false);
+    }
+
+    @Override
+    public UserRepository getFragmentRepository() {
+        return BaseRepository.getUserRepository(getContext());
     }
 }

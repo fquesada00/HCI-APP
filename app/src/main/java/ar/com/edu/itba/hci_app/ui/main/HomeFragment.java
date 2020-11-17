@@ -13,16 +13,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentHomeBinding;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 import ar.com.edu.itba.hci_app.ui.base.ViewModelFactory;
 import ar.com.edu.itba.hci_app.ui.routine.DisplayRoutineActivity;
 
-public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHomeBinding, UserRepository> {
+public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHomeBinding, RoutineRepository> {
 
 
     private static HomeFragment homeFragment;
@@ -34,30 +38,31 @@ public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHo
         return homeFragment;
     }
 
-    private HomeFragment() {
-        // Required empty public constructor
-    }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        binding.button1.setOnClickListener(v -> {
-//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-//            intent.putExtra("color", 1);
-//            startActivity(intent);
-//        });
-//        binding.button2.setOnClickListener(v -> {
-//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-//            intent.putExtra("color", 2);
-//            startActivity(intent);
-//        });
+        homeFragment = this;
+        viewModel.getDailyRoutine().observe(requireActivity(),routineResource -> {
+            switch (routineResource.getStatus()){
+                case SUCCESS:
+                    binding.textView7.setText(routineResource.getData().getName());
+                    break;
+                case LOADING:
+                    Toast.makeText(getContext(),"Loading", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(getContext(),"ERROR", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
     }
 
     @Override
-    public Class<HomeFragmentViewModel> getViewModel() {
-        return HomeFragmentViewModel.class;
+    public Class<MainActivityViewModel> getViewModel() {
+        return MainActivityViewModel.class;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHo
     }
 
     @Override
-    public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+    public RoutineRepository getFragmentRepository() {
+        return BaseRepository.getRoutineRepository(getContext());
     }
 }

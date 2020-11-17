@@ -1,101 +1,55 @@
 package ar.com.edu.itba.hci_app.network.api.model;
 
-import java.util.List;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Exercise {
+public class Exercise{
 
-    @SerializedName("totalCount")
-    @Expose
-    private int totalCount;
-    @SerializedName("orderBy")
-    @Expose
-    private String orderBy;
-    @SerializedName("direction")
-    @Expose
-    private String direction;
-    @SerializedName("results")
-    @Expose
-    private List<Routine> routines = null;
-    @SerializedName("size")
-    @Expose
-    private int size;
-    @SerializedName("page")
-    @Expose
-    private int page;
-    @SerializedName("isLastPage")
-    @Expose
-    private boolean isLastPage;
+	@SerializedName("duration")
+	private int duration;
 
-    public Exercise() {
-    }
+	@SerializedName("name")
+	private String name;
 
-    public Exercise(int totalCount, String orderBy, String direction, List<Routine> routines, int size, int page, boolean isLastPage) {
-        super();
-        this.totalCount = totalCount;
-        this.orderBy = orderBy;
-        this.direction = direction;
-        this.routines = routines;
-        this.size = size;
-        this.page = page;
-        this.isLastPage = isLastPage;
-    }
+	@SerializedName("id")
+	private int id;
 
-    public int getTotalCount() {
-        return totalCount;
-    }
+	@SerializedName("detail")
+	private String detail;
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
-    }
+	@SerializedName("type")
+	private String type;
 
-    public String getOrderBy() {
-        return orderBy;
-    }
+	@SerializedName("repetitions")
+	private int repetitions;
 
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
+	@SerializedName("order")
+	private int order;
 
-    public String getDirection() {
-        return direction;
-    }
+	public int getDuration(){
+		return duration;
+	}
 
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
+	public String getName(){
+		return name;
+	}
 
-    public List<Routine> getRoutines() {
-        return routines;
-    }
+	public int getId(){
+		return id;
+	}
 
-    public void setRoutines(List<Routine> routines) {
-        this.routines = routines;
-    }
+	public String getDetail(){
+		return detail;
+	}
 
-    public int getSize() {
-        return size;
-    }
+	public String getType(){
+		return type;
+	}
 
-    public void setSize(int size) {
-        this.size = size;
-    }
+	public int getRepetitions(){
+		return repetitions;
+	}
 
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public boolean isIsLastPage() {
-        return isLastPage;
-    }
-
-    public void setIsLastPage(boolean isLastPage) {
-        this.isLastPage = isLastPage;
-    }
-
+	public int getOrder(){
+		return order;
+	}
 }
