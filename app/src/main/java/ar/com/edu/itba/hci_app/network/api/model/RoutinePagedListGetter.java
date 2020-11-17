@@ -4,5 +4,4 @@ public enum RoutinePagedListGetter {
     ALL,
     CURRENT,
     FAVOURITES,
-    RATINGS,
 }

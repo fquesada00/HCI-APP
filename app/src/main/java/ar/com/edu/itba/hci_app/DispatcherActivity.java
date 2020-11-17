@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class DispatcherActivity extends AppCompatActivity {
         });
         //TODO: MUY HARDCODEADO PERO PARA TESTEOS
         AppPreferences appPreferences = new AppPreferences(getApplicationContext());
-        appPreferences.clearToken();
+        appPreferences.clear();
         getRoutines.setOnClickListener(v -> BaseRepository.getUserRepository(this).login(new Credentials("johndoe", "1234567890")).observe(this, tokenResource -> {
 
             if (tokenResource.getStatus() == Status.SUCCESS) {
@@ -80,7 +81,10 @@ public class DispatcherActivity extends AppCompatActivity {
             }else if(tokenResource.getStatus() != Status.LOADING)
                 Toast.makeText(getApplicationContext(),"Failed Login",Toast.LENGTH_SHORT).show();
         }));
-
+        if(appPreferences.getAuthToken() != null)
+            binding.loggedText.setVisibility(View.VISIBLE);
+        else
+            binding.loggedText.setVisibility(View.GONE);
 
     }
 

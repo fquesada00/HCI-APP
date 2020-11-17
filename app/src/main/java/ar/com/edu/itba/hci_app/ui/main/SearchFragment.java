@@ -27,9 +27,9 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         return searchFragment;
     }
 
-    private SearchFragment() {
-        // Required empty public constructor
-    }
+//    private SearchFragment() {
+//        // Required empty public constructor
+//    }
 
     //TODO LO PARCHIE COMO PUDE JAJAJJA
     @Override
@@ -44,6 +44,9 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RoutineDescriptionFragment()).addToBackStack(null).commit();
             getActivity().getSupportFragmentManager().executePendingTransactions();
         });
+        searchFragment = this;
+        Log.d("ACA", searchFragment.toString());
+
     }
 
     @Override

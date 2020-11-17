@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,15 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         return statisticsFragment;
     }
 
-    private StatisticsFragment() {
-        // Required empty public constructor
-    }
+//    private StatisticsFragment() {
+//        // Required empty public constructor
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        statisticsFragment = this;
+        Log.d("ACA", statisticsFragment.toString());
     }
 
     @Override

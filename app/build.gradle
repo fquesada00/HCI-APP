@@ -73,4 +73,5 @@ dependencies {
 
 //    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha07"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -14,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentHomeBinding;
@@ -36,9 +38,26 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
         return homeFragment;
     }
 
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        homeFragment = this;
+        viewModel.getDailyRoutine().observe(requireActivity(),routineResource -> {
+            switch (routineResource.getStatus()){
+                case SUCCESS:
+                    binding.textView7.setText(routineResource.getData().getName());
+                    break;
+                case LOADING:
+                    Toast.makeText(getContext(),"Loading", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(getContext(),"ERROR", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
     }
 
     @Override
@@ -55,5 +74,4 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
     public RoutineRepository getFragmentRepository() {
         return BaseRepository.getRoutineRepository(getContext());
     }
-
 }

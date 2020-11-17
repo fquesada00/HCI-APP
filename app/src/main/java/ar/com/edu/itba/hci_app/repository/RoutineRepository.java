@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import org.jetbrains.annotations.NotNull;
 
+import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.network.NetworkBoundResource;
 import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.api.ApiClient;
@@ -48,15 +49,6 @@ public class RoutineRepository extends BaseRepository{
                         return apiService.getCurrentUserRoutines(difficulty,page,size,orderBy,direction);
                     }
                 }.asLiveData();
-            case RATINGS:
-                return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>(){
-
-                    @NonNull
-                    @Override
-                    protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
-                        return apiService.getCurrentUserRoutinesRatings(page,size,orderBy,direction);
-                    }
-                }.asLiveData();
             case FAVOURITES:
                 return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>(){
 
@@ -69,6 +61,20 @@ public class RoutineRepository extends BaseRepository{
         }
         throw new IllegalArgumentException("Bad api call in repo");
     }
+
+    public LiveData<Resource<PagedList<Rating>>> getCurrentUserRatings(@Nullable Integer page,
+                                                                       @Nullable Integer size, @Nullable String orderBy,
+                                                                       @Nullable String direction){
+        return new NetworkBoundResource<PagedList<Rating>,PagedList<Rating>>(){
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<PagedList<Rating>>> createCall() {
+                return apiService.getCurrentUserRoutinesRatings(page,size,orderBy,direction);
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Resource<PagedList<Routine>>> getRoutinesFromUser(@NonNull Integer userID,@Nullable String difficulty, @Nullable Integer page,
                                                                       @Nullable Integer size, @Nullable String orderBy,
                                                                       @Nullable String direction){
@@ -181,5 +187,6 @@ public class RoutineRepository extends BaseRepository{
             }
         }.asLiveData();
     }
+
 
 }

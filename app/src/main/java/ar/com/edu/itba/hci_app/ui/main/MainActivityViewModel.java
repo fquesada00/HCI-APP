@@ -1,10 +1,21 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import ar.com.edu.itba.hci_app.network.Resource;
+import ar.com.edu.itba.hci_app.network.Status;
+import ar.com.edu.itba.hci_app.network.api.LiveDataCallAdapter;
+import ar.com.edu.itba.hci_app.network.api.model.PagedList;
+import ar.com.edu.itba.hci_app.network.api.model.Routine;
+import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 
-public class MainActivityViewModel extends ViewModel {
+public class MainActivityViewModel extends AndroidViewModel {
 
     //TODO que el login haga un getUser y cargue en room, y aca se fetchea de ahi,
     //asi nos ahorramos dos repos
@@ -49,7 +60,38 @@ public class MainActivityViewModel extends ViewModel {
 
     private RoutineRepository repository;
 
-    public MainActivityViewModel(RoutineRepository repository) {
+    private MutableLiveData<Resource<Routine>> dailyRoutine;
+
+
+    public MainActivityViewModel(Application application,RoutineRepository repository) {
+        super(application);
         this.repository = repository;
+    }
+
+    private void setDailyRoutine(){
+        if(dailyRoutine == null)
+            dailyRoutine = new MutableLiveData<>();
+        repository.getRoutine(null,0,1,"dateCreated","desc",RoutinePagedListGetter.ALL)
+                .observeForever(pagedListResource -> {
+                    switch (pagedListResource.getStatus()){
+                        case SUCCESS:
+                            if(pagedListResource.getData().getResults().size() > 0)
+                                dailyRoutine.setValue(Resource.success(pagedListResource.getData().getResults().get(0)));
+                            else
+                                dailyRoutine.setValue(Resource.success(new Routine()));
+                            break;
+                        case LOADING:
+                            dailyRoutine.setValue(Resource.loading(new Routine()));
+                            break;
+                        case ERROR:
+                            dailyRoutine.setValue(Resource.error(pagedListResource.getError(),new Routine()));
+                            break;
+                    }
+                });
+    }
+
+    public LiveData<Resource<Routine>> getDailyRoutine(){
+        setDailyRoutine();
+        return dailyRoutine;
     }
 }

@@ -33,7 +33,7 @@ public interface ApiRoutinesService {
                                                                        @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("user/current/routines/ratings")
-    LiveData<ApiResponse<PagedList<Routine>>> getCurrentUserRoutinesRatings(@Query("page") Integer page,
+    LiveData<ApiResponse<PagedList<Rating>>> getCurrentUserRoutinesRatings(@Query("page") Integer page,
                                                                             @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID}")

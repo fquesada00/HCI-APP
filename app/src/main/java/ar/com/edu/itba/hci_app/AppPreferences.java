@@ -18,9 +18,9 @@ public class AppPreferences {
         editor.apply();
     }
 
-    public void clearToken(){
+    public void clear(){
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(AUTH_TOKEN,null);
+        editor.clear();
         editor.apply();
     }
 

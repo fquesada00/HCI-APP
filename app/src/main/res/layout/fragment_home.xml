@@ -21,42 +21,54 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true">
 
                 <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:src="@drawable/image1" />
+                    android:src="@drawable/image1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:includeFontPadding="true"
+
                     android:singleLine="true"
-
                     android:text="Rutina de Hoy"
-                    android:textColor="@color/white" />
-            </RelativeLayout>
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:clickable="true">
 
                 <ImageView
+                    android:id="@+id/imageView2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:src="@drawable/image1" />
+                    android:src="@drawable/image1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -64,8 +76,10 @@
                     android:includeFontPadding="true"
                     android:singleLine="true"
                     android:text="Rutinas Creadas"
-                    android:textColor="@color/white" />
-            </RelativeLayout>
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="wrap_content"

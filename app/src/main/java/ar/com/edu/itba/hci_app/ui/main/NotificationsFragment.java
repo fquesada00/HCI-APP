@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +27,15 @@ public class NotificationsFragment extends BaseFragment<MainActivityViewModel, F
         return notificationsFragment;
     }
 
-    private NotificationsFragment() {
-        // Required empty public constructor
-    }
+//    private NotificationsFragment() {
+//        // Required empty public constructor
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notificationsFragment = this;
+        Log.d("ACA", notificationsFragment.toString());
 
     }
 
