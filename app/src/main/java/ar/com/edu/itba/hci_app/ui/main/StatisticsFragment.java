@@ -12,12 +12,13 @@ import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentSearchBinding;
 import ar.com.edu.itba.hci_app.network.api.model.User;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
 
-public class StatisticsFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, UserRepository> {
+public class StatisticsFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, RoutineRepository> {
 
     private static StatisticsFragment statisticsFragment;
 
@@ -55,7 +56,7 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
     }
 
     @Override
-    public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+    public RoutineRepository getFragmentRepository() {
+        return BaseRepository.getRoutineRepository(getContext());
     }
 }

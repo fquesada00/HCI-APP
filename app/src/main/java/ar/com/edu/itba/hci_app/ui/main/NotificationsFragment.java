@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentNotificationsBinding;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
-public class NotificationsFragment extends BaseFragment<MainActivityViewModel, FragmentNotificationsBinding, UserRepository> {
+public class NotificationsFragment extends BaseFragment<MainActivityViewModel, FragmentNotificationsBinding, RoutineRepository> {
 
     private static NotificationsFragment notificationsFragment;
 
@@ -46,7 +47,7 @@ public class NotificationsFragment extends BaseFragment<MainActivityViewModel, F
     }
 
     @Override
-    public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+    public RoutineRepository getFragmentRepository() {
+        return BaseRepository.getRoutineRepository(getContext());
     }
 }

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.ui.main.MainActivityViewModel;
 
 public abstract class BaseFragment<VM extends ViewModel, B extends ViewBinding, R extends BaseRepository> extends Fragment {
 

@@ -28,6 +28,17 @@ import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 
 public class DispatcherActivity extends AppCompatActivity {
 
+    /*
+        TODO
+         -ordenar por categoria?? si devuelve id
+         -abrir rutinas por URL??
+         -el tema de rutinas en ejecucion que se vean de dos modos se podria mechar con la opcion que el usuario personalize el display del mismo
+         -compartir rutinas?
+
+         -agregar idioma ingles
+         -el tema de la personalizacion con funcionamiento es el punto 3 de arriba (PREGUNTAR!!!!!)
+     */
+ 
     @SuppressLint("StaticFieldLeak")
     private static Button secondActBtn = null;
     private AppCompatActivity act;
@@ -42,8 +53,6 @@ public class DispatcherActivity extends AppCompatActivity {
         Button secondActBtn = binding.secondActivityBtn;
         Button authActBtn = binding.authActivityBtn;
         Button getRoutines = binding.getRoutinesBtn;
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setLogo(R.drawable.app_logo);
         secondActBtn.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();

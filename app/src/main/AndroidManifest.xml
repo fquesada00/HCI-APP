@@ -27,7 +27,7 @@
         </activity>
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.auth.AuthActivity" />
-        <activity android:name=".ui.routine.DisplayRoutineActivity"/>
+        <activity android:name=".ui.routine.DisplayRoutineActivity" />
     </application>
 
 </manifest>

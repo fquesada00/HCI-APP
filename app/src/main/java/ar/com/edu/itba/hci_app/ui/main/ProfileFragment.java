@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentProfileBinding;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
 
-public class ProfileFragment extends BaseFragment<MainActivityViewModel, FragmentProfileBinding, UserRepository> {
+public class ProfileFragment extends BaseFragment<MainActivityViewModel, FragmentProfileBinding, RoutineRepository> {
 
 
 
@@ -50,7 +51,7 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
     }
 
     @Override
-    public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+    public RoutineRepository getFragmentRepository() {
+        return BaseRepository.getRoutineRepository(getContext());
     }
 }

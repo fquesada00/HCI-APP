@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -17,12 +18,13 @@ import android.widget.Button;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentHomeBinding;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
+import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 import ar.com.edu.itba.hci_app.ui.base.ViewModelFactory;
 import ar.com.edu.itba.hci_app.ui.routine.DisplayRoutineActivity;
 
-public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHomeBinding, UserRepository> {
+public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHomeBinding, RoutineRepository> {
 
 
     private static HomeFragment homeFragment;
@@ -34,30 +36,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHo
         return homeFragment;
     }
 
-    private HomeFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        binding.button1.setOnClickListener(v -> {
-//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-//            intent.putExtra("color", 1);
-//            startActivity(intent);
-//        });
-//        binding.button2.setOnClickListener(v -> {
-//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-//            intent.putExtra("color", 2);
-//            startActivity(intent);
-//        });
-
     }
 
     @Override
-    public Class<HomeFragmentViewModel> getViewModel() {
-        return HomeFragmentViewModel.class;
+    public Class<MainActivityViewModel> getViewModel() {
+        return MainActivityViewModel.class;
     }
 
     @Override
@@ -66,7 +52,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentViewModel, FragmentHo
     }
 
     @Override
-    public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+    public RoutineRepository getFragmentRepository() {
+        return BaseRepository.getRoutineRepository(getContext());
     }
+
 }
