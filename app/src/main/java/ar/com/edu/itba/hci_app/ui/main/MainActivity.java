@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 throw new NullPointerException("Bottom navigation bar");
             }
 
-            if ( fragments.contains(fragment)) {
+            if (fragments.contains(fragment)) {
                 fragments.remove(fragment);
             }
             fragments.push(fragment);
@@ -153,27 +153,30 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
 //        int count = getSupportFragmentManager().getBackStackEntryCount();
         int count = fragments.size();
         //aca vuelve para atras, hay que decirle que destruya el dispatcher
-        if (count <= 1) {
+        if (count == 1 && !fragments.peek().getClass().toString().equals(HomeFragment.class.toString())) {
+            change(fragments.pop(), false);
+            fragments.push(HomeFragment.getHomeFragment());
+            change(fragments.peek(), true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
+        }
+        else if (count == 1){
+            fragments.pop();
             finish();
-            onDestroy();
-        } else {
+        }
+        else {
 //            getSupportFragmentManager().popBackStack();
             change(fragments.pop(), false);
 //            String tag = tags.pop();
 //            changeChecked(tag, false);
 //            changeChecked(tag, true);
             change(fragments.peek(), true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
+
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
     }
 
-    @Override
-    protected void onDestroy() {
-        //android.os.Process.killProcess(android.os.Process.myPid());
-        super.onDestroy();
-    }
+
 }
