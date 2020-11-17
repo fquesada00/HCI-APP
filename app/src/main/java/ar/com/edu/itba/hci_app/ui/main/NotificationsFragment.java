@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.RatingBar;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentNotificationsBinding;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
