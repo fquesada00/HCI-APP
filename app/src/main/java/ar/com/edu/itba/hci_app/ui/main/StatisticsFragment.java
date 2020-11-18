@@ -2,6 +2,8 @@ package ar.com.edu.itba.hci_app.ui.main;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentSearchBinding;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
+import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
@@ -57,8 +60,6 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
 
     @Override
     public RoutineRepository getFragmentRepository() {
-        MyApplication application = (MyApplication)getActivity().getApplication();
-
-        return application.getRoutineRepository();
-    }
+        MyApplication myApplication = (MyApplication) requireActivity().getApplication();
+        return myApplication.getRoutineRepository();    }
 }

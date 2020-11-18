@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
 import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
@@ -52,7 +53,6 @@ public class NotificationsFragment extends BaseFragment<MainActivityViewModel, F
 
     @Override
     public RoutineRepository getFragmentRepository() {
-        MyApplication application = (MyApplication)getActivity().getApplication();
-        return application.getRoutineRepository();
-    }
+        MyApplication myApplication = (MyApplication) requireActivity().getApplication();
+        return myApplication.getRoutineRepository();    }
 }
