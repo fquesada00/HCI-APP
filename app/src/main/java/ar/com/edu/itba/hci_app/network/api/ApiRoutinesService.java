@@ -2,6 +2,7 @@ package ar.com.edu.itba.hci_app.network.api;
 
 import androidx.lifecycle.LiveData;
 
+import ar.com.edu.itba.hci_app.network.api.model.Category;
 import ar.com.edu.itba.hci_app.network.api.model.Cycle;
 import ar.com.edu.itba.hci_app.network.api.model.Exercise;
 import ar.com.edu.itba.hci_app.network.api.model.PagedList;
@@ -37,34 +38,40 @@ public interface ApiRoutinesService {
                                                                             @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID}")
-    LiveData<ApiResponse<Routine>> getRoutineByID(@Path("routineID") Integer routineID);
+    LiveData<ApiResponse<Routine>> getRoutineByID(@Path("routineId") Integer routineID);
 
     @GET("routines/{routineID}/ratings")
-    LiveData<ApiResponse<PagedList<Rating>>> getRoutineRating(@Path("routineID") Integer routineID, @Query("page") Integer page,
+    LiveData<ApiResponse<PagedList<Rating>>> getRoutineRating(@Path("routineId") Integer routineID, @Query("page") Integer page,
                                                    @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID/cycles")
-    LiveData<ApiResponse<PagedList<Cycle>>> getRoutineCycles(@Path("routineID") Integer routineID, @Query("page") Integer page,
+    LiveData<ApiResponse<PagedList<Cycle>>> getRoutineCycles(@Path("routineId") Integer routineID, @Query("page") Integer page,
                                                              @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID}/cycles/{cycleID}")
-    LiveData<ApiResponse<Cycle>> getRoutineCycleByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID);
+    LiveData<ApiResponse<Cycle>> getRoutineCycleByID(@Path("routineId") Integer routineID, @Path("cycleId") Integer cycleID);
 
     @GET("routines/{routineID}/cycles/{cycleID}/exercises")
-    LiveData<ApiResponse<PagedList<Exercise>>> getCycleExercises(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID, @Query("page") Integer page,
+    LiveData<ApiResponse<PagedList<Exercise>>> getCycleExercises(@Path("routineId") Integer routineID, @Path("cycleId") Integer cycleID, @Query("page") Integer page,
                                                                  @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID}/cycles/{cycleID}/exercises/{exerciseID}")
-    LiveData<ApiResponse<Exercise>> getExerciseByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID,
-                                                    @Path("exerciseID") Integer exerciseID);
+    LiveData<ApiResponse<Exercise>> getExerciseByID(@Path("routineId") Integer routineID, @Path("cycleId") Integer cycleID,
+                                                    @Path("exerciseId") Integer exerciseID);
 
     @POST("user/current/routines/{routineID}/favourites")
-    LiveData<ApiResponse<Void>> addToFavourites(@Path("routineID") Integer routineID);
+    LiveData<ApiResponse<Void>> addToFavourites(@Path("routineId") Integer routineID);
 
     @POST("routines/{routineID}/ratings")
-    LiveData<ApiResponse<Rating>> addRatingToRoutine(@Path("routineID") Integer routineID, @Body Rating rating);
+    LiveData<ApiResponse<Rating>> addRatingToRoutine(@Path("routineId") Integer routineID, @Body Rating rating);
 
     @DELETE("user/current/routines/{routineID}/favourites")
-    LiveData<ApiResponse<Void>> removeFromFavourites(@Path("routineID") Integer routineID);
+    LiveData<ApiResponse<Void>> removeFromFavourites(@Path("routineId") Integer routineID);
+
+    @GET("categories")
+    LiveData<ApiResponse<PagedList<Category>>> getCategories(@Query("page") Integer page, @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+
+    @GET("categories/{categoryID}")
+    LiveData<ApiResponse<Category>> getCategoryByID(@Path("categoryId") Integer categoryID);
 
 }

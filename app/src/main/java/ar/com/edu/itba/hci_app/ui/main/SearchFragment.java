@@ -1,15 +1,23 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentSearchBinding;
+import ar.com.edu.itba.hci_app.network.Status;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
@@ -27,25 +35,70 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         return searchFragment;
     }
 
-//    private SearchFragment() {
-//        // Required empty public constructor
-//    }
+    private void unknownStatusException() {
+        throw new IllegalArgumentException("Unkown resource status");
+    }
 
-    //TODO LO PARCHIE COMO PUDE JAJAJJA
+    private void displayMessage(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT);
+    }
+
+    private void switchResourceStatus(Status status) {
+        switch (status) {
+            case LOADING:
+                displayMessage("Loading");
+                break;
+            case ERROR:
+                displayMessage("Error");
+                break;
+            default:
+                unknownStatusException();
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreateView(inflater, container, savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final int[] val = {0};
-        binding.button3.setOnClickListener(v -> {
-//            Intent intent = new Intent(getContext(), DisplayRoutineActivity.class);
-//            intent.putExtras(getActivity().getIntent()).putExtra("color", val[0]);
-//            val[0] = val[0] == 0?1:0;
-//            startActivity(intent);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RoutineDescriptionFragment()).addToBackStack(null).commit();
-            getActivity().getSupportFragmentManager().executePendingTransactions();
-        });
+
         searchFragment = this;
-        Log.d("ACA", searchFragment.toString());
+
+        viewModel.getDifficultyRoutines().observe(requireActivity(), pagedListResource -> {
+            switch (pagedListResource.getStatus()){
+                case SUCCESS:
+                    break;
+                default:
+                    switchResourceStatus(pagedListResource.getStatus());
+            }
+        });
+
+        viewModel.getCategories().observe(requireActivity(), pagedListResource -> {
+            switch (pagedListResource.getStatus()){
+                case SUCCESS:
+                    break;
+                default:
+                    switchResourceStatus(pagedListResource.getStatus());
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_search, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
 
     }
 

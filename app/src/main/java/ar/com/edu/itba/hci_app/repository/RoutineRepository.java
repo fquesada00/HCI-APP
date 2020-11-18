@@ -1,6 +1,7 @@
 package ar.com.edu.itba.hci_app.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.api.ApiClient;
 import ar.com.edu.itba.hci_app.network.api.ApiResponse;
 import ar.com.edu.itba.hci_app.network.api.ApiRoutinesService;
+import ar.com.edu.itba.hci_app.network.api.model.Category;
 import ar.com.edu.itba.hci_app.network.api.model.Cycle;
 import ar.com.edu.itba.hci_app.network.api.model.Exercise;
 import ar.com.edu.itba.hci_app.network.api.model.PagedList;
@@ -21,41 +23,42 @@ import ar.com.edu.itba.hci_app.network.api.model.Rating;
 import ar.com.edu.itba.hci_app.network.api.model.Routine;
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
 
-public class RoutineRepository extends BaseRepository{
+public class RoutineRepository extends BaseRepository {
     private final ApiRoutinesService apiService;
+
     public RoutineRepository(Context context) {
         apiService = ApiClient.create(context, ApiRoutinesService.class);
     }
 
     public LiveData<Resource<PagedList<Routine>>> getRoutine(@Nullable String difficulty, @Nullable Integer page,
                                                              @Nullable Integer size, @Nullable String orderBy,
-                                                             @Nullable String direction, @NotNull RoutinePagedListGetter selector){
-        switch (selector){
+                                                             @Nullable String direction, @NotNull RoutinePagedListGetter selector) {
+        switch (selector) {
             case ALL:
-                return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>(){
+                return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>() {
 
                     @NonNull
                     @Override
                     protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
-                        return apiService.getRoutines(difficulty,page,size,orderBy,direction);
+                        return apiService.getRoutines(difficulty, page, size, orderBy, direction);
                     }
                 }.asLiveData();
             case CURRENT:
-                return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>(){
+                return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>() {
 
                     @NonNull
                     @Override
                     protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
-                        return apiService.getCurrentUserRoutines(difficulty,page,size,orderBy,direction);
+                        return apiService.getCurrentUserRoutines(difficulty, page, size, orderBy, direction);
                     }
                 }.asLiveData();
             case FAVOURITES:
-                return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>(){
+                return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>() {
 
                     @NonNull
                     @Override
                     protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
-                        return apiService.getCurrentUserFavourites(page,size,orderBy,direction);
+                        return apiService.getCurrentUserFavourites(page, size, orderBy, direction);
                     }
                 }.asLiveData();
         }
@@ -64,31 +67,32 @@ public class RoutineRepository extends BaseRepository{
 
     public LiveData<Resource<PagedList<Rating>>> getCurrentUserRatings(@Nullable Integer page,
                                                                        @Nullable Integer size, @Nullable String orderBy,
-                                                                       @Nullable String direction){
-        return new NetworkBoundResource<PagedList<Rating>,PagedList<Rating>>(){
+                                                                       @Nullable String direction) {
+        return new NetworkBoundResource<PagedList<Rating>, PagedList<Rating>>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Rating>>> createCall() {
-                return apiService.getCurrentUserRoutinesRatings(page,size,orderBy,direction);
+                return apiService.getCurrentUserRoutinesRatings(page, size, orderBy, direction);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<PagedList<Routine>>> getRoutinesFromUser(@NonNull Integer userID,@Nullable String difficulty, @Nullable Integer page,
+    public LiveData<Resource<PagedList<Routine>>> getRoutinesFromUser(@NonNull Integer userID, @Nullable String difficulty, @Nullable Integer page,
                                                                       @Nullable Integer size, @Nullable String orderBy,
-                                                                      @Nullable String direction){
-        return new NetworkBoundResource<PagedList<Routine>,PagedList<Routine>>(){
+                                                                      @Nullable String direction) {
+        return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
-                return apiService.getUserRoutines(userID,difficulty,page,size,orderBy,direction);
+                return apiService.getUserRoutines(userID, difficulty, page, size, orderBy, direction);
             }
         }.asLiveData();
     }
-    public LiveData<Resource<Routine>> getRoutineByID(@NonNull Integer routineID){
-        return new NetworkBoundResource<Routine,Routine>(){
+
+    public LiveData<Resource<Routine>> getRoutineByID(@NonNull Integer routineID) {
+        return new NetworkBoundResource<Routine, Routine>() {
 
             @NonNull
             @Override
@@ -98,68 +102,70 @@ public class RoutineRepository extends BaseRepository{
         }.asLiveData();
     }
 
-    public LiveData<Resource<PagedList<Rating>>> getRoutineRatings(@NonNull Integer routineID,@Nullable String difficulty, @Nullable Integer page,
-                                                       @Nullable Integer size, @Nullable String orderBy,
-                                                       @Nullable String direction){
-        return new NetworkBoundResource<PagedList<Rating>,PagedList<Rating>>(){
+    public LiveData<Resource<PagedList<Rating>>> getRoutineRatings(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
+                                                                   @Nullable Integer size, @Nullable String orderBy,
+                                                                   @Nullable String direction) {
+        return new NetworkBoundResource<PagedList<Rating>, PagedList<Rating>>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Rating>>> createCall() {
-                return apiService.getRoutineRating(routineID,page,size,orderBy,direction);
+                return apiService.getRoutineRating(routineID, page, size, orderBy, direction);
             }
         }.asLiveData();
 
     }
 
-    public LiveData<Resource<PagedList<Cycle>>> getRoutineCycles(@NonNull Integer routineID,@Nullable String difficulty, @Nullable Integer page,
+    public LiveData<Resource<PagedList<Cycle>>> getRoutineCycles(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
                                                                  @Nullable Integer size, @Nullable String orderBy,
-                                                                 @Nullable String direction){
-        return new NetworkBoundResource<PagedList<Cycle>,PagedList<Cycle>>(){
+                                                                 @Nullable String direction) {
+        return new NetworkBoundResource<PagedList<Cycle>, PagedList<Cycle>>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Cycle>>> createCall() {
-                return apiService.getRoutineCycles(routineID,page,size,orderBy,direction);
+                return apiService.getRoutineCycles(routineID, page, size, orderBy, direction);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<Cycle>> getCycleByID(@NonNull Integer routineID,@NonNull Integer cycleID){
-        return new NetworkBoundResource<Cycle,Cycle>(){
+    public LiveData<Resource<Cycle>> getCycleByID(@NonNull Integer routineID, @NonNull Integer cycleID) {
+        return new NetworkBoundResource<Cycle, Cycle>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<Cycle>> createCall() {
-                return apiService.getRoutineCycleByID(routineID,cycleID);
+                return apiService.getRoutineCycleByID(routineID, cycleID);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<PagedList<Exercise>>> getCycleExercises(@NonNull Integer routineID,@NonNull Integer cycleID, @Nullable Integer page,
+    public LiveData<Resource<PagedList<Exercise>>> getCycleExercises(@NonNull Integer routineID, @NonNull Integer cycleID, @Nullable Integer page,
                                                                      @Nullable Integer size, @Nullable String orderBy,
-                                                                     @Nullable String direction){
-        return new NetworkBoundResource<PagedList<Exercise>,PagedList<Exercise>>(){
+                                                                     @Nullable String direction) {
+        return new NetworkBoundResource<PagedList<Exercise>, PagedList<Exercise>>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<Exercise>>> createCall() {
-                return apiService.getCycleExercises(routineID,cycleID,page,size,orderBy,direction);
+                return apiService.getCycleExercises(routineID, cycleID, page, size, orderBy, direction);
             }
         }.asLiveData();
     }
-    public LiveData<Resource<Exercise>> getExerciseByID(@NonNull Integer routineID,@NonNull Integer cycleID,@NonNull Integer exerciseID){
-        return new NetworkBoundResource<Exercise,Exercise>(){
+
+    public LiveData<Resource<Exercise>> getExerciseByID(@NonNull Integer routineID, @NonNull Integer cycleID, @NonNull Integer exerciseID) {
+        return new NetworkBoundResource<Exercise, Exercise>() {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<Exercise>> createCall() {
-                return apiService.getExerciseByID(routineID,cycleID,exerciseID);
+                return apiService.getExerciseByID(routineID, cycleID, exerciseID);
             }
         }.asLiveData();
     }
-    public LiveData<Resource<Void>> addToFavourites(@NonNull Integer routineID){
-        return new NetworkBoundResource<Void,Void>(){
+
+    public LiveData<Resource<Void>> addToFavourites(@NonNull Integer routineID) {
+        return new NetworkBoundResource<Void, Void>() {
 
             @NonNull
             @Override
@@ -168,18 +174,19 @@ public class RoutineRepository extends BaseRepository{
             }
         }.asLiveData();
     }
-    public LiveData<Resource<Rating>> addRating(@NonNull Integer routineID,Rating rating){
-        return new NetworkBoundResource<Rating,Rating>(){
+
+    public LiveData<Resource<Rating>> addRating(@NonNull Integer routineID, Rating rating) {
+        return new NetworkBoundResource<Rating, Rating>() {
             @NonNull
             @Override
             protected LiveData<ApiResponse<Rating>> createCall() {
-                return apiService.addRatingToRoutine(routineID,rating);
+                return apiService.addRatingToRoutine(routineID, rating);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<Void>> removeFromFavourites(@NonNull Integer routineID){
-        return new NetworkBoundResource<Void,Void>(){
+    public LiveData<Resource<Void>> removeFromFavourites(@NonNull Integer routineID) {
+        return new NetworkBoundResource<Void, Void>() {
             @NonNull
             @Override
             protected LiveData<ApiResponse<Void>> createCall() {
@@ -188,5 +195,24 @@ public class RoutineRepository extends BaseRepository{
         }.asLiveData();
     }
 
+    public LiveData<Resource<PagedList<Category>>> getCategories(Integer categoryID, Integer size, String orderBy, String direction) {
+        return new NetworkBoundResource<PagedList<Category>, PagedList<Category>>() {
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<PagedList<Category>>> createCall() {
+                return apiService.getCategories(categoryID, size, orderBy, direction);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<Category>> getCategoryById(@NonNull Integer categoryID){
+        return new NetworkBoundResource<Category, Category>() {
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Category>> createCall() {
+                return apiService.getCategoryByID(categoryID);
+            }
+        }.asLiveData();
+    }
 
 }
