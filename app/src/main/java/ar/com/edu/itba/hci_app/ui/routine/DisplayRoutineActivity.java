@@ -23,17 +23,21 @@ public class DisplayRoutineActivity extends AppCompatActivity {
 
         binding = ActivityDisplayRoutineBinding.inflate(getLayoutInflater());
 
-//        Button button = findViewById(R.id.button);
-//
-//        int id = getIntent().getExtras().getInt("color");
-//        switch (id){
-//            case 0:
-//                button.setBackgroundColor(Color.WHITE);
-//                break;
-//            case 1:
-//                button.setBackgroundColor(Color.RED);
-//                break;
-//        }
+        Button button = findViewById(R.id.button);
+
+        int id = getIntent().getExtras().getInt("color");
+        switch (id){
+            case 0:
+                button.setBackgroundColor(Color.WHITE);
+                break;
+            case 1:
+                button.setBackgroundColor(Color.RED);
+                break;
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

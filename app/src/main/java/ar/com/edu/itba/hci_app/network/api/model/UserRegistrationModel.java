@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class UserRegistration{
+public class UserRegistrationModel {
 
 	@SerializedName("password")
 	private String password;
@@ -30,7 +30,7 @@ public class UserRegistration{
 	@SerializedName("username")
 	private String username;
 
-	public UserRegistration(String password, Date birthdate, String gender, String phone, String avatarUrl, String fullName, String email, String username) {
+	public UserRegistrationModel(String password, Date birthdate, String gender, String phone, String avatarUrl, String fullName, String email, String username) {
 		this.password = password;
 		this.birthdate = birthdate;
 		this.gender = gender;
@@ -41,7 +41,7 @@ public class UserRegistration{
 		this.username = username;
 	}
 
-	public UserRegistration(String password, Date birthdate, String gender, String fullName, String email, String username) {
+	public UserRegistrationModel(String password, Date birthdate, String gender, String fullName, String email, String username) {
 		this.password = password;
 		this.birthdate = birthdate;
 		this.gender = gender;

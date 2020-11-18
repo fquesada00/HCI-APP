@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentRegisterBinding;
 import ar.com.edu.itba.hci_app.network.Status;
@@ -42,7 +43,6 @@ public class RegisterFragment extends BaseFragment<AuthViewModel,FragmentRegiste
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.genders, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinner.setAdapter(adapter);
-
         binding.buttonRegister.setOnClickListener(v -> {
             String username = binding.registerUsername.getText().toString();
             String password = binding.registerPassword.getText().toString();
@@ -73,6 +73,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel,FragmentRegiste
 
     @Override
     public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+        MyApplication application = (MyApplication)getActivity().getApplication();
+        return application.getUserRepository();
     }
 }

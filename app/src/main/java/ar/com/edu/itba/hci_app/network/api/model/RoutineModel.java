@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Routine{
+public class RoutineModel {
 
 	@SerializedName("difficulty")
 	private String difficulty;
 
 	@SerializedName("creator")
-	private Creator creator;
+	private CreatorModel creator;
 
 	@SerializedName("dateCreated")
 	private Date dateCreated;
 
 	@SerializedName("averageRating")
-	private int averageRating;
+	private Double averageRating;
 
 	@SerializedName("name")
 	private String name;
@@ -31,13 +31,13 @@ public class Routine{
 	private String detail;
 
 	@SerializedName("category")
-	private Category category;
+	private CategoryModel category;
 
 	public String getDifficulty(){
 		return difficulty;
 	}
 
-	public Creator getCreator(){
+	public CreatorModel getCreator(){
 		return creator;
 	}
 
@@ -45,7 +45,7 @@ public class Routine{
 		return dateCreated;
 	}
 
-	public int getAverageRating(){
+	public Double getAverageRating(){
 		return averageRating;
 	}
 
@@ -65,7 +65,7 @@ public class Routine{
 		return detail;
 	}
 
-	public Category getCategory(){
+	public CategoryModel getCategory(){
 		return category;
 	}
 }

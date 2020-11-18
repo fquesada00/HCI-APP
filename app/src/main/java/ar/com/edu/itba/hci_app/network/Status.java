@@ -5,3 +5,4 @@ public enum Status {
     ERROR,
     LOADING
 }
+
