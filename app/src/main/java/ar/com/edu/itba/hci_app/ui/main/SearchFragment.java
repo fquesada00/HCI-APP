@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.edu.itba.hci_app.MyApplication;
@@ -31,6 +33,8 @@ import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 public class SearchFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, RoutineRepository> {
 
     private List<Routine> routineList;
+
+    private View view;
 
     private static SearchFragment searchFragment;
 
@@ -65,15 +69,58 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        routineList = new ArrayList<>();
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+
+//        viewModel.getDifficultyRoutines().observe(requireActivity(), list -> {
+//            switch (list.getStatus()) {
+//                case SUCCESS:
+//                    for (int i = 0; i < list.getData().size(); i++) {
+//                        routineList.add(list.getData().get(i));
+//                    }
+//
+//                    break;
+//                default:
+//                    switchResourceStatus(list.getStatus());
+//            }
+//        });
+        return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        routineList.add(new Routine("BAJA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
+        routineList.add(new Routine("ALTA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
+
+        ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
+        RecyclerView recyclerView = binding.searchRecycleView;
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+//
+//        viewModel.getCurrentUserRoutines().observe(requireActivity(), list -> {
+//            switch (list.getStatus()) {
+//                case SUCCESS:
+//
+//                    break;
+//                default:
+//                    switchResourceStatus(list.getStatus());
+//            }
+//        });
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -81,26 +128,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
 
         searchFragment = this;
 
-        viewModel.getDifficultyRoutines().observe(requireActivity(), pagedListResource -> {
-            switch (pagedListResource.getStatus()) {
-                case SUCCESS:
-                    break;
-                default:
-                    switchResourceStatus(pagedListResource.getStatus());
-            }
-        });
 
-        viewModel.getCurrentUserRoutines().observe(requireActivity(), list -> {
-            switch (list.getStatus()) {
-                case SUCCESS:
-                    for (int i = 0; i < list.getData().size(); i++)
-                        routineList.add(list.getData().get(i));
-                    ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
-                    break;
-                default:
-                    switchResourceStatus(list.getStatus());
-            }
-        });
 
 //        binding.routineCardDisplay.setOnClickListener(v -> {
 //            binding.routineCardDisplay.setCardBackgroundColor(Color.BLUE);
