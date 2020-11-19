@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentSearchBinding;
+import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Status;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
@@ -36,6 +38,12 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     private View view;
     private RecyclerView recyclerView;
     private List<Routine> list;
+    private ListSearchAdapter listSearchAdapter;
+
+    private View categoryView;
+    private RecyclerView categoryRecyclerView;
+    private List<Category> categoryList;
+    private ListCategorySearchAdapter categorySearchAdapter;
 
     private static SearchFragment searchFragment;
 
@@ -76,25 +84,25 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        view = super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_search, container, false);
         recyclerView = view.findViewById(R.id.search_recycle_view);
         list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list.add(new Routine("BAJA", null, null, 3.0, "BAJA", true, 0, null, null));
         list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
 
-        ListSearchAdapter adapter = new ListSearchAdapter(list, getContext());
-        recyclerView.setAdapter(adapter);
+        listSearchAdapter = new ListSearchAdapter(list, getContext());
+        recyclerView.setAdapter(listSearchAdapter);
         setHasOptionsMenu(true);
+
+        categoryRecyclerView = view.findViewById(R.id.search_category_recycler_view);
+        categoryList = new ArrayList<>();
+        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+
+
+        categorySearchAdapter = new ListCategorySearchAdapter(categoryList);
+        categoryRecyclerView.setAdapter(categorySearchAdapter);
 
 
 
@@ -117,7 +125,39 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Button button = getActivity().findViewById(R.id.button33);
+        button.setOnClickListener(v -> {
+                        list.add(new Routine("BOTOOOON", null, null, 3.0, "ALTA", true, 0, null, null));
+                        listSearchAdapter.notifyItemInserted(list.size() - 1);
 
+//            listSearchAdapter = new ListSearchAdapter(list, getContext());
+//            recyclerView.setAdapter(listSearchAdapter);
+
+        });
+
+        viewModel.getCategories().observe(requireActivity(), v -> {
+            switch (v.getStatus()){
+                case SUCCESS:
+                    binding.button33.setBackgroundColor(Color.RED);
+                    for(int i = 0 ; i < v.getData().size() ; i++){
+                        categoryList.add(v.getData().get(i));
+
+                        categorySearchAdapter.notifyItemInserted(categoryList.size() - 1);
+                    }
+                    break;
+                default:
+                    Log.d("HERE","defaukt");
+            }
+        });
+
+//        binding.button33.setOnClickListener(v -> {
+//            binding.button33.setBackgroundColor(Color.RED);
+//            list.add(new Routine("BOTOOOON", null, null, 3.0, "ALTA", true, 0, null, null));
+//            listSearchAdapter = new ListSearchAdapter(list, getContext());
+//            recyclerView.setAdapter(listSearchAdapter);
+//            Log.d("INSERT","eee");
+//
+//        });
 
 //
 //        viewModel.getCurrentUserRoutines().observe(requireActivity(), list -> {
@@ -135,6 +175,8 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
 
         searchFragment = this;
 //
