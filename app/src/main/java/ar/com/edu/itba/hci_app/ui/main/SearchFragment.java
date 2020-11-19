@@ -96,6 +96,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
                     for (int i = 0; i < list.getData().size(); i++)
                         routineList.add(list.getData().get(i));
                     ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
+                    RecyclerView
                     break;
                 default:
                     switchResourceStatus(list.getStatus());
