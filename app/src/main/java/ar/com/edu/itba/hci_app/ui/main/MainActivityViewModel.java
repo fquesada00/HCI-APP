@@ -267,9 +267,9 @@ public class MainActivityViewModel extends AndroidViewModel {
         return categories;
     }
 
-//    public LiveData<Resource<Category>> getCategoryById(@NonNull Integer id){
-//        return repository.getCategoryById(id);
-//    }
+    public LiveData<Resource<Category>> getCategoryById(@NonNull Integer id){
+        return repository.getCategoryById(id);
+    }
 
 
 

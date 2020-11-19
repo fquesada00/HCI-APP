@@ -1,10 +1,9 @@
-package ar.com.edu.itba.hci_app.ui.main;
+package ar.com.edu.itba.hci_app.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +16,11 @@ import ar.com.edu.itba.hci_app.domain.Category;
 public class ListCategorySearchAdapter extends RecyclerView.Adapter<ListCategorySearchAdapter.CategoryViewHolder> {
 
     private List<Category> list;
+    private CategoryAdapterListener listener;
 
-    public ListCategorySearchAdapter(List<Category> list){
+    public ListCategorySearchAdapter(List<Category> list, CategoryAdapterListener listener) {
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -45,14 +46,17 @@ public class ListCategorySearchAdapter extends RecyclerView.Adapter<ListCategory
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         Button button;
-
-        public CategoryViewHolder(View view){
+        Category category;
+        public CategoryViewHolder(View view) {
             super(view);
             button = view.findViewById(R.id.btn_category_list);
         }
 
-        void bindData(Category category){
+        void bindData(Category category) {
             button.setText(category.getName());
+            this.category = category;
+            button.setOnClickListener(view -> listener.onCategoryButtonClick(category.getId()));
+
         }
     }
 }
