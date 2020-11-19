@@ -63,7 +63,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
 
         void bindData(Routine routine){
             //TODO la rutina no tiene un drawable --> imageView.setImageDrawable(routine);
-            creator.setText(routine.getCreator().getUsername());
+            creator.setText(routine.getDifficulty());
             name.setText(routine.getName());
             rating.setText(routine.getAverageRating().toString());
         }
