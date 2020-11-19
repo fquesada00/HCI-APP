@@ -25,6 +25,8 @@ public abstract class CategoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(CategoryEntity... categories);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void insert(List<CategoryEntity> categories);
 
     @Update
     public abstract void update(CategoryEntity category);

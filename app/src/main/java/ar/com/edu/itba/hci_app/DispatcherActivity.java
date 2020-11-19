@@ -19,7 +19,7 @@ import ar.com.edu.itba.hci_app.ui.auth.AuthActivity;
 import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 
 
-public class DispatcherActivity extends AppCompatActivity {
+public class    DispatcherActivity extends AppCompatActivity {
 
     /*
         TODO
