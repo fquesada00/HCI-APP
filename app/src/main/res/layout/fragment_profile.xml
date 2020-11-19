@@ -1,13 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.main.ProfileFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_profile_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="205dp"
+            android:layout_height="205dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="400dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="400dp">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_person_24" />
+
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="MARTINA PALERMO"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="35dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Button"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Button"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Button"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+    </LinearLayout>
+</ScrollView>
