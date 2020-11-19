@@ -15,7 +15,7 @@ import java.util.List;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.domain.Routine;
 
-public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.ViewHolder> {
+public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.RoutineViewHolder> {
 
     private List<Routine> list;
     private LayoutInflater layoutInflater;
@@ -34,13 +34,14 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
 
     @NonNull
     @Override
-    public ListSearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.list_item_search_fragment, null);
-        return new ListSearchAdapter.ViewHolder(view);
+    public ListSearchAdapter.RoutineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        View view = layoutInflater.inflate(R.layout.list_item_search_fragment, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_search_fragment, null, false);
+        return new RoutineViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ListSearchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ListSearchAdapter.RoutineViewHolder holder, int position) {
         holder.bindData(list.get(position));
     }
 
@@ -48,24 +49,24 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
         this.list = list;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class RoutineViewHolder extends RecyclerView.ViewHolder {
 
 //                ImageView imageView;
         TextView creator, name, rating;
 
-        public ViewHolder(View itemView) {
+        public RoutineViewHolder(View itemView) {
             super(itemView);
 //            imageView = itemView.findViewById(R.id.);
-            creator = itemView.findViewById(R.id.creator_routine);
-            name = itemView.findViewById(R.id.routine_title);
-            rating = itemView.findViewById(R.id.rating_bar);
+            creator = (TextView) itemView.findViewById(R.id.creator_routine);
+            name = (TextView) itemView.findViewById(R.id.routine_title);
+//            rating = itemView.findViewById(R.id.rating_bar);
         }
 
         void bindData(Routine routine){
             //TODO la rutina no tiene un drawable --> imageView.setImageDrawable(routine);
             creator.setText(routine.getDifficulty());
             name.setText(routine.getName());
-            rating.setText(routine.getAverageRating().toString());
+//            rating.setText(routine.getAverageRating().toString());
         }
     }
 
