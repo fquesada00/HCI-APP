@@ -32,9 +32,10 @@ import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 public class SearchFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, RoutineRepository> {
 
-    private List<Routine> routineList;
 
     private View view;
+    private RecyclerView recyclerView;
+    private List<Routine> list;
 
     private static SearchFragment searchFragment;
 
@@ -69,8 +70,6 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        routineList = new ArrayList<>();
-
     }
 
     @Nullable
@@ -78,6 +77,23 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        view = super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_search, container, false);
+        recyclerView = view.findViewById(R.id.search_recycle_view);
+        list = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        list.add(new Routine("BAJA", null, null, 3.0, "BAJA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+
+        ListSearchAdapter adapter = new ListSearchAdapter(list, getContext());
+        recyclerView.setAdapter(adapter);
         setHasOptionsMenu(true);
 
 
@@ -121,15 +137,15 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         super.onActivityCreated(savedInstanceState);
 
         searchFragment = this;
-
-        routineList.add(new Routine("BAJA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
-        routineList.add(new Routine("ALTA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
-
-        ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
-        RecyclerView recyclerView = getView().findViewById(R.id.search_recycle_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+//
+//        routineList.add(new Routine("BAJA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
+//        routineList.add(new Routine("ALTA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
+//
+//        ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
+//        RecyclerView recyclerView = getView().findViewById(R.id.search_recycle_view);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setAdapter(adapter);
 
 //        binding.routineCardDisplay.setOnClickListener(v -> {
 //            binding.routineCardDisplay.setCardBackgroundColor(Color.BLUE);
