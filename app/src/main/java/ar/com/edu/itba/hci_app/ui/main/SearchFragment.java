@@ -1,5 +1,6 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import ar.com.edu.itba.hci_app.network.Status;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
+import ar.com.edu.itba.hci_app.ui.routine.DisplayRoutineActivity;
 
 
 public class SearchFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, RoutineRepository> {
@@ -76,6 +78,15 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.button3.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new RoutineDescriptionFragment()).commit();
+            getActivity().getSupportFragmentManager().executePendingTransactions();
+        });
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -96,7 +107,6 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
                     for (int i = 0; i < list.getData().size(); i++)
                         routineList.add(list.getData().get(i));
                     ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
-                    RecyclerView
                     break;
                 default:
                     switchResourceStatus(list.getStatus());

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.main.SearchFragment">
 
-    
+
 
 <!--    <androidx.cardview.widget.CardView-->
 <!--        android:id="@+id/routine_card_display"-->
@@ -64,4 +64,9 @@
 <!--            </LinearLayout>-->
 <!--        </LinearLayout>-->
 <!--    </androidx.cardview.widget.CardView>-->
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 </LinearLayout>
