@@ -76,7 +76,8 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = super.onCreateView(inflater, container, savedInstanceState);
+//        view = super.onCreateView(inflater, container, savedInstanceState);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
         setHasOptionsMenu(true);
 
 
@@ -93,21 +94,14 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
 //                    switchResourceStatus(list.getStatus());
 //            }
 //        });
-        return binding.getRoot();
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        routineList.add(new Routine("BAJA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
-        routineList.add(new Routine("ALTA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
 
-        ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
-        RecyclerView recyclerView = binding.searchRecycleView;
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
 
 //
 //        viewModel.getCurrentUserRoutines().observe(requireActivity(), list -> {
@@ -128,7 +122,14 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
 
         searchFragment = this;
 
+        routineList.add(new Routine("BAJA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
+        routineList.add(new Routine("ALTA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
 
+        ListSearchAdapter adapter = new ListSearchAdapter(routineList, getContext());
+        RecyclerView recyclerView = getView().findViewById(R.id.search_recycle_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
 
 //        binding.routineCardDisplay.setOnClickListener(v -> {
 //            binding.routineCardDisplay.setCardBackgroundColor(Color.BLUE);

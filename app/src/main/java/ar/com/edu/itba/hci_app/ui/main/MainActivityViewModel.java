@@ -322,6 +322,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                 .observeForever(pagedListResource -> {
                     switch (pagedListResource.getStatus()) {
                         case SUCCESS:
+                            Log.d("ALL", "setFavouritesRoutines: "+ pagedListResource.getData().size());
                             if (pagedListResource.getData().size() == 0) {
                                 List<Routine> pagedList = new ArrayList<>();
                                 favouritesRoutines.setValue(Resource.success(pagedList));

@@ -2,6 +2,7 @@ package ar.com.edu.itba.hci_app.network.api;
 
 import androidx.lifecycle.LiveData;
 
+import ar.com.edu.itba.hci_app.network.api.model.CategoryModel;
 import ar.com.edu.itba.hci_app.network.api.model.CycleModel;
 import ar.com.edu.itba.hci_app.network.api.model.ExerciseModel;
 import ar.com.edu.itba.hci_app.network.api.model.PagedList;
@@ -56,6 +57,13 @@ public interface ApiRoutinesService {
     @GET("routines/{routineID}/cycles/{cycleID}/exercises/{exerciseID}")
     LiveData<ApiResponse<ExerciseModel>> getExerciseByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID,
                                                          @Path("exerciseID") Integer exerciseID);
+
+    @GET("categories")
+    LiveData<ApiResponse<PagedList<CategoryModel>>> getCategories(@Query("page") Integer page,
+                                                                  @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+
+    @GET("categories/{categoryID}")
+    LiveData<ApiResponse<CategoryModel>> getCategoryById(@Path("categoryID") int categoryID);
 
     @POST("user/current/routines/{routineID}/favourites")
     LiveData<ApiResponse<Void>> addToFavourites(@Path("routineID") Integer routineID);

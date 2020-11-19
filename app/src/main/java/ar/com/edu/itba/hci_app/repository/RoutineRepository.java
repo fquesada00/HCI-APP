@@ -1,5 +1,7 @@
 package ar.com.edu.itba.hci_app.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -15,21 +17,17 @@ import ar.com.edu.itba.hci_app.db.entity.CategoryEntity;
 import ar.com.edu.itba.hci_app.db.entity.CreatorEntity;
 import ar.com.edu.itba.hci_app.db.entity.CycleEntity;
 import ar.com.edu.itba.hci_app.db.entity.ExerciseEntity;
-import ar.com.edu.itba.hci_app.db.entity.RatingAbstractEntity;
 import ar.com.edu.itba.hci_app.db.entity.RatingCurrentEntity;
 import ar.com.edu.itba.hci_app.db.entity.RatingEntity;
-import ar.com.edu.itba.hci_app.db.entity.RoutineAbstractEntity;
 import ar.com.edu.itba.hci_app.db.entity.RoutineCurrentEntity;
 import ar.com.edu.itba.hci_app.db.entity.RoutineEntity;
 import ar.com.edu.itba.hci_app.db.entity.RoutineFavEntity;
-import ar.com.edu.itba.hci_app.db.entity.UserEntity;
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Creator;
 import ar.com.edu.itba.hci_app.domain.Cycle;
 import ar.com.edu.itba.hci_app.domain.Exercise;
 import ar.com.edu.itba.hci_app.domain.Rating;
 import ar.com.edu.itba.hci_app.domain.Routine;
-import ar.com.edu.itba.hci_app.domain.User;
 import ar.com.edu.itba.hci_app.network.AbsentLiveData;
 import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.api.ApiResponse;
@@ -42,7 +40,6 @@ import ar.com.edu.itba.hci_app.network.api.model.PagedList;
 import ar.com.edu.itba.hci_app.network.api.model.RatingModel;
 import ar.com.edu.itba.hci_app.network.api.model.RoutineModel;
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
-import ar.com.edu.itba.hci_app.network.api.model.UserModel;
 
 public class RoutineRepository extends BaseRepository {
 
@@ -54,7 +51,6 @@ public class RoutineRepository extends BaseRepository {
         super(executors, database);
         this.apiService = service;
     }
-
 
 
     private Creator mapCreatorEntityToDomain(CreatorEntity userEntity) {
@@ -83,7 +79,21 @@ public class RoutineRepository extends BaseRepository {
         return new Category(categoryModel.getName(), categoryModel.getId(), categoryModel.getDetail());
     }
 
-    private Routine mapRoutineEntityToDomain(RoutineAbstractEntity routineEntity) {
+    private Routine mapRoutineEntityToDomain(RoutineEntity routineEntity) {
+        Creator creator = mapCreatorEntityToDomain(routineEntity.creator);
+        Category category = mapCategoryEntityToDomain(routineEntity.category);
+        return new Routine(routineEntity.difficulty, creator, routineEntity.dateCreated, routineEntity.averageRating,
+                routineEntity.name, routineEntity.isPublic, routineEntity.id, routineEntity.detail, category);
+    }
+
+    private Routine mapRoutineEntityToDomain(RoutineCurrentEntity routineEntity) {
+        Creator creator = mapCreatorEntityToDomain(routineEntity.creator);
+        Category category = mapCategoryEntityToDomain(routineEntity.category);
+        return new Routine(routineEntity.difficulty, creator, routineEntity.dateCreated, routineEntity.averageRating,
+                routineEntity.name, routineEntity.isPublic, routineEntity.id, routineEntity.detail, category);
+    }
+
+    private Routine mapRoutineEntityToDomain(RoutineFavEntity routineEntity) {
         Creator creator = mapCreatorEntityToDomain(routineEntity.creator);
         Category category = mapCategoryEntityToDomain(routineEntity.category);
         return new Routine(routineEntity.difficulty, creator, routineEntity.dateCreated, routineEntity.averageRating,
@@ -118,19 +128,24 @@ public class RoutineRepository extends BaseRepository {
                 routineModel.isIsPublic(), routineModel.getId(), routineModel.getDetail(), category);
     }
 
-    private Rating mapRatingEntityToDomain(RatingAbstractEntity ratingEntity) {
+    private Rating mapRatingEntityToDomain(RatingEntity ratingEntity) {
+        Routine routine = mapRoutineEntityToDomain(ratingEntity.routine);
+        return new Rating(ratingEntity.date, ratingEntity.score, routine, ratingEntity.review, ratingEntity.id);
+    }
+
+    private Rating mapRatingEntityToDomain(RatingCurrentEntity ratingEntity) {
         Routine routine = mapRoutineEntityToDomain(ratingEntity.routine);
         return new Rating(ratingEntity.date, ratingEntity.score, routine, ratingEntity.review, ratingEntity.id);
     }
 
     private RatingEntity mapRatingModelToEntity(RatingModel ratingModel) {
-        RoutineAbstractEntity routine = mapRoutineModelToEntity(ratingModel.getRoutine());
+        RoutineEntity routine = mapRoutineModelToEntity(ratingModel.getRoutine());
         return new RatingEntity(ratingModel.getId(), ratingModel.getDate(), ratingModel.getScore(), ratingModel.getReview(),
                 routine);
     }
 
     private RatingCurrentEntity mapRatingModelToCurrentEntity(RatingModel ratingModel) {
-        RoutineAbstractEntity routine = mapRoutineModelToEntity(ratingModel.getRoutine());
+        RoutineCurrentEntity routine = mapRoutineModelToCurrentEntity(ratingModel.getRoutine());
         return new RatingCurrentEntity(ratingModel.getId(), ratingModel.getDate(), ratingModel.getScore(), ratingModel.getReview(), routine);
     }
 
@@ -182,6 +197,16 @@ public class RoutineRepository extends BaseRepository {
                     @Override
                     protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
                         database.routineDao().deleteRoutines();
+                        CategoryEntity categoryEntity;
+                        CreatorEntity creatorEntity;
+                        for (int i = 0; i < entity.size(); i++) {
+                            categoryEntity = entity.get(i).category;
+                            creatorEntity = entity.get(i).creator;
+                            database.categoryDao().delete(categoryEntity);
+                            database.categoryDao().insert(categoryEntity);
+                            database.userDao().delete(creatorEntity);
+                            database.userDao().insert(creatorEntity);
+                        }
                         database.routineDao().insertRoutine(entity);
                     }
 
@@ -217,6 +242,16 @@ public class RoutineRepository extends BaseRepository {
                     @Override
                     protected void saveCallResult(@NonNull List<RoutineCurrentEntity> entity) {
                         database.routineDao().deleteCurrentUserRoutines();
+                        CategoryEntity categoryEntity;
+                        CreatorEntity creatorEntity;
+                        for (int i = 0; i < entity.size(); i++) {
+                            categoryEntity = entity.get(i).category;
+                            creatorEntity = entity.get(i).creator;
+                            database.categoryDao().delete(categoryEntity);
+                            database.categoryDao().insert(categoryEntity);
+                            database.userDao().delete(creatorEntity);
+                            database.userDao().insert(creatorEntity);
+                        }
                         database.routineDao().insertCurrentRoutine(entity);
 
                     }
@@ -253,6 +288,16 @@ public class RoutineRepository extends BaseRepository {
                     @Override
                     protected void saveCallResult(@NonNull List<RoutineFavEntity> entity) {
                         database.routineDao().deleteFavRoutines();
+                        CategoryEntity categoryEntity;
+                        CreatorEntity creatorEntity;
+                        for (int i = 0; i < entity.size(); i++) {
+                            categoryEntity = entity.get(i).category;
+                            creatorEntity = entity.get(i).creator;
+                            database.categoryDao().delete(categoryEntity);
+                            database.categoryDao().insert(categoryEntity);
+                            database.userDao().delete(creatorEntity);
+                            database.userDao().insert(creatorEntity);
+                        }
                         database.routineDao().insertRoutineFav(entity);
 
                     }
@@ -276,7 +321,7 @@ public class RoutineRepository extends BaseRepository {
                     @NonNull
                     @Override
                     protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
-                        return apiService.getCurrentUserRoutines(difficulty, page, size, orderBy, direction);
+                        return apiService.getCurrentUserFavourites(page, size, orderBy, direction);
                     }
                 }.asLiveData();
         }
@@ -332,6 +377,16 @@ public class RoutineRepository extends BaseRepository {
             @Override
             protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
                 database.routineDao().deleteRoutineFromCreator(userID);
+                CategoryEntity categoryEntity;
+                CreatorEntity creatorEntity;
+                for (int i = 0; i < entity.size(); i++) {
+                    categoryEntity = entity.get(i).category;
+                    creatorEntity = entity.get(i).creator;
+                    database.categoryDao().delete(categoryEntity);
+                    database.categoryDao().insert(categoryEntity);
+                    database.userDao().delete(creatorEntity);
+                    database.userDao().insert(creatorEntity);
+                }
                 database.routineDao().insertRoutine(entity);
             }
 
@@ -368,6 +423,10 @@ public class RoutineRepository extends BaseRepository {
             @Override
             protected void saveCallResult(@NonNull RoutineEntity entity) {
                 database.routineDao().delete(entity);
+                database.categoryDao().delete(entity.category);
+                database.categoryDao().insert(entity.category);
+                database.userDao().delete(entity.creator);
+                database.userDao().insert(entity.creator);
                 database.routineDao().insertRoutine(entity);
             }
 
@@ -582,6 +641,80 @@ public class RoutineRepository extends BaseRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<List<Category>>> getCategories(@Nullable Integer page,
+                                                            @Nullable Integer size, @Nullable String orderBy,
+                                                            @Nullable String direction){
+        return new NetworkBoundResource<List<Category>, List<CategoryEntity>, PagedList<CategoryModel>>(executors,
+                categoryEntities -> categoryEntities.stream().map(this::mapCategoryEntityToDomain).collect(Collectors.toList()),
+                categoryModelPagedList -> categoryModelPagedList.getResults().stream().map(this::mapCategoryModelToEntity).collect(Collectors.toList()),
+                categoryModelPagedList -> categoryModelPagedList.getResults().stream().map(this::mapCategoryModelToDomain).collect(Collectors.toList())
+        ) {
+            @Override
+            protected void saveCallResult(@NonNull List<CategoryEntity> entity) {
+                database.categoryDao().deleteAll();
+                database.categoryDao().insert(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<CategoryEntity> entity) {
+                return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable PagedList<CategoryModel> model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<CategoryEntity>> loadFromDb() {
+                return database.categoryDao().getCategories();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<PagedList<CategoryModel>>> createCall() {
+                return apiService.getCategories(page,size,orderBy,direction);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<Category>> getCategoryById(int categoryId){
+        return new NetworkBoundResource<Category, CategoryEntity, CategoryModel>(executors,
+                this::mapCategoryEntityToDomain,
+                this::mapCategoryModelToEntity,
+                this::mapCategoryModelToDomain
+        ) {
+            @Override
+            protected void saveCallResult(@NonNull CategoryEntity entity) {
+                database.categoryDao().delete(entity);
+                database.categoryDao().insert(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable CategoryEntity entity) {
+                return (entity == null || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable CategoryModel model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<CategoryEntity> loadFromDb() {
+                return database.categoryDao().getCategoryByIdId(categoryId);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<CategoryModel>> createCall() {
+                return apiService.getCategoryById(categoryId);
+            }
+        }.asLiveData();
+    }
+
     public LiveData<Resource<Void>> addToFavourites(@NonNull Integer routineID) {
         return new NetworkBoundResource<Void, RoutineFavEntity, Void>(executors,
                 routineFavEntity -> null,
@@ -659,10 +792,10 @@ public class RoutineRepository extends BaseRepository {
     }
 
     public LiveData<Resource<Void>> removeFromFavourites(@NonNull Integer routineID) {
-        return new NetworkBoundResource<Void,RoutineEntity, Void>(executors,routineEntity -> null,
+        return new NetworkBoundResource<Void, RoutineEntity, Void>(executors, routineEntity -> null,
                 model -> null,
                 model -> null
-                ) {
+        ) {
             @Override
             protected void saveCallResult(@NonNull RoutineEntity entity) {
                 database.routineDao().delete(entity);
