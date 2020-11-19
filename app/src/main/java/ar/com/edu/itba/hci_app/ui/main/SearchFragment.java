@@ -35,6 +35,8 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     private List<Routine> routineList;
 
     private View view;
+    private RecyclerView recyclerView;
+    private List<Routine> list;
 
     private static SearchFragment searchFragment;
 
@@ -78,6 +80,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        view = super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_search, container, false);
+//        recyclerView = view.findViewById(R.id.search_recycle_view);
         setHasOptionsMenu(true);
 
 
