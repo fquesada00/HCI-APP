@@ -243,30 +243,29 @@ public class MainActivityViewModel extends AndroidViewModel {
 
 
     //TODO getcategories
-//    private void setCategories() {
-//        if (categories == null)
-//            categories = new MutableLiveData<>();
-//        repository.getCategories(null, categoriesPerPage, "name", "asc")
-//                .observeForever(pagedListResource -> {
-//                    switch (pagedListResource.getStatus()) {
-//                        case SUCCESS:
-//                            if (pagedListResource.getData().getResults().size() == 0){
-//                                PagedList<Category> pagedList = new PagedList<>();
-//                                pagedList.setResults(new ArrayList<>());
-//                                categories.setValue(Resource.success(pagedList));}
-//                            else
-//                                categories.setValue(Resource.success(pagedListResource.getData()));
-//                            break;
-//                        default:
-//                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, categories);
-//                    }
-//                });
-//    }
-//
-//    public LiveData<Resource<PagedList<Category>>> getCategories() {
-//        setCategories();
-//        return categories;
-//    }
+    private void setCategories() {
+        if (categories == null)
+            categories = new MutableLiveData<>();
+        repository.getCategories(null, categoriesPerPage, "name", "asc")
+                .observeForever(pagedListResource -> {
+                    switch (pagedListResource.getStatus()) {
+                        case SUCCESS:
+                            if (pagedListResource.getData().size() == 0){
+                                List<Category> pagedList = new ArrayList<>();
+                                categories.setValue(Resource.success(pagedList));}
+                            else
+                                categories.setValue(Resource.success(pagedListResource.getData()));
+                            break;
+                        default:
+                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, categories);
+                    }
+                });
+    }
+
+    public LiveData<Resource<List<Category>>> getCategories() {
+        setCategories();
+        return categories;
+    }
 
 //    public LiveData<Resource<Category>> getCategoryById(@NonNull Integer id){
 //        return repository.getCategoryById(id);

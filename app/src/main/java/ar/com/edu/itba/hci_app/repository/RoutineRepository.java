@@ -657,7 +657,7 @@ public class RoutineRepository extends BaseRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<CategoryEntity> entity) {
-                return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                return true;
             }
 
             @Override
