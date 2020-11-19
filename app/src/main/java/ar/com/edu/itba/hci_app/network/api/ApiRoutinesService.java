@@ -2,12 +2,11 @@ package ar.com.edu.itba.hci_app.network.api;
 
 import androidx.lifecycle.LiveData;
 
-import ar.com.edu.itba.hci_app.network.api.model.Cycle;
-import ar.com.edu.itba.hci_app.network.api.model.Exercise;
+import ar.com.edu.itba.hci_app.network.api.model.CycleModel;
+import ar.com.edu.itba.hci_app.network.api.model.ExerciseModel;
 import ar.com.edu.itba.hci_app.network.api.model.PagedList;
-import ar.com.edu.itba.hci_app.network.api.model.Rating;
-import ar.com.edu.itba.hci_app.network.api.model.Routine;
-import retrofit2.Response;
+import ar.com.edu.itba.hci_app.network.api.model.RatingModel;
+import ar.com.edu.itba.hci_app.network.api.model.RoutineModel;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -17,52 +16,52 @@ import retrofit2.http.Query;
 
 public interface ApiRoutinesService {
     @GET("routines")
-    LiveData<ApiResponse<PagedList<Routine>>> getRoutines(@Query("difficulty") String difficulty, @Query("page") Integer page,
-                                                          @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+    LiveData<ApiResponse<PagedList<RoutineModel>>> getRoutines(@Query("difficulty") String difficulty, @Query("page") Integer page,
+                                                               @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("user/current/routines/")
-    LiveData<ApiResponse<PagedList<Routine>>> getCurrentUserRoutines(@Query("difficulty") String difficulty, @Query("page") Integer page,
-                                                                     @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+    LiveData<ApiResponse<PagedList<RoutineModel>>> getCurrentUserRoutines(@Query("difficulty") String difficulty, @Query("page") Integer page,
+                                                                          @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("user/{userID}/routines/")
-    LiveData<ApiResponse<PagedList<Routine>>> getUserRoutines(@Path("userID") Integer userID, @Query("difficulty") String difficulty, @Query("page") Integer page,
-                                                              @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+    LiveData<ApiResponse<PagedList<RoutineModel>>> getUserRoutines(@Path("userID") Integer userID, @Query("difficulty") String difficulty, @Query("page") Integer page,
+                                                                   @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("user/current/routines/favourites")
-    LiveData<ApiResponse<PagedList<Routine>>> getCurrentUserFavourites(@Query("page") Integer page,
-                                                                       @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
-
-    @GET("user/current/routines/ratings")
-    LiveData<ApiResponse<PagedList<Rating>>> getCurrentUserRoutinesRatings(@Query("page") Integer page,
+    LiveData<ApiResponse<PagedList<RoutineModel>>> getCurrentUserFavourites(@Query("page") Integer page,
                                                                             @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
+    @GET("user/current/routines/ratings")
+    LiveData<ApiResponse<PagedList<RatingModel>>> getCurrentUserRoutinesRatings(@Query("page") Integer page,
+                                                                                @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+
     @GET("routines/{routineID}")
-    LiveData<ApiResponse<Routine>> getRoutineByID(@Path("routineID") Integer routineID);
+    LiveData<ApiResponse<RoutineModel>> getRoutineByID(@Path("routineID") Integer routineID);
 
     @GET("routines/{routineID}/ratings")
-    LiveData<ApiResponse<PagedList<Rating>>> getRoutineRating(@Path("routineID") Integer routineID, @Query("page") Integer page,
-                                                   @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+    LiveData<ApiResponse<PagedList<RatingModel>>> getRoutineRating(@Path("routineID") Integer routineID, @Query("page") Integer page,
+                                                                   @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID/cycles")
-    LiveData<ApiResponse<PagedList<Cycle>>> getRoutineCycles(@Path("routineID") Integer routineID, @Query("page") Integer page,
-                                                             @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+    LiveData<ApiResponse<PagedList<CycleModel>>> getRoutineCycles(@Path("routineID") Integer routineID, @Query("page") Integer page,
+                                                                  @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID}/cycles/{cycleID}")
-    LiveData<ApiResponse<Cycle>> getRoutineCycleByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID);
+    LiveData<ApiResponse<CycleModel>> getRoutineCycleByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID);
 
     @GET("routines/{routineID}/cycles/{cycleID}/exercises")
-    LiveData<ApiResponse<PagedList<Exercise>>> getCycleExercises(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID, @Query("page") Integer page,
-                                                                 @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+    LiveData<ApiResponse<PagedList<ExerciseModel>>> getCycleExercises(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID, @Query("page") Integer page,
+                                                                      @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @GET("routines/{routineID}/cycles/{cycleID}/exercises/{exerciseID}")
-    LiveData<ApiResponse<Exercise>> getExerciseByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID,
-                                                    @Path("exerciseID") Integer exerciseID);
+    LiveData<ApiResponse<ExerciseModel>> getExerciseByID(@Path("routineID") Integer routineID, @Path("cycleID") Integer cycleID,
+                                                         @Path("exerciseID") Integer exerciseID);
 
     @POST("user/current/routines/{routineID}/favourites")
     LiveData<ApiResponse<Void>> addToFavourites(@Path("routineID") Integer routineID);
 
     @POST("routines/{routineID}/ratings")
-    LiveData<ApiResponse<Rating>> addRatingToRoutine(@Path("routineID") Integer routineID, @Body Rating rating);
+    LiveData<ApiResponse<RatingModel>> addRatingToRoutine(@Path("routineID") Integer routineID, @Body RatingModel rating);
 
     @DELETE("user/current/routines/{routineID}/favourites")
     LiveData<ApiResponse<Void>> removeFromFavourites(@Path("routineID") Integer routineID);

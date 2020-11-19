@@ -3,7 +3,7 @@ package ar.com.edu.itba.hci_app.network.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Token {
+public class TokenModel {
     @SerializedName("token")
     @Expose
     private String token;

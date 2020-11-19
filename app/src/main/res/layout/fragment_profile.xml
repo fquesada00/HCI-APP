@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="205dp"
@@ -39,6 +38,21 @@
 
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress_bar"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
@@ -51,7 +65,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/created_routines"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -62,7 +76,7 @@
             android:textSize="17sp" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/completed_routines"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -74,14 +88,14 @@
 
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/favourites_routines"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="Button"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/black"
             android:textSize="17sp" />
     </LinearLayout>

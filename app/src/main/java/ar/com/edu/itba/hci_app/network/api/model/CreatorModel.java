@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Creator{
+public class CreatorModel {
 
 	@SerializedName("dateLastActive")
-	private long dateLastActive;
+	private Date dateLastActive;
 
 	@SerializedName("dateCreated")
 	private Date dateCreated;
@@ -24,7 +24,7 @@ public class Creator{
 	@SerializedName("username")
 	private String username;
 
-	public long getDateLastActive(){
+	public Date getDateLastActive(){
 		return dateLastActive;
 	}
 

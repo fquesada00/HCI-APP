@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.internal.TextWatcherAdapter;
 
+import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 import ar.com.edu.itba.hci_app.databinding.FragmentLoginBinding;
@@ -47,7 +48,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                 switch (tokenResource.getStatus()) {
                     case SUCCESS:
                         AppPreferences preferences = new AppPreferences(getContext());
-                        preferences.setAuthToken(tokenResource.getData().getToken());
+                        preferences.setAuthToken(tokenResource.getData());
                         Toast.makeText(requireContext(), tokenResource.toString(), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
@@ -119,6 +120,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
     @Override
     public UserRepository getFragmentRepository() {
-        return BaseRepository.getUserRepository(getContext());
+        MyApplication application = (MyApplication)getActivity().getApplication();
+        return application.getUserRepository();
     }
 }

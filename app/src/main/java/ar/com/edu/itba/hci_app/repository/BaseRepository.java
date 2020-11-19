@@ -3,24 +3,20 @@ package ar.com.edu.itba.hci_app.repository;
 
 import android.content.Context;
 
+import ar.com.edu.itba.hci_app.db.MyDatabase;
 import ar.com.edu.itba.hci_app.network.api.ApiUserService;
 
 public abstract class BaseRepository {
-    protected static UserRepository userRepository;
-    protected static RoutineRepository routineRepository;
+
+    protected AppExecutors executors;
+    protected MyDatabase database;
 
 
-    static public UserRepository getUserRepository(Context context) {
-        if(userRepository == null)
-            userRepository = new UserRepository(context);
-        return userRepository;
+    public BaseRepository(AppExecutors executors,MyDatabase database){
+        this.database = database;
+        this.executors=executors;
     }
 
-    static public RoutineRepository getRoutineRepository(Context context){
-        if(routineRepository == null)
-            routineRepository = new RoutineRepository(context);
-        return routineRepository;
-    }
 
 
 

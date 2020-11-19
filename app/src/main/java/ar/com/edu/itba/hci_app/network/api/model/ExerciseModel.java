@@ -2,7 +2,7 @@ package ar.com.edu.itba.hci_app.network.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Exercise{
+public class ExerciseModel {
 
 	@SerializedName("duration")
 	private int duration;

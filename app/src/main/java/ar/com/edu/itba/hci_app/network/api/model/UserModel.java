@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class User {
+public class UserModel {
 
     @SerializedName("id")
     @Expose
@@ -44,10 +44,10 @@ public class User {
     @Expose
     private Boolean verified;
 
-    public User() {
+    public UserModel() {
     }
 
-    public User(Integer id, String username, String fullName, String gender, Date birthdate, String email, String phone, String avatarUrl, Date dateCreated, Date dateLastActive, Boolean deleted, Boolean verified) {
+    public UserModel(Integer id, String username, String fullName, String gender, Date birthdate, String email, String phone, String avatarUrl, Date dateCreated, Date dateLastActive, Boolean deleted, Boolean verified) {
         super();
         this.id = id;
         this.username = username;

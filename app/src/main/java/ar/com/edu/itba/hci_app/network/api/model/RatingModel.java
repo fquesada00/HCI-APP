@@ -4,16 +4,36 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Rating{
+public class RatingModel {
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public void setRoutine(RoutineModel routine) {
+		this.routine = routine;
+	}
+
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@SerializedName("date")
 	private Date date;
 
 	@SerializedName("score")
-	private int score;
+	private Double score;
 
 	@SerializedName("routine")
-	private Routine routine;
+	private RoutineModel routine;
 
 	@SerializedName("review")
 	private String review;
@@ -25,11 +45,11 @@ public class Rating{
 		return date;
 	}
 
-	public int getScore(){
+	public Double getScore(){
 		return score;
 	}
 
-	public Routine getRoutine(){
+	public RoutineModel getRoutine(){
 		return routine;
 	}
 

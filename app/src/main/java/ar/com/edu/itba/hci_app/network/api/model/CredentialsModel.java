@@ -3,7 +3,7 @@ package ar.com.edu.itba.hci_app.network.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Credentials {
+public class CredentialsModel {
 
     @SerializedName("username")
     @Expose
@@ -12,10 +12,10 @@ public class Credentials {
     @Expose
     private String password;
 
-    public Credentials() {
+    public CredentialsModel() {
     }
 
-    public Credentials(String username, String password) {
+    public CredentialsModel(String username, String password) {
         this.username = username;
         this.password = password;
     }
