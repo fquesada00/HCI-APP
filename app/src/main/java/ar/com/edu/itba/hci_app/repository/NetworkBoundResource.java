@@ -51,7 +51,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType, ModelType> {
 
     private void fetchFromNetwork(final LiveData<EntityType> dbSource) {
         LiveData<ApiResponse<ModelType>> apiResponse = createCall();
-        // we re-attach dbSource as a new source, it will dispatch it   s latest value quickly
+        // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource,
                 newData -> {
                     DomainType domain = (newData != null) ?
