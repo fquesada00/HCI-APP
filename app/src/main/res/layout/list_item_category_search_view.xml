@@ -11,6 +11,8 @@
         android:text="Coaches"
         android:backgroundTint="@color/colorPrimary"
         android:textSize="20sp"
+        android:background="@drawable/border"
+        android:paddingHorizontal="10dp"
         android:textColor="@android:color/black" />
 
 </LinearLayout>
