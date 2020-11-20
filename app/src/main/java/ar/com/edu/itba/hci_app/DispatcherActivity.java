@@ -39,6 +39,7 @@ public class    DispatcherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_SignIn);
         super.onCreate(savedInstanceState);
         act = this;
         binding = ActivityDispatcherBinding.inflate(getLayoutInflater());
