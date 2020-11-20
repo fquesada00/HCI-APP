@@ -83,9 +83,8 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        view = super.onCreateView(inflater, container, savedInstanceState);
         view = super.onCreateView(inflater, container, savedInstanceState);
-//        view = inflater.inflate(R.layout.fragment_search, container, false);
+
         recyclerView = view.findViewById(R.id.search_recycle_view);
         list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -98,13 +97,13 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         recyclerView.setAdapter(listSearchAdapter);
         setHasOptionsMenu(true);
 
-        categoryRecyclerView = view.findViewById(R.id.search_category_recycler_view);
-        categoryList = new ArrayList<>();
-        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-
-
-        categorySearchAdapter = new ListCategorySearchAdapter(categoryList, this::onCategoryButtonClick );
-        categoryRecyclerView.setAdapter(categorySearchAdapter);
+//        categoryRecyclerView = view.findViewById(R.id.search_category_recycler_view);
+//        categoryList = new ArrayList<>();
+//        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+//
+//
+//        categorySearchAdapter = new ListCategorySearchAdapter(categoryList, this::onCategoryButtonClick );
+//        categoryRecyclerView.setAdapter(categorySearchAdapter);
 
         return view;
     }
@@ -123,21 +122,18 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.button33.setOnClickListener(v ->{
-            binding.button33.setBackgroundColor(Color.RED);
-        });
 
-        viewModel.getCategories().observe(requireActivity(), v -> {
-            switch (v.getStatus()){
-                case SUCCESS:
-                    categoryList.clear();
-                    categoryList.addAll(v.getData());
-                    categorySearchAdapter.notifyDataSetChanged();
-                    break;
-                default:
-                    switchResourceStatus(v.getStatus());
-            }
-        });
+//        viewModel.getCategories().observe(requireActivity(), v -> {
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    categoryList.clear();
+//                    categoryList.addAll(v.getData());
+//                    categorySearchAdapter.notifyDataSetChanged();
+//                    break;
+//                default:
+//                    switchResourceStatus(v.getStatus());
+//            }
+//        });
 
 //        viewModel.getDifficultyRoutines().observe(requireActivity(), list -> {
 //            switch (list.getStatus()) {

@@ -11,19 +11,12 @@
         android:orientation="vertical"
         tools:context=".ui.main.MainActivity">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_category_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/search_category_recycler_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal" />-->
 
-        <Button
-            android:id="@+id/button33"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button"
-
-            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recycle_view"
