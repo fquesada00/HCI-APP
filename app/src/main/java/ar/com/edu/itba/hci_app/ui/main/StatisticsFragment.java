@@ -1,8 +1,10 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,15 +103,28 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         principalListAdapter = new ExerciseRoutineAdapter(principalList);
         principalRecyclerView.setAdapter(principalListAdapter);
 
+     //   principalRecyclerView.setNestedScrollingEnabled(false);
+
         enfriamientoRecyclerView = view.findViewById(R.id.exercise_routine_recycler_view);
         enfriamientoList = new ArrayList<>();
         enfriamientoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+      //  enfriamientoRecyclerView.setNestedScrollingEnabled(false);
 
         enfriamientoList.add(new Exercise(1,"Prueba 1",1,null,null,1,1));
         enfriamientoList.add(new Exercise(1,"Prueba 2",1,null,null,1,1));
 
         enfriamientoListAdapter = new ExerciseRoutineAdapter(enfriamientoList);
         enfriamientoRecyclerView.setAdapter(enfriamientoListAdapter);
+
+        view.findViewById(R.id.share_button).setOnClickListener(v -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        });
 
         return view;
     }
