@@ -39,6 +39,7 @@ public class    DispatcherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_SignIn);
         super.onCreate(savedInstanceState);
         act = this;
         binding = ActivityDispatcherBinding.inflate(getLayoutInflater());
@@ -56,7 +57,6 @@ public class    DispatcherActivity extends AppCompatActivity {
         });
         //TODO: MUY HARDCODEADO PERO PARA TESTEOS
         AppPreferences appPreferences = new AppPreferences(getApplicationContext());
-        appPreferences.clear();
         MyApplication application = (MyApplication) getApplication();
         getRoutines.setOnClickListener(v -> application.getUserRepository().login(new CredentialsModel("johndoe", "1234567890")).observe(this, tokenResource -> {
 

@@ -12,10 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,13 +25,15 @@ import ar.com.edu.itba.hci_app.databinding.FragmentSearchBinding;
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Status;
-import ar.com.edu.itba.hci_app.repository.BaseRepository;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
+import ar.com.edu.itba.hci_app.ui.adapters.CategoryAdapterListener;
+import ar.com.edu.itba.hci_app.ui.adapters.ListCategorySearchAdapter;
+import ar.com.edu.itba.hci_app.ui.adapters.ListSearchAdapter;
+import ar.com.edu.itba.hci_app.ui.adapters.RoutineAdapterListener;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
-public class SearchFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, RoutineRepository> {
-
+public class SearchFragment extends BaseFragment<MainActivityViewModel, FragmentSearchBinding, RoutineRepository> implements CategoryAdapterListener, RoutineAdapterListener {
 
     private View view;
     private RecyclerView recyclerView;
@@ -83,28 +83,57 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        view = super.onCreateView(inflater, container, savedInstanceState);
-        super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.fragment_search, container, false);
+        view = super.onCreateView(inflater, container, savedInstanceState);
+
         recyclerView = view.findViewById(R.id.search_recycle_view);
         list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        //TODO FRAN CAMBIA LA LISTA A LIVE DATA ACA MISMO
         list.add(new Routine("BAJA", null, null, 3.0, "BAJA", true, 0, null, null));
         list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
 
-        listSearchAdapter = new ListSearchAdapter(list, getContext());
+        listSearchAdapter = new ListSearchAdapter(list, getContext(), this::onRoutineButtonClick);
         recyclerView.setAdapter(listSearchAdapter);
         setHasOptionsMenu(true);
 
-        categoryRecyclerView = view.findViewById(R.id.search_category_recycler_view);
-        categoryList = new ArrayList<>();
-        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+//        categoryRecyclerView = view.findViewById(R.id.search_category_recycler_view);
+//        categoryList = new ArrayList<>();
+//        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+//
+//
+//        categorySearchAdapter = new ListCategorySearchAdapter(categoryList, this::onCategoryButtonClick );
+//        categoryRecyclerView.setAdapter(categorySearchAdapter);
+
+        return view;
+    }
+
+    //TODO ACA ES EL CLICK EN LAS CATEGORIAS, QUE BUSCA POR ID Y HACE DISPLAY
+    public void onCategoryButtonClick(int categoryId){
+        Log.d("here","en interface "+categoryId);
+    }
+
+    //TODO ACA ES EL CLICK DE LA CARTA DE RUTINA, QUE REDIRIJE A LA VISTA DE RECYCLERVIEW DE RECYCLERVIEW
+    public void onRoutineButtonClick(Routine routine){
+        Log.d("here", "int "+routine.getName());
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
-        categorySearchAdapter = new ListCategorySearchAdapter(categoryList);
-        categoryRecyclerView.setAdapter(categorySearchAdapter);
-
-
+//        viewModel.getCategories().observe(requireActivity(), v -> {
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    categoryList.clear();
+//                    categoryList.addAll(v.getData());
+//                    categorySearchAdapter.notifyDataSetChanged();
+//                    break;
+//                default:
+//                    switchResourceStatus(v.getStatus());
+//            }
+//        });
 
 //        viewModel.getDifficultyRoutines().observe(requireActivity(), list -> {
 //            switch (list.getStatus()) {
@@ -117,46 +146,6 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
 //                default:
 //                    switchResourceStatus(list.getStatus());
 //            }
-//        });
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Button button = getActivity().findViewById(R.id.button33);
-        button.setOnClickListener(v -> {
-                        list.add(new Routine("BOTOOOON", null, null, 3.0, "ALTA", true, 0, null, null));
-                        listSearchAdapter.notifyItemInserted(list.size() - 1);
-
-//            listSearchAdapter = new ListSearchAdapter(list, getContext());
-//            recyclerView.setAdapter(listSearchAdapter);
-
-        });
-
-        viewModel.getCategories().observe(requireActivity(), v -> {
-            switch (v.getStatus()){
-                case SUCCESS:
-                    binding.button33.setBackgroundColor(Color.RED);
-                    for(int i = 0 ; i < v.getData().size() ; i++){
-                        categoryList.add(v.getData().get(i));
-
-                        categorySearchAdapter.notifyItemInserted(categoryList.size() - 1);
-                    }
-                    break;
-                default:
-                    Log.d("HERE","defaukt");
-            }
-        });
-
-//        binding.button33.setOnClickListener(v -> {
-//            binding.button33.setBackgroundColor(Color.RED);
-//            list.add(new Routine("BOTOOOON", null, null, 3.0, "ALTA", true, 0, null, null));
-//            listSearchAdapter = new ListSearchAdapter(list, getContext());
-//            recyclerView.setAdapter(listSearchAdapter);
-//            Log.d("INSERT","eee");
-//
 //        });
 
 //
@@ -226,4 +215,6 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         MyApplication myApplication = (MyApplication) requireActivity().getApplication();
         return myApplication.getRoutineRepository();
     }
+
+
 }

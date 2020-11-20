@@ -1,11 +1,10 @@
-package ar.com.edu.itba.hci_app.ui.main;
+package ar.com.edu.itba.hci_app.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,11 +21,13 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
     private List<Routine> list;
     private LayoutInflater layoutInflater;
     private Context context;
+    private RoutineAdapterListener listener;
 
-    public ListSearchAdapter(List<Routine> list, Context context){
+    public ListSearchAdapter(List<Routine> list, Context context, RoutineAdapterListener listener){
         this.context = context;
         layoutInflater = LayoutInflater.from(this.context);
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -37,7 +38,6 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
     @NonNull
     @Override
     public ListSearchAdapter.RoutineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = layoutInflater.inflate(R.layout.list_item_search_fragment, null);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_search_fragment, null, false);
         return new RoutineViewHolder(view);
     }
@@ -73,6 +73,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
             name.setText(routine.getName());
             cardView.setOnClickListener(v -> {
                 cardView.setCardBackgroundColor(Color.BLUE);
+                listener.onRoutineButtonClick(routine);
             });
 
 //            rating.setText(routine.getAverageRating().toString());
