@@ -183,6 +183,10 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     }
 
+    public void setHomeFragmentRoutinesPerPage(int integer){
+        homeFragmentRoutinesPerPage = integer;
+    }
+
     private void setPopularRoutines() {
         if (popularRoutines == null)
             popularRoutines = new MutableLiveData<>();

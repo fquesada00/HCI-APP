@@ -83,7 +83,8 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
         viewModel.getFavouritesRoutines().observe(requireActivity(), pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
-                    loadingScreen(ProgressBar.GONE, true);break;
+                    loadingScreen(ProgressBar.GONE, true);
+                    break;
                 default:
                     switchResourceStatus(pagedListResource.getStatus());
             }
@@ -111,8 +112,8 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
         });
 
         binding.favouritesRoutines.setOnClickListener(v -> {
-                viewModel.setSelectedRoutineList(viewModel.getFavouritesRoutinesList().getValue());
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DisplayRoutinesFragment()).addToBackStack(null).commit();
+            viewModel.setSelectedRoutineList(viewModel.getFavouritesRoutinesList().getValue());
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DisplayRoutinesFragment()).addToBackStack(null).commit();
         });
 
         //TODO falta el de completadas
@@ -131,5 +132,6 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
     @Override
     public RoutineRepository getFragmentRepository() {
         MyApplication myApplication = (MyApplication) requireActivity().getApplication();
-        return myApplication.getRoutineRepository();    }
+        return myApplication.getRoutineRepository();
+    }
 }

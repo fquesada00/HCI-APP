@@ -41,7 +41,7 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
     private List<Routine> recommendedList;
     private ListRoutineHomeAdapter listRecommendedAdapter;
 
-
+    private static final int ROUTINES_TO_DISPLAY = 5;
 
     public static HomeFragment getHomeFragment() {
         if (homeFragment == null) {
@@ -79,21 +79,14 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
         super.onViewCreated(view, savedInstanceState);
         homeFragment = this;
 
-        Log.d("FRAGMENTO", ""+viewModel);
+        viewModel.setHomeFragmentRoutinesPerPage(ROUTINES_TO_DISPLAY);
 
         binding.imageView.setOnClickListener(v -> {
 
         });
 
         binding.imageView2.setOnClickListener(v -> {
-            viewModel.getSelectedRoutineList().observe(getViewLifecycleOwner(), b -> {
-                Log.d("CURRENT", "CHEQUEANDO EL SIZE 1 = "+ b.size());
-            });
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DisplayRoutinesFragment()).addToBackStack(null).commit();
-//            getActivity().getSupportFragmentManager().executePendingTransactions();
-            viewModel.getSelectedRoutineList().observe(getViewLifecycleOwner(), b -> {
-                Log.d("CURRENT", "CHEQUEANDO EL SIZE 2 = "+ b.size());
-            });
         });
 
         viewModel.getDailyRoutine().observe(requireActivity(), routineResource -> {
@@ -108,7 +101,6 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
         viewModel.getCurrentUserRoutines().observe(requireActivity(), pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
-                    Log.d("CURRENT", "duffy "+pagedListResource.getData().size());
                     viewModel.setSelectedRoutineList(pagedListResource.getData());
                     break;
                 default:
