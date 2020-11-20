@@ -63,7 +63,7 @@ public abstract class RoutineDao {
     @Query("SELECT * FROM routines WHERE creator_id = :id LIMIT :limit OFFSET :offset")
     public abstract LiveData<List<RoutineEntity>> getUserRoutines(int id,int limit, int offset);
 
-    @Query("SELECT * FROM routines WHERE name LIKE :query || '%'")
+    @Query("SELECT * FROM routines WHERE name LIKE :query")
     public abstract LiveData<List<RoutineEntity>> searchRoutines(String query);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

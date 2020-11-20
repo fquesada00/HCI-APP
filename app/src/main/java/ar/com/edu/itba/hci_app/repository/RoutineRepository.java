@@ -5,9 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -356,13 +358,24 @@ public class RoutineRepository extends BaseRepository {
             @NonNull
             @Override
             protected LiveData<List<RoutineEntity>> loadFromDb() {
-                return database.routineDao().searchRoutines(query);
+                LiveData<List<RoutineEntity>> el;
+                Log.d("SEARCH", "loadFromDb: searching " + query);
+                (el = database.routineDao().searchRoutines(query+"%")).observeForever(e->{
+                    Log.d("SEARCH", "loadFromDb: " + e.size());
+                });
+                return el;
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
-                return apiService.searchRoutines(query,page,size);
+                LiveData<ApiResponse<PagedList<RoutineModel>>> rt;
+                (rt = apiService.searchRoutines(query,page,size)) .observeForever(e->{
+                    if(e.getData() != null)
+                        Log.d("SEARCH", "createCall: " + e.getData().getSize());
+                    Log.d("search", "createCall: sending" + query + " page " + page + " size " + size );
+                });
+                return rt;
             }
         }.asLiveData();
     }
@@ -373,6 +386,119 @@ public class RoutineRepository extends BaseRepository {
 
     public LiveData<Resource<List<Routine>>> getRoutine(@NonNull Integer page, @NonNull Integer size,@NonNull RoutinePagedListGetter selector){
         return getRoutine(null,page,size,null,null,selector);
+    }
+
+    public LiveData<Resource<List<Routine>>> getRoutinesNoSave(@Nullable String difficulty, @Nullable Integer page,
+                                                               @Nullable Integer size, @Nullable String orderBy,
+                                                               @Nullable String direction, @NotNull RoutinePagedListGetter selector){
+
+        switch (selector){
+            case ALL:
+                return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
+                        routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToDomain).collect(Collectors.toList())
+                ){
+
+                    @Override
+                    protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
+                    }
+
+                    @Override
+                    protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
+                        return true;
+                    }
+
+                    @Override
+                    protected boolean shouldPersist(@Nullable PagedList<RoutineModel> model) {
+                        return false;
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<List<RoutineEntity>> loadFromDb() {
+                        return database.routineDao().getRoutines();
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
+                        return apiService.getRoutines(difficulty,page,size,orderBy,direction);
+                    }
+
+                }.asLiveData();
+            case CURRENT:
+                return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
+                        routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToDomain).collect(Collectors.toList())
+                ){
+
+                    @Override
+                    protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
+                    }
+
+                    @Override
+                    protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
+                        return true;
+                    }
+
+                    @Override
+                    protected boolean shouldPersist(@Nullable PagedList<RoutineModel> model) {
+                        return false;
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<List<RoutineEntity>> loadFromDb() {
+                        return database.routineDao().getRoutines();
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
+                        return apiService.getCurrentUserRoutines(difficulty,page,size,orderBy,direction);
+                    }
+
+                }.asLiveData();
+
+            case FAVOURITES:
+                return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
+                        routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToDomain).collect(Collectors.toList())
+                ){
+
+                    @Override
+                    protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
+                    }
+
+                    @Override
+                    protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
+                        return true;
+                    }
+
+                    @Override
+                    protected boolean shouldPersist(@Nullable PagedList<RoutineModel> model) {
+                        return false;
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<List<RoutineEntity>> loadFromDb() {
+                        return database.routineDao().getRoutines();
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
+                        return apiService.getCurrentUserFavourites(page,size,orderBy,direction);
+                    }
+
+                }.asLiveData();
+        }
+        throw new IllegalArgumentException("Bad selector");
+
     }
 
     public LiveData<Resource<List<Rating>>> getCurrentUserRatings(@Nullable Integer page,

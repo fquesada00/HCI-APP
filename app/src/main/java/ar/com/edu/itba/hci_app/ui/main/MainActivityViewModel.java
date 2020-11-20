@@ -1,8 +1,6 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
 import android.app.Application;
-import android.app.MediaRouteActionProvider;
-import android.graphics.pdf.PdfDocument;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,20 +9,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.Status;
-
-import ar.com.edu.itba.hci_app.network.api.model.PagedList;
 
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
 
@@ -91,14 +87,14 @@ public class MainActivityViewModel extends AndroidViewModel {
             case LOADING:
                 Log.d("LOADING", "vm");
                 try {
-                    mutableLiveData.setValue(Resource.loading(c.getConstructor().newInstance()));
+                    mutableLiveData.setValue(Resource.loading((T) c.getConstructor().newInstance()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case ERROR:
                 try {
-                    mutableLiveData.setValue(Resource.error(resource.getError(), c.getConstructor().newInstance()));
+                    mutableLiveData.setValue(Resource.error(resource.getError(), (T) c.getConstructor().newInstance()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -151,7 +147,6 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Resource<Routine>> getDailyRoutine() {
         setDailyRoutine();
-        Log.d("LOADING", "GET DAILY ROUTINE");
         return dailyRoutine;
     }
 
@@ -175,7 +170,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                                 List<Routine> pagedList = new ArrayList<>();
                                 createdRoutinesList.setValue(pagedList);
                                 currentUserRoutines.setValue(Resource.success(pagedList));
-                            } else{
+                            } else {
                                 currentUserRoutines.setValue(Resource.success(pagedListResource.getData()));
                                 createdRoutinesList.setValue(currentUserRoutines.getValue().getData());
                             }
@@ -269,6 +264,12 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private boolean searchActive = false;
 
+    public void setCurrentGetter(GetRoutinesEnum currentGetter) {
+        this.currentGetter = currentGetter;
+    }
+
+    private GetRoutinesEnum currentGetter;
+
     public boolean isSearchActive() {
         return searchActive;
     }
@@ -277,15 +278,34 @@ public class MainActivityViewModel extends AndroidViewModel {
         isLastRoutinePage = false;
         routinePage = 0;
         this.searchActive = searchActive;
+
     }
 
     private final List<Routine> allRoutines = new ArrayList<>();
 
-    private final MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
+    private final MutableLiveData<Resource<List<Routine>>> routines = new MutableLiveData<>();
     //TODO getcategories
 
 
-    public LiveData<Resource<List<Routine>>> getRoutines() {
+    public LiveData<Resource<List<Routine>>> getRoutines(GetRoutinesEnum routinesEnum) {
+        if (currentGetter != routinesEnum) {
+            isLastRoutinePage = false;
+            routinePage = 0;
+            currentGetter = routinesEnum;
+            routines.setValue(Resource.loading(new ArrayList<>()));
+            allRoutines.clear();
+        }
+        getMoreRoutines();
+        return routines;
+    }
+
+    public LiveData<Resource<List<Routine>>> getRoutines(GetRoutinesEnum routinesEnum, String query2) {
+        query = query2;
+        isLastRoutinePage = false;
+        routinePage = 0;
+        currentGetter = routinesEnum;
+        routines.setValue(Resource.loading(new ArrayList<>()));
+        allRoutines.clear();
         getMoreRoutines();
         return routines;
     }
@@ -293,39 +313,45 @@ public class MainActivityViewModel extends AndroidViewModel {
     public void getMoreRoutines() {
         if (isLastRoutinePage)
             return;
-        LiveData<Resource<List<Routine>>> resourceLiveData1;
-        LiveData<Resource<List<Routine>>> resourceLiveData2;
-        if (!searchActive)
-            routines.addSource((resourceLiveData1 = repository.getRoutine(routinePage, PAGE_SIZE, ALL)), setRoutines(resourceLiveData1));
-        else
-            routines.addSource((resourceLiveData2 = repository.searchRoutines(query, routinePage, PAGE_SIZE)), setRoutines(resourceLiveData2));
+        switch (currentGetter) {
+            case ALL:
+                repository.getRoutine(routinePage, PAGE_SIZE, ALL).observeForever(setRoutines());
+                break;
+            case FAV:
+                break;
+            case SEARCH:
+                repository.searchRoutines(query, routinePage, PAGE_SIZE).observeForever(setRoutines());
+                break;
+            case CURR:
+                break;
+        }
+
 
     }
 
-    public LiveData<Resource<List<Routine>>> searchRoutines(String query) {
-        this.query = query;
-        loadSearch(query);
-        return routines;
-
-    }
-
-    private void loadSearch(String query) {
-        LiveData<Resource<List<Routine>>> resourceLiveData;
-        routines.addSource((resourceLiveData = repository.searchRoutines(query, routinePage, PAGE_SIZE)), setRoutines(resourceLiveData));
-    }
+//    public LiveData<Resource<List<Routine>>> searchRoutines(String query) {
+//        this.query = query;
+//        loadSearch(query);
+//        return routines;
+//
+//    }
+//
+//    private void loadSearch(String query) {
+//        LiveData<Resource<List<Routine>>> resourceLiveData;
+//        routines.addSource((resourceLiveData = repository.searchRoutines(query, routinePage, PAGE_SIZE)), setRoutines(resourceLiveData));
+//    }
 
     @NotNull
-    private Observer<Resource<List<Routine>>> setRoutines(LiveData<Resource<List<Routine>>> resourceLiveData) {
+    private Observer<Resource<List<Routine>>> setRoutines() {
         return resource -> {
             if (resource.getStatus() == Status.SUCCESS) {
-                routines.removeSource(resourceLiveData);
                 if ((resource.getData().size() == 0) || (resource.getData().size() < PAGE_SIZE))
                     isLastRoutinePage = true;
                 routinePage++;
                 List<Routine> aux;
-                aux = (allRoutines.stream().distinct().filter(e -> !resource.getData().contains(e)).collect(Collectors.toList()));
+//                aux = (allRoutines.stream().distinct().filter(e -> !resource.getData().contains(e)).collect(Collectors.toList()));
                 allRoutines.clear();
-                allRoutines.addAll(aux);
+//                allRoutines.addAll(aux);
                 allRoutines.addAll(resource.getData());
                 Log.d("GETROUTINES", "getMoreRoutines: " + resource.getData().size());
                 routines.setValue(Resource.success(allRoutines));
@@ -433,7 +459,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 ////                    switchResourceStatus(listResource.getStatus(), listResource, List.class, numberOfCurrentUserRoutines);
 //            }
 //        });
-        currentUserRoutines.observeForever(pagedListResource -> {
+
+        repository.getRoutinesNoSave(null, null, Integer.MAX_VALUE, null, null, CURRENT).observeForever(pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
                     Log.d("NUMBER s", "eeee " + numberOfCurrentUserRoutines.getValue());
@@ -485,7 +512,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getNumberOfFavouritesUserRoutines() {
         numberOfFavouritesUserRoutines.setValue(0);
-        favouritesRoutines.observeForever(pagedListResource -> {
+        repository.getRoutinesNoSave(null, null, Integer.MAX_VALUE, null, null, FAVOURITES).observeForever(pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
                     numberOfFavouritesUserRoutines.setValue(pagedListResource.getData().size());
@@ -537,7 +564,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     private MutableLiveData<List<Routine>> createdRoutinesList = new MutableLiveData<>();
-    private MutableLiveData<List<Routine>> favouritesRoutinesList= new MutableLiveData<>();
+    private MutableLiveData<List<Routine>> favouritesRoutinesList = new MutableLiveData<>();
     private MutableLiveData<List<Routine>> completedRoutinesList = new MutableLiveData<>();
     private MutableLiveData<Integer> numberSelectedRoutineList = new MutableLiveData<>();
 
