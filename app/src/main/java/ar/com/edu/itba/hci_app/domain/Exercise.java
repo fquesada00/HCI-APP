@@ -4,7 +4,11 @@ package ar.com.edu.itba.hci_app.domain;
 import java.util.Objects;
 
 public class Exercise {
-    public Exercise(int duration, String name, int id, String detail, String type, int repetitions, int order) {
+    public int getCycleId() {
+        return cycleId;
+    }
+
+    public Exercise(int duration, String name, int id, String detail, String type, int repetitions, int order, int cycleId) {
         this.duration = duration;
         this.name = name;
         this.id = id;
@@ -12,6 +16,7 @@ public class Exercise {
         this.type = type;
         this.repetitions = repetitions;
         this.order = order;
+        this.cycleId = cycleId;
     }
 
     private int duration;
@@ -27,6 +32,8 @@ public class Exercise {
     private int repetitions;
 
     private int order;
+
+    private int cycleId;
 
     public int getDuration(){
         return duration;

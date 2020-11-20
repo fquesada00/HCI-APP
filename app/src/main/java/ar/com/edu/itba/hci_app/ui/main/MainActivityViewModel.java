@@ -1,19 +1,19 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
 import android.app.Application;
-import android.app.MediaRouteActionProvider;
-import android.graphics.pdf.PdfDocument;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Cycle;
@@ -21,8 +21,6 @@ import ar.com.edu.itba.hci_app.domain.Exercise;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.Status;
-
-import ar.com.edu.itba.hci_app.network.api.model.PagedList;
 
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
@@ -420,7 +418,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setCalentamientoList(List<Exercise> calentamientoList) {
+        if (this.calentamientoList.getValue() != null)
+            this.calentamientoList.getValue().clear();
         this.calentamientoList.setValue(calentamientoList);
+        Log.d("VISTA", "Calentamiento size: " + this.calentamientoList.getValue().size());
     }
 
     public MutableLiveData<List<Exercise>> getPrincipalList() {
@@ -428,7 +429,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setPrincipalList(List<Exercise> principalList) {
+        if (this.principalList.getValue() != null)
+            this.principalList.getValue().clear();
         this.principalList.setValue(principalList);
+        Log.d("VISTA", "Principal size " + this.principalList.getValue().size());
     }
 
     public MutableLiveData<List<Exercise>> getEnfriamientoList() {
@@ -436,7 +440,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setEnfriamientoList(List<Exercise> enfriamientoList) {
+        if (this.enfriamientoList.getValue() != null)
+            this.enfriamientoList.getValue().clear();
         this.enfriamientoList.setValue(enfriamientoList);
+        Log.d("VISTA", "Enfriamiento list " + this.enfriamientoList.getValue().size());
     }
 
     public LiveData<List<Routine>> getSelectedRoutineList() {
@@ -471,14 +478,14 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Resource<List<Exercise>>> getCycleExercises(@NonNull Integer routineID, @NonNull Integer cycleID, @Nullable Integer page,
                                                                 @Nullable Integer size, @Nullable String orderBy,
-                                                                @Nullable String direction){
+                                                                @Nullable String direction) {
         repository.getCycleExercises(routineID, cycleID, page, size, orderBy, direction).observeForever(v -> {
-            switch (v.getStatus()){
+            switch (v.getStatus()) {
                 case SUCCESS:
-                    if(v.getData().size() == 0){
+                    if (v.getData().size() == 0) {
                         List<Exercise> list = new ArrayList<>();
                         cycleExercises.setValue(Resource.success(list));
-                    }else
+                    } else
                         cycleExercises.setValue(Resource.success(v.getData()));
                     break;
                 default:
@@ -493,11 +500,11 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Resource<List<Cycle>>> getRoutineCycles(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
                                                             @Nullable Integer size, @Nullable String orderBy,
-                                                            @Nullable String direction){
+                                                            @Nullable String direction) {
         repository.getRoutineCycles(routineID, difficulty, page, size, orderBy, direction).observeForever(v -> {
-            switch (v.getStatus()){
+            switch (v.getStatus()) {
                 case SUCCESS:
-                    if(v.getData().size() == 0)
+                    if (v.getData().size() == 0)
                         cycles.setValue(Resource.success(new ArrayList<>()));
                     else
                         cycles.setValue(Resource.success(v.getData()));
@@ -514,27 +521,86 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private MutableLiveData<Resource<List<Cycle>>> routineCycles = new MutableLiveData<>();
 
+    private Map<String, Integer> basicsIds = new HashMap<>();
+
+    private MutableLiveData<Resource<Map<Integer, List<Exercise>>>> routineExercisesMap = new MutableLiveData<>();
+
+    private Map<Integer, Exercise> cycleSection = new HashMap<>();
+
+    private final static String CALENTAMIENTO = "Calentamiento";
+
+    private final static String ENFRIAMIENTO = "Enfriamiento";
+
     private void setRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
-                                                                                @Nullable Integer size, @Nullable String orderBy,
-                                                                                @Nullable String direction){
+                                     @Nullable Integer size, @Nullable String orderBy,
+                                     @Nullable String direction) {
+
+
         this.getRoutineCycles(routineID, difficulty, page, size, orderBy, direction).observeForever(v -> {
-            switch (v.getStatus()){
+            switch (v.getStatus()) {
                 case SUCCESS:
                     routineCycles.setValue(Resource.success(new ArrayList<>()));
                     routineExercises.setValue(Resource.success(new ArrayList<>()));
-                    for(int i = 0 ; i < v.getData().size() ; i++) {
-                        final int pos = i;
+                    routineExercisesMap.setValue(Resource.success(new HashMap<>()));
+                    for (int i = 0; i < v.getData().size(); i++) { //list[0] calentamient, list[1] principallist, list[2] enfriamiento
+                        if (v.getData().get(i).getName().equals(ENFRIAMIENTO))
+                            basicsIds.put(ENFRIAMIENTO, v.getData().get(i).getId());
+                        else if (v.getData().get(i).getName().equals(CALENTAMIENTO))
+                            basicsIds.put(CALENTAMIENTO, v.getData().get(i).getId());
+                        routineExercisesMap.getValue().getData().put(v.getData().get(i).getId(), new ArrayList<>());
                         routineExercises.getValue().getData().add(new ArrayList<>());
                         routineCycles.getValue().getData().add(v.getData().get(i));
+                        if (basicsIds.getOrDefault(ENFRIAMIENTO, -1) != v.getData().get(i).getId() && basicsIds.getOrDefault(CALENTAMIENTO, -1) != v.getData().get(i).getId())
+                            cycleSection.put(v.getData().get(i).getId(), new Exercise(1, v.getData().get(i).getName(), -1, null
+                                    , null, v.getData().get(i).getRepetitions(), -1, v.getData().get(i).getId()));
+//                            routineExercisesMap.getValue().getData().get(v.getData().get(i).getId()).add(new Exercise(1, v.getData().get(i).getName(), -1, null
+//                                    , null, v.getData().get(i).getRepetitions(), -1, v.getData().get(i).getId()));
+
+//                        if(i > 0 && i < (v.getData().size() - 1))
+//                            routineExercises.getValue().getData().get(i).add(new Exercise(1, v.getData().get(pos).getName(), -1, null, null, v.getData().get(pos).getRepetitions(),
+//                                0, v.getData().get(i).getId()));
                         this.getCycleExercises(routineID, v.getData().get(i).getId(), page, size, orderBy, direction).observeForever(b -> {
-                            switch (b.getStatus()){
+                            switch (b.getStatus()) {
                                 case SUCCESS:
-                                    routineExercises.getValue().getData().get(pos).addAll(b.getData());
+//                                    Log.d("SIZE", "cycleId: " + b.getData().get(0).getCycleId());
+//                                    for (int h = 0; h < b.getData().size(); h++)
+//                                        Log.d("SIZE", "Exid= " + b.getData().get(h).getId());
+                                    if (b.getData() == null || b.getData().size() == 0)
+                                        throw new IllegalArgumentException("Not enough exercises");
+//                                    routineExercises.getValue().getData().get(b.getData().get(0).getCycleId() - 1).clear();
+                                    routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).clear();
+                                    if (basicsIds.get(ENFRIAMIENTO) != b.getData().get(0).getCycleId() &&
+                                            basicsIds.get(CALENTAMIENTO) != b.getData().get(0).getCycleId())
+                                        routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
+                                    routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
+//                                    routineExercises.getValue().getData().get(b.getData().get(0).getCycleId() - 1).addAll(b.getData());
+//                                    if(pos > 0 && pos < (sizeCycles - 1)){
+//                                        if(routineExercises.getValue().getData().get(pos).size() < b.getData().size()){
+//                                            routineExercises.getValue().getData().get(pos).clear();
+//                                            routineExercises.getValue().getData().get(pos).add(new Exercise(1, v.getData().get(pos).getName(), -1, null, null, v.getData().get(pos).getRepetitions(), 0));
+//                                            routineExercises.getValue().getData().get(pos).addAll(b.getData());
+//                                        }
+//                                    }
+//                                    routineExercises.getValue().getData().get(pos).clear();
+//                                    if (pos != 0 && pos < (sizeCycles - 1))
+//                                        routineExercises.getValue().getData().get(pos).add(new Exercise(1, v.getData().get(pos).getName(), -1, null, null, v.getData().get(pos).getRepetitions(), 0));
+//                                    routineExercises.getValue().getData().get(pos).addAll(b.getData());
+
+//                                    Log.d("SIZE", "cycleid: " + v.getData().get(pos).getId() + "tamaño: " + b.getData().size() + " SECCION " + v.getData().get(pos).getName());
+//                                    for (int k = 0; k < b.getData().size(); k++)
+//                                        Log.d("SIZE 2", "name: " + b.getData().get(k).getName() + " ex Id: " + b.getData().get(k).getId());
                                     break;
                                 default:
                                     //TODO
                             }
                         });
+                    }
+                    for (int i = 0; i < routineExercises.getValue().getData().size(); i++) {
+
+                        for (int j = 0; j < routineExercises.getValue().getData().get(i).size(); j++) {
+                            Log.d("GOOD MORNING", "Ejercicio: " + routineExercises.getValue().getData().get(i).get(j).getName()
+                                    + " Category: " + routineExercises.getValue().getData().get(i).get(j).getId());
+                        }
                     }
                     break;
                 default:
@@ -543,11 +609,46 @@ public class MainActivityViewModel extends AndroidViewModel {
         });
     }
 
+    private Integer lastRoutineId = -1;
+
     public MutableLiveData<Resource<List<List<Exercise>>>> getRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
                                                                                @Nullable Integer size, @Nullable String orderBy,
-                                                                               @Nullable String direction){
-        if(routineExercises.getValue() == null || routineExercises.getValue().getData() == null)
-            setRoutineExercises(routineID,difficulty,page,size,orderBy,direction);
+                                                                               @Nullable String direction) {
+
+        if(lastRoutineId == routineID) {
+            for(int i = 0 ; i < routineExercises.getValue().getData().size() ; i++)
+                Log.d("LISTA","ee "+routineExercises.getValue().getData().get(i).size());
+            return routineExercises;
+        }
+//        if(lastRoutineId != -1){
+////            for (int i = 0 ; i < routineExercises.getValue().getData().size() ; i++)
+////                routineExercises.getValue().getData().get(i).clear();
+//            routineExercises.getValue().getData().clear();
+//            routineExercisesMap.getValue().getData().clear();
+//        }
+        lastRoutineId = routineID;
+
+        if(routineID != lastRoutineId)
+            setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
+//        if (routineExercisesMap.getValue() == null || routineExercisesMap.getValue().getData() == null || routineExercises.getValue().getData().isEmpty() || routineExercisesMap.getValue().getData().isEmpty()) {
+//            setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
+//        }
+//
+//
+//
+//        if (routineExercises.getValue() == null || routineExercises.getValue().getData() == null /*|| routineExercises.getValue().getData().get(0) == null*/) {
+//            Log.d("GOOD MORNING", "2");
+//
+//            setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
+//        }
+
+        int i = 0;
+        if (routineExercisesMap.getValue() != null && routineExercisesMap.getValue().getData() != null && !routineExercisesMap.getValue().getData().isEmpty()) {
+            for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
+                routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+            }
+        }
+
         return routineExercises;
     }
 
