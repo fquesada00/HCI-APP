@@ -37,6 +37,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
     private RecyclerView recyclerView;
     private ListSearchAdapter adapter;
 
+
     public DisplayRoutinesFragment() {
         // Required empty public constructor
     }
@@ -95,6 +96,11 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                 Log.d("CURRENT","DUFFY");
             }
             adapter.notifyDataSetChanged();
+            if(v.size() == 0){
+                view.findViewById(R.id.display_routines).setVisibility(View.GONE);
+                view.findViewById(R.id.no_routines_to_display).setVisibility(View.VISIBLE);
+            }
+
         });
     }
 
