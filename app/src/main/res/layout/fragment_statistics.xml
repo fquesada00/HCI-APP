@@ -40,8 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginEnd="40dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_baseline_share_24"
                 android:tint="@color/black" />
@@ -65,7 +65,7 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp">
@@ -109,16 +109,15 @@
                     android:id="@+id/exercise_routine_recycler_view1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    tools:listitem="@layout/exercise_frame" />
+                    android:layout_margin="20dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
                 android:layout_marginVertical="10dp"
+                android:background="@drawable/border"
                 android:orientation="vertical">
 
                 <FrameLayout
@@ -147,17 +146,15 @@
                     android:id="@+id/exercise_routine_recycler_view2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:layout_margin="20dp"
-                    tools:listitem="@layout/exercise_frame" />
+                    android:layout_margin="20dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
                 android:layout_marginVertical="10dp"
+                android:background="@drawable/border"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -190,7 +187,7 @@
                     android:id="@+id/exercise_routine_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"/>
+                    android:layout_margin="20dp" />
             </LinearLayout>
 
             <Button
@@ -203,8 +200,7 @@
                 android:background="@color/colorPrimary"
                 android:text="Comenzar" />
         </LinearLayout>
-    </ScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 
 
 </LinearLayout>

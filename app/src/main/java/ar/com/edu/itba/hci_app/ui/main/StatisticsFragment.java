@@ -101,9 +101,12 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         principalListAdapter = new ExerciseRoutineAdapter(principalList);
         principalRecyclerView.setAdapter(principalListAdapter);
 
+     //   principalRecyclerView.setNestedScrollingEnabled(false);
+
         enfriamientoRecyclerView = view.findViewById(R.id.exercise_routine_recycler_view);
         enfriamientoList = new ArrayList<>();
         enfriamientoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+      //  enfriamientoRecyclerView.setNestedScrollingEnabled(false);
 
         enfriamientoList.add(new Exercise(1,"Prueba 1",1,null,null,1,1));
         enfriamientoList.add(new Exercise(1,"Prueba 2",1,null,null,1,1));
