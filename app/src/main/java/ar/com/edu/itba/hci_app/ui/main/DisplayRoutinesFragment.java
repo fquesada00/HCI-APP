@@ -21,6 +21,8 @@ import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentDisplayRoutinesBinding;
 import ar.com.edu.itba.hci_app.databinding.FragmentRoutineDescriptionBinding;
+import ar.com.edu.itba.hci_app.domain.Cycle;
+import ar.com.edu.itba.hci_app.domain.Exercise;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Status;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
@@ -90,15 +92,11 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
         viewModel.getSelectedRoutineList().observe(requireActivity(), v -> {
             list.clear();
             list.addAll(v);
-            for(int i = 0 ; i < list.size() ; i++){
-                Log.d("CURRENT","DUFFY");
-            }
             adapter.notifyDataSetChanged();
-            if(v.size() == 0){
+            if (v.size() == 0) {
                 view.findViewById(R.id.display_routines).setVisibility(View.GONE);
                 view.findViewById(R.id.no_routines_to_display).setVisibility(View.VISIBLE);
             }
-
         });
     }
 
@@ -120,6 +118,57 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
 
     @Override
     public void onRoutineButtonClick(Routine routine) {
-        Log.d("PRESIONE", "duffy");
+//        viewModel.getRoutineExercises(routine.getId(), null, null, Integer.MAX_VALUE, null, null)
+//                .observe(getViewLifecycleOwner(), v -> {
+//                    switch (v.getStatus()) {
+//                        case SUCCESS:
+//                            if (v.getData().size() < 3) {
+////                                throw new IllegalArgumentException("Wrong quantity of cycles");
+//                                Log.d("VISTA", "ME FUI");
+//                                return;
+//                            }
+//                            viewModel.setCalentamientoList(v.getData().get(0));
+//                            List<Exercise> exerciseList = new ArrayList<>();
+//                            List<Cycle> cycleList = new ArrayList<>();
+//                            for (int i = 0; i < (v.getData().size() - 1); i++) {
+//                                exerciseList.add(new Exercise(1, cycleList.get(i).getName(), -1, null, null, cycleList.get(i).getRepetitions(), cycleList.get(i).getOrder()));
+//                                exerciseList.addAll(v.getData().get(i));
+//                            }
+//                            viewModel.setPrincipalList(exerciseList);
+//                            viewModel.setEnfriamientoList(v.getData().get(v.getData().size() - 1));
+//                            Log.d("VISTA", "ADENTRO OBSERVE: " + v.getData().size());
+//                            break;
+//                        default:
+//                            Log.d("VISTA", "AFUERA OBSERVEeeeee");
+//                    }
+//                });
+        List<Exercise> enfriamientoList = new ArrayList<>();
+        enfriamientoList.add(new Exercise(1, "Prueba 1", 1, null, null, 1, 1));
+        enfriamientoList.add(new Exercise(1, "Prueba 2", 1, null, null, 1, 1));
+
+        List<Exercise> principalList = new ArrayList<>();
+        principalList.add(new Exercise(1, "Brazos", -1, null, null, 2, 1));
+        principalList.add(new Exercise(1, "Flexiones de Brazos", 1, null, null, 1, 1));
+        principalList.add(new Exercise(1, "Abs", 1, null, null, 1, 1));
+        principalList.add(new Exercise(1, "Piernas", 1, null, null, 1, 1));
+
+        principalList.add(new Exercise(1, "Abdominales", -1, null, null, 1, 1));
+        principalList.add(new Exercise(1, "Abs", 1, null, null, 10, 1));
+        principalList.add(new Exercise(1, "Abs Cruzados", 1, null, null, 12, 1));
+        principalList.add(new Exercise(1, "Abs Crunches", 1, null, null, 20, 1));
+
+        List<Exercise> calentamientoList = new ArrayList<>();
+        calentamientoList.add(new Exercise(1, "Gluteos", 1, null, null, 1, 1));
+        calentamientoList.add(new Exercise(1, "Abdominales", 1, null, null, 1, 1));
+        calentamientoList.add(new Exercise(1, "Flexiones de Brazos", 1, null, null, 1, 1));
+        calentamientoList.add(new Exercise(1, "Abs", 1, null, null, 1, 1));
+        calentamientoList.add(new Exercise(1, "Piernas", 1, null, null, 1, 1));
+
+        viewModel.setPrincipalList(principalList);
+        viewModel.setEnfriamientoList(enfriamientoList);
+        viewModel.setCalentamientoList(calentamientoList);
+        Log.d("VISTA", "AFUERA OBSERVE");
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).commit();
     }
 }
