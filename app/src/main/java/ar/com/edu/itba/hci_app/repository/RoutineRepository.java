@@ -212,7 +212,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
-                        return ((entity == null) || (entity.size() == 0) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (size != null && entity.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -258,7 +258,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineCurrentEntity> entity) {
-                        return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (size != null && entity.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -304,7 +304,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineFavEntity> entity) {
-                        return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (size != null && entity.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override

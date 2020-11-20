@@ -1,10 +1,9 @@
-package ar.com.edu.itba.hci_app.ui.main;
+package ar.com.edu.itba.hci_app.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,7 +51,6 @@ public class ListRoutineHomeAdapter extends RecyclerView.Adapter<ListRoutineHome
     public class RoutineViewHolder extends RecyclerView.ViewHolder {
         TextView nombre;
         ImageView img;
-        boolean flag = false;
 
 
         public RoutineViewHolder(View view) {
@@ -65,11 +63,7 @@ public class ListRoutineHomeAdapter extends RecyclerView.Adapter<ListRoutineHome
             nombre.setText(routine.getName());
             img.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.image1));
             img.setOnClickListener(v -> {
-                if(flag)
-                    nombre.setText(routine.getName());
-                else
-                    nombre.setText(routine.getDifficulty());
-                flag = !flag;
+
             });
         }
     }

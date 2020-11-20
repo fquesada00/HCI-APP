@@ -25,7 +25,7 @@ public abstract class BaseFragment<VM extends ViewModel, B extends ViewBinding, 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = getFragmentBinding(inflater,container);
         ViewModelProvider.NewInstanceFactory factory = new ViewModelFactory(getFragmentRepository(),requireActivity().getApplication());
-        viewModel = new ViewModelProvider(this,factory).get(getViewModel());
+        viewModel = new ViewModelProvider(requireActivity(),factory).get(getViewModel());
         return binding.getRoot();
     }
 

@@ -83,9 +83,8 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        view = super.onCreateView(inflater, container, savedInstanceState);
         view = super.onCreateView(inflater, container, savedInstanceState);
-//        view = inflater.inflate(R.layout.fragment_search, container, false);
+
         recyclerView = view.findViewById(R.id.search_recycle_view);
         list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
