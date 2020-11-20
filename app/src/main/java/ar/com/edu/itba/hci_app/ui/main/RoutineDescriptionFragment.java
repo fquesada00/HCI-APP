@@ -29,9 +29,9 @@ public class RoutineDescriptionFragment extends BaseFragment<MainActivityViewMod
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.comenzar.setOnClickListener(v -> {
-            startActivity(new Intent(this.getActivity(),DisplayRoutineActivity.class));
-        });
+//        binding.comenzar.setOnClickListener(v -> {
+//            startActivity(new Intent(this.getActivity(),DisplayRoutineActivity.class));
+//        });
     }
 
     @Override
