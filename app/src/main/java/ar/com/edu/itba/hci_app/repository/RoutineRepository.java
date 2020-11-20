@@ -213,7 +213,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
-                        return ((entity == null) || (entity.size() <= size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (size != null && entity.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -259,7 +259,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineCurrentEntity> entity) {
-                        return ((entity == null) || (entity.size() <= size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (size != null && entity.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -305,7 +305,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineFavEntity> entity) {
-                        return ((entity == null) || (entity.size() <= size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (size != null && entity.size() < size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -767,6 +767,7 @@ public class RoutineRepository extends BaseRepository {
                 routineFavEntity -> null,
                 model -> null,
                 model -> null) {
+            int entityId = 0;
 
             @Override
             protected void saveCallResult(@NonNull RoutineFavEntity entity) {

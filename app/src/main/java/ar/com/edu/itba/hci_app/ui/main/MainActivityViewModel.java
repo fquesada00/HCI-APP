@@ -1,6 +1,7 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
 import android.app.Application;
+import android.app.MediaRouteActionProvider;
 import android.graphics.pdf.PdfDocument;
 import android.util.Log;
 
@@ -178,7 +179,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                             Log.d("current", "aca estoy viendo");
                             break;
                         default:
-                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, currentUserRoutines);
+                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, List.class, currentUserRoutines);
                     }
                 });
     }
@@ -186,6 +187,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<Resource<List<Routine>>> getCurrentUserRoutines() {
         setCurrentUserRoutines();
         return currentUserRoutines;
+
     }
 
     private void setPopularRoutines() {
@@ -202,7 +204,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                                 popularRoutines.setValue(Resource.success(pagedListResource.getData()));
                             break;
                         default:
-                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, popularRoutines);
+                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, List.class, popularRoutines);
                     }
                 });
     }
@@ -231,7 +233,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                                 difficultyRoutines.setValue(Resource.success(pagedListResource.getData()));
                             break;
                         default:
-                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, difficultyRoutines);
+                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, List.class, difficultyRoutines);
                     }
                 });
     }
@@ -417,20 +419,36 @@ public class MainActivityViewModel extends AndroidViewModel {
 
 
     public LiveData<Integer> getNumberOfCurrentUserRoutines() {
-        numberOfCurrentUserRoutines.setValue(0);
+//        numberOfCurrentUserRoutines.addSource(currentUserRoutines, listResource -> {
+//            switch (listResource.getStatus()){
+//                case SUCCESS:
+//                    numberOfCurrentUserRoutines.setValue(listResource.getData().size());
+//                    numberOfCurrentUserRoutines.removeSource(currentUserRoutines);
+//                    break;
+//                default:
+//
+////                    switchResourceStatus(listResource.getStatus(), listResource, List.class, numberOfCurrentUserRoutines);
+//            }
+//        });
         currentUserRoutines.observeForever(pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
+                    Log.d("NUMBER s", "eeee " + numberOfCurrentUserRoutines.getValue());
                     numberOfCurrentUserRoutines.setValue(pagedListResource.getData().size());
                     break;
                 case LOADING:
+                    Log.d("NUMBER l", "eeee " + numberOfCurrentUserRoutines.getValue());
+
                     numberOfCurrentUserRoutines.setValue(-2);
                     break;
                 case ERROR:
+                    Log.d("NUMBER error", "eeee " + numberOfCurrentUserRoutines.getValue());
+
                     numberOfCurrentUserRoutines.setValue(-1);
                     break;
             }
         });
+        Log.d("NUMBER", "routines " + currentUserRoutines.getValue().getData().size());
         return numberOfCurrentUserRoutines;
     }
 
@@ -449,7 +467,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                                 favouritesRoutines.setValue(Resource.success(pagedListResource.getData()));
                             break;
                         default:
-                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, favouritesRoutines);
+                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, List.class, favouritesRoutines);
                     }
                 });
     }
@@ -483,6 +501,20 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Resource<Void>> removeRoutineFromFavourites(@NonNull Integer id) {
         return repository.removeFromFavourites(id);
+    }
+
+    private MutableLiveData<List<Routine>> selectedRoutineList = new MutableLiveData<>();
+
+    public void setSelectedRoutineList(List<Routine> list) {
+        selectedRoutineList.setValue(list);
+    }
+
+    public LiveData<List<Routine>> getSelectedRoutineList() {
+        if (selectedRoutineList.getValue() == null) {
+            selectedRoutineList.setValue(new ArrayList<>());
+            Log.d("CURRENT", "SOY NULL");
+        }
+        return selectedRoutineList;
     }
 
 

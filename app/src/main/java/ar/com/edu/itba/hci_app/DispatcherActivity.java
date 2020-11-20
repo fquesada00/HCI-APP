@@ -56,7 +56,6 @@ public class    DispatcherActivity extends AppCompatActivity {
         });
         //TODO: MUY HARDCODEADO PERO PARA TESTEOS
         AppPreferences appPreferences = new AppPreferences(getApplicationContext());
-        appPreferences.clear();
         MyApplication application = (MyApplication) getApplication();
         getRoutines.setOnClickListener(v -> application.getUserRepository().login(new CredentialsModel("johndoe", "1234567890")).observe(this, tokenResource -> {
 

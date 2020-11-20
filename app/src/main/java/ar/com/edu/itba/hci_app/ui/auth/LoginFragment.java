@@ -38,6 +38,13 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
+        AppPreferences preferences = new AppPreferences(getContext());
+        if (preferences.getAuthToken() != null && !preferences.getAuthToken().isEmpty()) {
+            startActivity(new Intent(getActivity(), MainActivity.class));
+            getActivity().finish();
+        }
+
         binding.buttonLogin.setEnabled(false);
         binding.buttonLogin.setOnClickListener(v -> {
             String username = binding.editTextTextEmailAddress.getText().toString().trim();
@@ -47,7 +54,6 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
             viewModel.login(username, password).observe(getViewLifecycleOwner(), tokenResource -> {
                 switch (tokenResource.getStatus()) {
                     case SUCCESS:
-                        AppPreferences preferences = new AppPreferences(getContext());
                         preferences.setAuthToken(tokenResource.getData());
                         Toast.makeText(requireContext(), tokenResource.toString(), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getActivity(), MainActivity.class));
@@ -76,7 +82,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().isEmpty() && !binding.registerPassword.getText().toString().isEmpty())
+                if (!s.toString().isEmpty() && !binding.registerPassword.getText().toString().isEmpty())
                     binding.buttonLogin.setEnabled(true);
             }
         });
@@ -93,7 +99,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().isEmpty() && !binding.editTextTextEmailAddress.getText().toString().isEmpty())
+                if (!s.toString().isEmpty() && !binding.editTextTextEmailAddress.getText().toString().isEmpty())
                     binding.buttonLogin.setEnabled(true);
             }
         });
@@ -120,7 +126,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
     @Override
     public UserRepository getFragmentRepository() {
-        MyApplication application = (MyApplication)getActivity().getApplication();
+        MyApplication application = (MyApplication) getActivity().getApplication();
         return application.getUserRepository();
     }
 }
