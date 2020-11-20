@@ -4,20 +4,25 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import ar.com.edu.itba.hci_app.domain.Category;
+import ar.com.edu.itba.hci_app.domain.Cycle;
+import ar.com.edu.itba.hci_app.domain.Exercise;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.Status;
@@ -83,25 +88,25 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     private <T> void switchResourceStatus(Status status, Resource<T> resource, Class c, MutableLiveData mutableLiveData) {
-        switch (status) {
-            case LOADING:
-                Log.d("LOADING", "vm");
-                try {
-                    mutableLiveData.setValue(Resource.loading((T) c.getConstructor().newInstance()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case ERROR:
-                try {
-                    mutableLiveData.setValue(Resource.error(resource.getError(), (T) c.getConstructor().newInstance()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            default:
-                unknownStatusException();
-        }
+//        switch (status) {
+//            case LOADING:
+//                Log.d("LOADING", "vm");
+//                try {
+//                    mutableLiveData.setValue(Resource.loading(c.getConstructor().newInstance()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//            case ERROR:
+//                try {
+//                    mutableLiveData.setValue(Resource.error(resource.getError(), c.getConstructor().newInstance()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//            default:
+//                unknownStatusException();
+//        }
     }
 
     public MutableLiveData<Resource<Routine>> dailyRoutine;
@@ -147,6 +152,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<Resource<Routine>> getDailyRoutine() {
         setDailyRoutine();
+        Log.d("LOADING", "GET DAILY ROUTINE");
         return dailyRoutine;
     }
 
@@ -186,6 +192,10 @@ public class MainActivityViewModel extends AndroidViewModel {
         setCurrentUserRoutines();
         return currentUserRoutines;
 
+    }
+
+    public void setHomeFragmentRoutinesPerPage(int integer) {
+        homeFragmentRoutinesPerPage = integer;
     }
 
     private void setPopularRoutines() {
@@ -555,6 +565,39 @@ public class MainActivityViewModel extends AndroidViewModel {
         return completedRoutinesList;
     }
 
+    public MutableLiveData<List<Exercise>> getCalentamientoList() {
+        return calentamientoList;
+    }
+
+    public void setCalentamientoList(List<Exercise> calentamientoList) {
+        if (this.calentamientoList.getValue() != null)
+            this.calentamientoList.getValue().clear();
+        this.calentamientoList.setValue(calentamientoList);
+        Log.d("VISTA", "Calentamiento size: " + this.calentamientoList.getValue().size());
+    }
+
+    public MutableLiveData<List<Exercise>> getPrincipalList() {
+        return principalList;
+    }
+
+    public void setPrincipalList(List<Exercise> principalList) {
+        if (this.principalList.getValue() != null)
+            this.principalList.getValue().clear();
+        this.principalList.setValue(principalList);
+        Log.d("VISTA", "Principal size " + this.principalList.getValue().size());
+    }
+
+    public MutableLiveData<List<Exercise>> getEnfriamientoList() {
+        return enfriamientoList;
+    }
+
+    public void setEnfriamientoList(List<Exercise> enfriamientoList) {
+        if (this.enfriamientoList.getValue() != null)
+            this.enfriamientoList.getValue().clear();
+        this.enfriamientoList.setValue(enfriamientoList);
+        Log.d("VISTA", "Enfriamiento list " + this.enfriamientoList.getValue().size());
+    }
+
     public LiveData<List<Routine>> getSelectedRoutineList() {
         if (selectedRoutineList.getValue() == null) {
             selectedRoutineList.setValue(new ArrayList<>());
@@ -566,7 +609,166 @@ public class MainActivityViewModel extends AndroidViewModel {
     private MutableLiveData<List<Routine>> createdRoutinesList = new MutableLiveData<>();
     private MutableLiveData<List<Routine>> favouritesRoutinesList = new MutableLiveData<>();
     private MutableLiveData<List<Routine>> completedRoutinesList = new MutableLiveData<>();
-    private MutableLiveData<Integer> numberSelectedRoutineList = new MutableLiveData<>();
 
+    private MutableLiveData<List<Exercise>> calentamientoList = new MutableLiveData<>();
+    private MutableLiveData<List<Exercise>> principalList = new MutableLiveData<>();
+    private MutableLiveData<List<Exercise>> enfriamientoList = new MutableLiveData<>();
+
+    public LiveData<Resource<Exercise>> getExerciseById(@NonNull Integer routineID, @NonNull Integer cycleID, @NonNull Integer exerciseID) {
+        return repository.getExerciseByID(routineID, cycleID, exerciseID);
+    }
+
+    public LiveData<Resource<Cycle>> getCycleById(@NonNull Integer routineID, @NonNull Integer cycleID) {
+        return repository.getCycleByID(routineID, cycleID);
+    }
+
+    public LiveData<Resource<Routine>> getRoutineById(@NonNull Integer routineID) {
+        return repository.getRoutineByID(routineID);
+    }
+
+    private MutableLiveData<Resource<List<Exercise>>> cycleExercises = new MutableLiveData<>();
+
+    public LiveData<Resource<List<Exercise>>> getCycleExercises(@NonNull Integer routineID, @NonNull Integer cycleID, @Nullable Integer page,
+                                                                @Nullable Integer size, @Nullable String orderBy,
+                                                                @Nullable String direction) {
+        repository.getCycleExercises(routineID, cycleID, page, size, orderBy, direction).observeForever(v -> {
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    if (v.getData().size() == 0) {
+                        List<Exercise> list = new ArrayList<>();
+                        cycleExercises.setValue(Resource.success(list));
+                    } else
+                        cycleExercises.setValue(Resource.success(v.getData()));
+                    break;
+                default:
+                    switchResourceStatus(v.getStatus(), v, List.class, cycleExercises);
+            }
+        });
+
+        return cycleExercises;
+    }
+
+    private MutableLiveData<Resource<List<Cycle>>> cycles = new MutableLiveData<>();
+
+    public LiveData<Resource<List<Cycle>>> getRoutineCycles(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
+                                                            @Nullable Integer size, @Nullable String orderBy,
+                                                            @Nullable String direction) {
+        repository.getRoutineCycles(routineID, difficulty, page, size, orderBy, direction).observeForever(v -> {
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    if (v.getData().size() == 0)
+                        cycles.setValue(Resource.success(new ArrayList<>()));
+                    else
+                        cycles.setValue(Resource.success(v.getData()));
+                    break;
+                default:
+                    switchResourceStatus(v.getStatus(), v, List.class, cycles);
+            }
+        });
+
+        return cycles;
+    }
+
+    private MutableLiveData<Resource<List<List<Exercise>>>> routineExercises = new MutableLiveData<>();
+
+    private MutableLiveData<Resource<List<Cycle>>> routineCycles = new MutableLiveData<>();
+
+    private Map<String, Integer> basicsIds = new HashMap<>();
+
+    private MutableLiveData<Resource<Map<Integer, List<Exercise>>>> routineExercisesMap = new MutableLiveData<>();
+
+    private Map<Integer, Exercise> cycleSection = new HashMap<>();
+
+    private final static String CALENTAMIENTO = "Calentamiento";
+
+    private final static String ENFRIAMIENTO = "Enfriamiento";
+
+    public MutableLiveData<Resource<List<List<Exercise>>>> temp = new MutableLiveData<>();
+
+    private void setRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
+                                     @Nullable Integer size, @Nullable String orderBy,
+                                     @Nullable String direction) {
+
+
+        this.getRoutineCycles(routineID, difficulty, page, size, orderBy, direction).observeForever(v -> {
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    if (routineID != lastRoutineId) {
+                        routineCycles.setValue(Resource.success(new ArrayList<>()));
+                        routineExercises.setValue(Resource.success(new ArrayList<>()));
+                        routineExercisesMap.setValue(Resource.success(new HashMap<>()));
+                    }
+                    lastRoutineId = routineID;
+                    for (int i = 0; i < v.getData().size(); i++) {
+                        if (v.getData().get(i).getName().equals(ENFRIAMIENTO))
+                            basicsIds.put(ENFRIAMIENTO, v.getData().get(i).getId());
+                        else if (v.getData().get(i).getName().equals(CALENTAMIENTO))
+                            basicsIds.put(CALENTAMIENTO, v.getData().get(i).getId());
+                        Log.d("SETEE", "cycleid: " + v.getData().get(i).getId());
+                        routineExercisesMap.getValue().getData().put(v.getData().get(i).getId(), new ArrayList<>());
+                        routineExercises.getValue().getData().add(new ArrayList<>());
+                        routineCycles.getValue().getData().add(v.getData().get(i));
+                        if (basicsIds.getOrDefault(ENFRIAMIENTO, -1) != v.getData().get(i).getId() && basicsIds.getOrDefault(CALENTAMIENTO, -1) != v.getData().get(i).getId())
+                            cycleSection.put(v.getData().get(i).getId(), new Exercise(1, v.getData().get(i).getName(), -1, null
+                                    , null, v.getData().get(i).getRepetitions(), -1, v.getData().get(i).getId()));
+
+                        this.getCycleExercises(routineID, v.getData().get(i).getId(), page, size, orderBy, direction).observeForever(b -> {
+                            switch (b.getStatus()) {
+                                case SUCCESS:
+
+                                    if (b.getData() == null || b.getData().size() == 0)
+                                        throw new IllegalArgumentException("Not enough exercises");
+                                    Log.d("SETEE", "id: " + b.getData().get(0).getCycleId());
+                                    routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).clear();
+                                    if (basicsIds.get(ENFRIAMIENTO) != b.getData().get(0).getCycleId() &&
+                                            basicsIds.get(CALENTAMIENTO) != b.getData().get(0).getCycleId())
+                                        routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
+                                    routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
+                                    break;
+                                default:
+                                    //TODO
+                            }
+                        });
+                    }
+                    break;
+                default:
+                    //TODO
+            }
+        });
+    }
+
+    private Integer lastRoutineId = -1;
+
+    public MutableLiveData<Resource<List<List<Exercise>>>> getRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
+                                                                               @Nullable Integer size, @Nullable String orderBy,
+                                                                               @Nullable String direction) {
+
+        setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
+        routineExercisesMap.observeForever(v -> {
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    int i = 0;
+                    for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
+                        routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+                    }
+                    temp.setValue(routineExercises.getValue());
+                    break;
+                default:
+            }
+        });
+        return routineExercises;
+//        if (routineExercisesMap.getValue() != null && routineExercisesMap.getValue().getData() != null && !routineExercisesMap.getValue().getData().isEmpty()) {
+//            for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
+//                routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+//            }
+//        }
+//
+//        return routineExercises;
+    }
+
+
+    public List<Cycle> getRoutineCycles() {
+        return routineCycles.getValue().getData();
+    }
 
 }

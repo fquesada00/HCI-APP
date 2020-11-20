@@ -3,6 +3,8 @@ package ar.com.edu.itba.hci_app.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +31,6 @@ import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
-
 public class StatisticsFragment extends BaseFragment<MainActivityViewModel, FragmentStatisticsBinding, RoutineRepository> {
 
     private static StatisticsFragment statisticsFragment;
@@ -47,7 +48,7 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
     private List<Exercise> enfriamientoList;
     private ExerciseRoutineAdapter enfriamientoListAdapter;
 
-
+    private List<Cycle> cycleList;
 
     public static StatisticsFragment getStatisticsFragment() {
         if (statisticsFragment == null) {
@@ -56,8 +57,7 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         return statisticsFragment;
     }
 
-   private StatisticsFragment() {
-        // Required empty public constructor
+    public StatisticsFragment() {
 
     }
 
@@ -77,11 +77,11 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         calentamientoList = new ArrayList<>();
         calentamientoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        calentamientoList.add(new Exercise(1,"Gluteos",1,null,null,1,1));
-        calentamientoList.add(new Exercise(1,"Abdominales",1,null,null,1,1));
-        calentamientoList.add(new Exercise(1,"Flexiones de Brazos",1,null,null,1,1));
-        calentamientoList.add(new Exercise(1,"Abs",1,null,null,1,1));
-        calentamientoList.add(new Exercise(1,"Piernas",1,null,null,1,1));
+//        calentamientoList.add(new Exercise(1, "Gluteos", 1, null, null, 1, 1));
+//        calentamientoList.add(new Exercise(1, "Abdominales", 1, null, null, 1, 1));
+//        calentamientoList.add(new Exercise(1, "Flexiones de Brazos", 1, null, null, 1, 1));
+//        calentamientoList.add(new Exercise(1, "Abs", 1, null, null, 1, 1));
+//        calentamientoList.add(new Exercise(1, "Piernas", 1, null, null, 1, 1));
 
         calentamientoListAdapter = new ExerciseRoutineAdapter(calentamientoList);
         calentamientoRecyclerView.setAdapter(calentamientoListAdapter);
@@ -90,15 +90,15 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         principalList = new ArrayList<>();
         principalRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        principalList.add(new Exercise(1,"Brazos",-1,null,null,2,1));
-        principalList.add(new Exercise(1,"Flexiones de Brazos",1,null,null,1,1));
-        principalList.add(new Exercise(1,"Abs",1,null,null,1,1));
-        principalList.add(new Exercise(1,"Piernas",1,null,null,1,1));
-
-        principalList.add(new Exercise(1,"Abdominales",-1,null,null,1,1));
-        principalList.add(new Exercise(1,"Abs",1,null,null,10,1));
-        principalList.add(new Exercise(1,"Abs Cruzados",1,null,null,12,1));
-        principalList.add(new Exercise(1,"Abs Crunches",1,null,null,20,1));
+//        principalList.add(new Exercise(1, "Brazos", -1, null, null, 2, 1));
+//        principalList.add(new Exercise(1, "Flexiones de Brazos", 1, null, null, 1, 1));
+//        principalList.add(new Exercise(1, "Abs", 1, null, null, 1, 1));
+//        principalList.add(new Exercise(1, "Piernas", 1, null, null, 1, 1));
+//
+//        principalList.add(new Exercise(1, "Abdominales", -1, null, null, 1, 1));
+//        principalList.add(new Exercise(1, "Abs", 1, null, null, 10, 1));
+//        principalList.add(new Exercise(1, "Abs Cruzados", 1, null, null, 12, 1));
+//        principalList.add(new Exercise(1, "Abs Crunches", 1, null, null, 20, 1));
 
         principalListAdapter = new ExerciseRoutineAdapter(principalList);
         principalRecyclerView.setAdapter(principalListAdapter);
@@ -110,8 +110,8 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         enfriamientoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
       //  enfriamientoRecyclerView.setNestedScrollingEnabled(false);
 
-        enfriamientoList.add(new Exercise(1,"Prueba 1",1,null,null,1,1));
-        enfriamientoList.add(new Exercise(1,"Prueba 2",1,null,null,1,1));
+//        enfriamientoList.add(new Exercise(1, "Prueba 1", 1, null, null, 1, 1));
+//        enfriamientoList.add(new Exercise(1, "Prueba 2", 1, null, null, 1, 1));
 
         enfriamientoListAdapter = new ExerciseRoutineAdapter(enfriamientoList);
         enfriamientoRecyclerView.setAdapter(enfriamientoListAdapter);
@@ -127,6 +127,30 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getCalentamientoList().observe(getViewLifecycleOwner(), v -> {
+            calentamientoList.clear();
+            calentamientoList.addAll(v);
+            calentamientoListAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.getPrincipalList().observe(getViewLifecycleOwner(), v ->{
+            principalList.clear();
+            principalList.addAll(v);
+            principalListAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.getEnfriamientoList().observe(getViewLifecycleOwner(), v -> {
+            enfriamientoList.clear();
+            enfriamientoList.addAll(v);
+            enfriamientoListAdapter.notifyDataSetChanged();
+        });
+
     }
 
     @Override

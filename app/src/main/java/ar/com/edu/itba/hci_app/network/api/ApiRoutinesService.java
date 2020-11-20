@@ -46,7 +46,7 @@ public interface ApiRoutinesService {
     LiveData<ApiResponse<PagedList<RatingModel>>> getRoutineRating(@Path("routineID") Integer routineID, @Query("page") Integer page,
                                                                    @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
-    @GET("routines/{routineID/cycles")
+    @GET("routines/{routineID}/cycles")
     LiveData<ApiResponse<PagedList<CycleModel>>> getRoutineCycles(@Path("routineID") Integer routineID, @Query("page") Integer page,
                                                                   @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 

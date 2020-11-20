@@ -169,9 +169,9 @@ public class RoutineRepository extends BaseRepository {
         return new Cycle(cycleModel.getName(), cycleModel.getId(), cycleModel.getDetail(), cycleModel.getType(), cycleModel.getRepetitions(), cycleModel.getOrder());
     }
 
-    private Exercise mapExerciseEntityToDomain(ExerciseEntity exerciseEntity) {
+    private Exercise mapExerciseEntityToDomain(ExerciseEntity exerciseEntity,int cycleId) {
         return new Exercise(exerciseEntity.duration, exerciseEntity.name, exerciseEntity.id, exerciseEntity.detail, exerciseEntity.type,
-                exerciseEntity.repetitions, exerciseEntity.order);
+                exerciseEntity.repetitions, exerciseEntity.order,cycleId);
     }
 
     private ExerciseEntity mapExerciseModelToEntity(ExerciseModel exerciseModel, int cycleID) {
@@ -180,10 +180,11 @@ public class RoutineRepository extends BaseRepository {
                 cycleID);
     }
 
-    private Exercise mapExerciseModelToDomain(ExerciseModel exerciseModel) {
+    private Exercise mapExerciseModelToDomain(ExerciseModel exerciseModel, int cycleId) {
         return new Exercise(exerciseModel.getDuration(), exerciseModel.getName(), exerciseModel.getId(), exerciseModel.getDetail(),
-                exerciseModel.getType(), exerciseModel.getRepetitions(), exerciseModel.getOrder());
+                exerciseModel.getType(), exerciseModel.getRepetitions(), exerciseModel.getOrder(),cycleId);
     }
+
 
 
     public LiveData<Resource<List<Routine>>> getRoutine(@Nullable String difficulty, @Nullable Integer page,
@@ -744,9 +745,9 @@ public class RoutineRepository extends BaseRepository {
                                                                 @Nullable Integer size, @Nullable String orderBy,
                                                                 @Nullable String direction) {
         return new NetworkBoundResource<List<Exercise>, List<ExerciseEntity>, PagedList<ExerciseModel>>(executors,
-                exerciseEntities -> exerciseEntities.stream().map(this::mapExerciseEntityToDomain).collect(Collectors.toList()),
+                exerciseEntities -> exerciseEntities.stream().map(e ->mapExerciseEntityToDomain(e,cycleID)).collect(Collectors.toList()),
                 exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(exerciseModel -> mapExerciseModelToEntity(exerciseModel, cycleID)).collect(Collectors.toList()),
-                exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(this::mapExerciseModelToDomain).collect(Collectors.toList())) {
+                exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(e->mapExerciseModelToDomain(e,cycleID)).collect(Collectors.toList())) {
 
             @Override
             protected void saveCallResult(@NonNull List<ExerciseEntity> entity) {
@@ -780,9 +781,9 @@ public class RoutineRepository extends BaseRepository {
 
     public LiveData<Resource<Exercise>> getExerciseByID(@NonNull Integer routineID, @NonNull Integer cycleID, @NonNull Integer exerciseID) {
         return new NetworkBoundResource<Exercise, ExerciseEntity, ExerciseModel>(executors,
-                this::mapExerciseEntityToDomain,
+                e->mapExerciseEntityToDomain(e,cycleID),
                 exerciseModel -> mapExerciseModelToEntity(exerciseModel, cycleID),
-                this::mapExerciseModelToDomain) {
+                e->mapExerciseModelToDomain(e,cycleID)) {
 
             @Override
             protected void saveCallResult(@NonNull ExerciseEntity entity) {

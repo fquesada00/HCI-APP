@@ -46,10 +46,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     private List<Routine> list;
     private ListSearchAdapter listSearchAdapter;
 
-    private View categoryView;
-    private RecyclerView categoryRecyclerView;
-    private List<Category> categoryList;
-    private ListCategorySearchAdapter categorySearchAdapter;
+    private static final int ROUTINES_TO_DISPLAY = Integer.MAX_VALUE;
 
     private static SearchFragment searchFragment;
 
