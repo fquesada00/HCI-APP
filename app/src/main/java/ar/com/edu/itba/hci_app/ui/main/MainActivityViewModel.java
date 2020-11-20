@@ -531,6 +531,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private final static String ENFRIAMIENTO = "Enfriamiento";
 
+    public MutableLiveData<Resource<List<List<Exercise>>>> temp = new MutableLiveData<>();
+
     private void setRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
                                      @Nullable Integer size, @Nullable String orderBy,
                                      @Nullable String direction) {
@@ -539,68 +541,42 @@ public class MainActivityViewModel extends AndroidViewModel {
         this.getRoutineCycles(routineID, difficulty, page, size, orderBy, direction).observeForever(v -> {
             switch (v.getStatus()) {
                 case SUCCESS:
-                    routineCycles.setValue(Resource.success(new ArrayList<>()));
-                    routineExercises.setValue(Resource.success(new ArrayList<>()));
-                    routineExercisesMap.setValue(Resource.success(new HashMap<>()));
-                    for (int i = 0; i < v.getData().size(); i++) { //list[0] calentamient, list[1] principallist, list[2] enfriamiento
+                    if (routineID != lastRoutineId) {
+                        routineCycles.setValue(Resource.success(new ArrayList<>()));
+                        routineExercises.setValue(Resource.success(new ArrayList<>()));
+                        routineExercisesMap.setValue(Resource.success(new HashMap<>()));
+                    }
+                    lastRoutineId = routineID;
+                    for (int i = 0; i < v.getData().size(); i++) {
                         if (v.getData().get(i).getName().equals(ENFRIAMIENTO))
                             basicsIds.put(ENFRIAMIENTO, v.getData().get(i).getId());
                         else if (v.getData().get(i).getName().equals(CALENTAMIENTO))
                             basicsIds.put(CALENTAMIENTO, v.getData().get(i).getId());
+                        Log.d("SETEE", "cycleid: " + v.getData().get(i).getId());
                         routineExercisesMap.getValue().getData().put(v.getData().get(i).getId(), new ArrayList<>());
                         routineExercises.getValue().getData().add(new ArrayList<>());
                         routineCycles.getValue().getData().add(v.getData().get(i));
                         if (basicsIds.getOrDefault(ENFRIAMIENTO, -1) != v.getData().get(i).getId() && basicsIds.getOrDefault(CALENTAMIENTO, -1) != v.getData().get(i).getId())
                             cycleSection.put(v.getData().get(i).getId(), new Exercise(1, v.getData().get(i).getName(), -1, null
                                     , null, v.getData().get(i).getRepetitions(), -1, v.getData().get(i).getId()));
-//                            routineExercisesMap.getValue().getData().get(v.getData().get(i).getId()).add(new Exercise(1, v.getData().get(i).getName(), -1, null
-//                                    , null, v.getData().get(i).getRepetitions(), -1, v.getData().get(i).getId()));
 
-//                        if(i > 0 && i < (v.getData().size() - 1))
-//                            routineExercises.getValue().getData().get(i).add(new Exercise(1, v.getData().get(pos).getName(), -1, null, null, v.getData().get(pos).getRepetitions(),
-//                                0, v.getData().get(i).getId()));
                         this.getCycleExercises(routineID, v.getData().get(i).getId(), page, size, orderBy, direction).observeForever(b -> {
                             switch (b.getStatus()) {
                                 case SUCCESS:
-//                                    Log.d("SIZE", "cycleId: " + b.getData().get(0).getCycleId());
-//                                    for (int h = 0; h < b.getData().size(); h++)
-//                                        Log.d("SIZE", "Exid= " + b.getData().get(h).getId());
+
                                     if (b.getData() == null || b.getData().size() == 0)
                                         throw new IllegalArgumentException("Not enough exercises");
-//                                    routineExercises.getValue().getData().get(b.getData().get(0).getCycleId() - 1).clear();
+                                    Log.d("SETEE", "id: " + b.getData().get(0).getCycleId());
                                     routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).clear();
                                     if (basicsIds.get(ENFRIAMIENTO) != b.getData().get(0).getCycleId() &&
                                             basicsIds.get(CALENTAMIENTO) != b.getData().get(0).getCycleId())
                                         routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
                                     routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
-//                                    routineExercises.getValue().getData().get(b.getData().get(0).getCycleId() - 1).addAll(b.getData());
-//                                    if(pos > 0 && pos < (sizeCycles - 1)){
-//                                        if(routineExercises.getValue().getData().get(pos).size() < b.getData().size()){
-//                                            routineExercises.getValue().getData().get(pos).clear();
-//                                            routineExercises.getValue().getData().get(pos).add(new Exercise(1, v.getData().get(pos).getName(), -1, null, null, v.getData().get(pos).getRepetitions(), 0));
-//                                            routineExercises.getValue().getData().get(pos).addAll(b.getData());
-//                                        }
-//                                    }
-//                                    routineExercises.getValue().getData().get(pos).clear();
-//                                    if (pos != 0 && pos < (sizeCycles - 1))
-//                                        routineExercises.getValue().getData().get(pos).add(new Exercise(1, v.getData().get(pos).getName(), -1, null, null, v.getData().get(pos).getRepetitions(), 0));
-//                                    routineExercises.getValue().getData().get(pos).addAll(b.getData());
-
-//                                    Log.d("SIZE", "cycleid: " + v.getData().get(pos).getId() + "tamaño: " + b.getData().size() + " SECCION " + v.getData().get(pos).getName());
-//                                    for (int k = 0; k < b.getData().size(); k++)
-//                                        Log.d("SIZE 2", "name: " + b.getData().get(k).getName() + " ex Id: " + b.getData().get(k).getId());
                                     break;
                                 default:
                                     //TODO
                             }
                         });
-                    }
-                    for (int i = 0; i < routineExercises.getValue().getData().size(); i++) {
-
-                        for (int j = 0; j < routineExercises.getValue().getData().get(i).size(); j++) {
-                            Log.d("GOOD MORNING", "Ejercicio: " + routineExercises.getValue().getData().get(i).get(j).getName()
-                                    + " Category: " + routineExercises.getValue().getData().get(i).get(j).getId());
-                        }
                     }
                     break;
                 default:
@@ -615,45 +591,29 @@ public class MainActivityViewModel extends AndroidViewModel {
                                                                                @Nullable Integer size, @Nullable String orderBy,
                                                                                @Nullable String direction) {
 
-        if(lastRoutineId == routineID) {
-            for(int i = 0 ; i < routineExercises.getValue().getData().size() ; i++)
-                Log.d("LISTA","ee "+routineExercises.getValue().getData().get(i).size());
-            return routineExercises;
-        }
-//        if(lastRoutineId != -1){
-////            for (int i = 0 ; i < routineExercises.getValue().getData().size() ; i++)
-////                routineExercises.getValue().getData().get(i).clear();
-//            routineExercises.getValue().getData().clear();
-//            routineExercisesMap.getValue().getData().clear();
-//        }
-        lastRoutineId = routineID;
-
-        if(routineID != lastRoutineId)
-            setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
-//        if (routineExercisesMap.getValue() == null || routineExercisesMap.getValue().getData() == null || routineExercises.getValue().getData().isEmpty() || routineExercisesMap.getValue().getData().isEmpty()) {
-//            setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
-//        }
-//
-//
-//
-//        if (routineExercises.getValue() == null || routineExercises.getValue().getData() == null /*|| routineExercises.getValue().getData().get(0) == null*/) {
-//            Log.d("GOOD MORNING", "2");
-//
-//            setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
-//        }
-
-        int i = 0;
-        if (routineExercisesMap.getValue() != null && routineExercisesMap.getValue().getData() != null && !routineExercisesMap.getValue().getData().isEmpty()) {
-            for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
-                routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+        setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
+        routineExercisesMap.observeForever(v -> {
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    int i = 0;
+                    for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
+                        routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+                    }
+                    temp.setValue(routineExercises.getValue());
+                    break;
+                default:
             }
-        }
-
+        });
         return routineExercises;
+//        if (routineExercisesMap.getValue() != null && routineExercisesMap.getValue().getData() != null && !routineExercisesMap.getValue().getData().isEmpty()) {
+//            for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
+//                routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+//            }
+//        }
+//
+//        return routineExercises;
     }
 
-
-    //livedata<resource<list<list<exercise>>>>
 
     public List<Cycle> getRoutineCycles() {
         return routineCycles.getValue().getData();

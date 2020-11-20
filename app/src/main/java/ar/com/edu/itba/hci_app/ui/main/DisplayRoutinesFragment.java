@@ -118,26 +118,45 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
 
     @Override
     public void onRoutineButtonClick(Routine routine) {
-        viewModel.getRoutineExercises(routine.getId(), null, null, Integer.MAX_VALUE, null, null)
-                .observe(getViewLifecycleOwner(), v -> {
-                    switch (v.getStatus()) {
-                        case SUCCESS:
-                            if (v.getData().size() < 3) {
-                                return;
-                            }
-                            viewModel.setCalentamientoList(v.getData().get(0));
-                            List<Exercise> exerciseList = new ArrayList<>();
-                            for (int i = 1; i < (v.getData().size() - 1); i++) {
-                                exerciseList.addAll(v.getData().get(i));
-                            }
-                            viewModel.setPrincipalList(exerciseList);
-                            viewModel.setEnfriamientoList(v.getData().get(v.getData().size() - 1));
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
-                            break;
-                        default:
-                            Log.d("VISTA", "AFUERA OBSERVEeeeee");
-                    }
-                });
+        viewModel.getRoutineExercises(routine.getId(), null, null, Integer.MAX_VALUE, null, null);
+//                .observe(getViewLifecycleOwner(), v -> {
+//                    switch (v.getStatus()) {
+//                        case SUCCESS:
+//                            if (v.getData().size() < 3) {
+//                                return;
+//                            }
+//                            viewModel.setCalentamientoList(v.getData().get(0));
+//                            List<Exercise> exerciseList = new ArrayList<>();
+//                            for (int i = 1; i < (v.getData().size() - 1); i++) {
+//                                exerciseList.addAll(v.getData().get(i));
+//                            }
+//                            viewModel.setPrincipalList(exerciseList);
+//                            viewModel.setEnfriamientoList(v.getData().get(v.getData().size() - 1));
+//                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
+//                            break;
+//                        default:
+//                            Log.d("VISTA", "AFUERA OBSERVEeeeee");
+//                    }
+//                });
+        viewModel.temp.observe(getViewLifecycleOwner(), v->{
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
+                    break;
+                default:
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
 //        List<Exercise> enfriamientoList = new ArrayList<>();
 //        enfriamientoList.add(new Exercise(1, "Prueba 1", 1, null, null, 1, 1));
 //        enfriamientoList.add(new Exercise(1, "Prueba 2", 1, null, null, 1, 1));
@@ -163,8 +182,6 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
 //        viewModel.setPrincipalList(principalList);
 //        viewModel.setEnfriamientoList(enfriamientoList);
 //        viewModel.setCalentamientoList(calentamientoList);
-        Log.d("GOOD MORNING","5");
-
 
 //        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
     }
