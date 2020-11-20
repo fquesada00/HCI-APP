@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:text="Entrena ese gluteo"
+        android:text="@string/ejercicio"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -22,8 +22,8 @@
         android:id="@+id/exercise_length"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:text="x3"
+        android:layout_gravity="end"
+        android:text="@string/ejer_cant"
         android:textColor="@color/black"
         android:textSize="16sp" />
 

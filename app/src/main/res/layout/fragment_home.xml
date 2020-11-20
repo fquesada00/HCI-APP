@@ -45,7 +45,7 @@
                     android:includeFontPadding="true"
 
                     android:singleLine="true"
-                    android:text="Rutina de Hoy"
+                    android:text="@string/rutina_de_hoy"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
                     android:layout_marginTop="10dp"
                     android:includeFontPadding="true"
                     android:singleLine="true"
-                    android:text="Rutinas Creadas"
+                    android:text="@string/rutinas_creadas"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Rutinas por rating"
+                android:text="@string/rutinas_por_rating"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="Rutinas por Dificultad"
+                    android:text="@string/rutinas_por_dificultad"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
                     android:layout_gravity="bottom|end"
                     android:backgroundTint="@color/colorPrimary"
                     android:gravity="center"
-                    android:text="+ Diff" />
+                    android:text="@string/difficulty_button" />
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView

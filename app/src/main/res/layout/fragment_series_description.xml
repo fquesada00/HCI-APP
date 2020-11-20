@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:text="Calentamiento"
+                android:text="@string/calentamiento"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="x3"
+                android:text="@string/ejer_cant"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </FrameLayout>

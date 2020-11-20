@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="115dp"
-            android:text="Name"
+            android:text="@string/name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:ems="10"
-            android:hint="John Doe"
+            android:hint="@string/john_doe"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+
             android:layout_marginTop="16dp"
             android:text="@string/email"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+
             android:layout_marginTop="16dp"
             android:text="@string/password"
             app:layout_constraintStart_toStartOf="parent"

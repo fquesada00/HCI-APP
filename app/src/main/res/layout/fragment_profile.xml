@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="MARTINA PALERMO"
+            android:text="@string/nombre_user"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -79,7 +79,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="35dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Button"
+            android:text="@string/button"
             android:textColor="@color/black"
             android:textSize="17sp" />
 
@@ -90,7 +90,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Button"
+            android:text="@string/button"
             android:textColor="@color/black"
             android:textSize="17sp" />
 
@@ -102,7 +102,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Button"
+            android:text="@string/button"
             android:layout_marginBottom="10dp"
             android:textColor="@color/black"
             android:textSize="17sp" />

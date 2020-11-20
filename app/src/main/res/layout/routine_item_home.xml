@@ -9,7 +9,7 @@
         android:layout_height="150dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/border"
-        android:text="Drawable Center">
+        android:text="@string/drawable_center">
         <ImageView
             android:id="@+id/routine_item_image"
             android:layout_width="175dp"
@@ -27,7 +27,7 @@
 
             android:includeFontPadding="true"
             android:singleLine="true"
-            android:text="Rutinas Creadas"
+            android:text="@string/rutinas_creadas"
             android:textColor="@color/white"/>
     </FrameLayout>
 

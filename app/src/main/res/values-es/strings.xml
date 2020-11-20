@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">HCI-APP</string>
     <string name="hello_home_fragment">home_fragment</string>
@@ -5,35 +6,30 @@
     <string name="hello_search_fragment">search_fragment</string>
     <string name="hello_profile_fragment">profile_fragment</string>
     <string name="hello_notifications_fragment">notifications_fragment</string>
-    <string name="second_activity">Go to second activity</string>
-    <string name="auth_activity_btn">Go to auth activity</string>
+    <string name="second_activity">Ir a segunda actividad</string>
+    <string name="auth_activity_btn">Ir a auth actividad</string>
     <string name="button">Button</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="don_t_have_an_account_register_now">Don\'t have an account? <b>Register Now</b></string>
+    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+    <string name="don_t_have_an_account_register_now">No tenes una cuenta? <b>Registrate Ahora</b></string>
     <string name="email">Email</string>
     <string name="email_hint">john@mail.czom</string>
-    <string name="password">Password</string>
+    <string name="password">Contraseña</string>
     <string name="login">Login</string>
-    <string name="forgot_your_password">Forgot your password?</string>
-    <string name="register_now">Register Now</string>
-    <string name="already_have_an_account_login_now">Already have an account? <b>Login Now</b></string>
+    <string name="forgot_your_password">Olvidaste tu contraseña?</string>
+    <string name="register_now">Registrate Ahora</string>
+    <string name="already_have_an_account_login_now">Ya tienes una cuenta? <b>Ingresa Ahora</b></string>
     <string name="AppName">FitBo</string>
-    <string name="username">Username</string>
-    <string name="birthdate">Birthdate</string>
+    <string name="username">Usuario</string>
+    <string name="birthdate">Fecha de Nacimiento</string>
     <string name="title_activity_display_routine">DisplayRoutineActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Round World</string>
+    <string name="hello_world">Hola Mundo Redondo</string>
     <string name="rutina_terminada">Rutina Terminada</string>
     <string name="darle_un_rating">Darle un Rating</string>
     <string name="confirmar">Confirmar</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="eliminar_cuenta">Eliminar Cuenta</string>
-    <string name="change_to_spanish">Change to Spanish</string>
-    <string name="change_to_dark_mode">Change to Dark Mode</string>
+    <string name="change_to_spanish">Cambiar a Español</string>
+    <string name="change_to_dark_mode">Cambiar a modo Oscuro</string>
     <string name="ejercicio">Ejercicio</string>
     <string name="ejer_cant">x3</string>
     <string name="volver">Volver</string>
@@ -43,7 +39,7 @@
     <string name="ejercitacion_principal">Ejercitacion Principal</string>
     <string name="enfriamiento">Enfriamiento</string>
     <string name="comenzar">Comenzar</string>
-    <string name="nombre_user">MARTINA PALERMO</string>
+    <string name="nombre_user">Octavio Serpe</string>
     <string name="duration_left">20s</string>
     <string name="ejercicio_actual">Ejercicio Actual</string>
     <string name="duration">20s</string>
@@ -58,12 +54,11 @@
     <string name="rutinas_por_rating">Rutinas por rating</string>
     <string name="rutinas_por_dificultad">Rutinas por Dificultad</string>
     <string name="difficulty_button">+ Diff</string>
-    <string name="coaches">Coaches</string>
+    <string name="coaches">Entrenadores</string>
     <string name="profile_configuration">PROFILE_CONFIGURATION</string>
-    <string name="name">Name</string>
+    <string name="name">Nombre</string>
+    <string name="john_doe">Pedro Sanchez</string>
     <string name="rutina_titulo">A QUEMAR</string>
-    <string name="rutina_autor">By Octavio Serpe</string>
-    <string name="drawable_center">Drawable Center</string>
-    <string name="john_doe">John Doe</string>
-
+    <string name="rutina_autor">Por Octavio Serpe</string>
+    <string name="drawable_center">Centro Dibujable</string>
 </resources>
