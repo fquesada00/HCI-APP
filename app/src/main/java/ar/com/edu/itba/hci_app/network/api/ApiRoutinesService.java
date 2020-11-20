@@ -20,6 +20,9 @@ public interface ApiRoutinesService {
     LiveData<ApiResponse<PagedList<RoutineModel>>> getRoutines(@Query("difficulty") String difficulty, @Query("page") Integer page,
                                                                @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
+    @GET("routines")
+    LiveData<ApiResponse<PagedList<RoutineModel>>> searchRoutines(@Query("search") String query,@Query("page") Integer page,@Query("size") Integer size);
+
     @GET("user/current/routines/")
     LiveData<ApiResponse<PagedList<RoutineModel>>> getCurrentUserRoutines(@Query("difficulty") String difficulty, @Query("page") Integer page,
                                                                           @Query("size") Integer size, @Query("orderBy") String orderBy, @Query("direction") String direction);

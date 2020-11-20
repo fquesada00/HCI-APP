@@ -7,10 +7,16 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Routine;
@@ -20,6 +26,11 @@ import ar.com.edu.itba.hci_app.network.Status;
 import ar.com.edu.itba.hci_app.network.api.model.PagedList;
 
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
+
+import static ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter.ALL;
+import static ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter.CURRENT;
+import static ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter.FAVOURITES;
+
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
@@ -241,36 +252,145 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private int categoriesPerPage = 10;
 
+    private List<Category> activeCategories = new ArrayList<>();
 
+    private boolean isLastRoutinePage = false;
+
+    private final static int PAGE_SIZE = 10;
+
+    private int routinePage = 0;
+
+    private String query;
+
+    private boolean searchActive = false;
+
+    public boolean isSearchActive() {
+        return searchActive;
+    }
+
+    public void setSearchActive(boolean searchActive) {
+        isLastRoutinePage = false;
+        routinePage = 0;
+        this.searchActive = searchActive;
+    }
+
+    private final List<Routine> allRoutines = new ArrayList<>();
+
+    private final MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
     //TODO getcategories
-    private void setCategories() {
-        if (categories == null)
-            categories = new MutableLiveData<>();
-        repository.getCategories(null, categoriesPerPage, "name", "asc")
-                .observeForever(pagedListResource -> {
-                    switch (pagedListResource.getStatus()) {
-                        case SUCCESS:
-                            if (pagedListResource.getData().size() == 0){
-                                List<Category> pagedList = new ArrayList<>();
-                                categories.setValue(Resource.success(pagedList));}
-                            else
-                                categories.setValue(Resource.success(pagedListResource.getData()));
-                            break;
-                        default:
-                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, categories);
-                    }
-                });
+
+
+    public LiveData<Resource<List<Routine>>> getRoutines() {
+        getMoreRoutines();
+        return routines;
     }
 
-    public LiveData<Resource<List<Category>>> getCategories() {
-        setCategories();
-        return categories;
+    public void getMoreRoutines() {
+        if (isLastRoutinePage)
+            return;
+        LiveData<Resource<List<Routine>>> resourceLiveData1;
+        LiveData<Resource<List<Routine>>> resourceLiveData2;
+        if (!searchActive)
+            routines.addSource((resourceLiveData1 = repository.getRoutine(routinePage, PAGE_SIZE, ALL)), setRoutines(resourceLiveData1));
+        else
+            routines.addSource((resourceLiveData2 = repository.searchRoutines(query, routinePage, PAGE_SIZE)), setRoutines(resourceLiveData2));
+
     }
 
-    public LiveData<Resource<Category>> getCategoryById(@NonNull Integer id){
-        return repository.getCategoryById(id);
+    public LiveData<Resource<List<Routine>>> searchRoutines(String query) {
+        this.query = query;
+        loadSearch(query);
+        return routines;
+
     }
 
+    private void loadSearch(String query) {
+        LiveData<Resource<List<Routine>>> resourceLiveData;
+        routines.addSource((resourceLiveData = repository.searchRoutines(query, routinePage, PAGE_SIZE)), setRoutines(resourceLiveData));
+    }
+
+    @NotNull
+    private Observer<Resource<List<Routine>>> setRoutines(LiveData<Resource<List<Routine>>> resourceLiveData) {
+        return resource -> {
+            if (resource.getStatus() == Status.SUCCESS) {
+                routines.removeSource(resourceLiveData);
+                if ((resource.getData().size() == 0) || (resource.getData().size() < PAGE_SIZE))
+                    isLastRoutinePage = true;
+                routinePage++;
+                List<Routine> aux;
+                aux = (allRoutines.stream().distinct().filter(e -> !resource.getData().contains(e)).collect(Collectors.toList()));
+                allRoutines.clear();
+                allRoutines.addAll(aux);
+                allRoutines.addAll(resource.getData());
+                Log.d("GETROUTINES", "getMoreRoutines: " + resource.getData().size());
+                routines.setValue(Resource.success(allRoutines));
+            } else if (resource.getStatus() == Status.LOADING) {
+                routines.setValue(resource);
+            }
+        };
+    }
+
+//    public void toggleCategory(Category category){
+//        if(activeCategories.contains(category))
+//            activeCategories.remove(category);
+//        else
+//            activeCategories.add(category);
+//    }
+
+    //    public List<Category> getActiveCategories(){
+//        return activeCategories;
+//    }
+//    private void setCategories() {
+//        if (categories == null)
+//            categories = new MutableLiveData<>();
+//        repository.getCategories(null, categoriesPerPage, "name", "asc")
+//                .observeForever(pagedListResource -> {
+//                    switch (pagedListResource.getStatus()) {
+//                        case SUCCESS:
+//                            if (pagedListResource.getData().getResults().size() == 0){
+//                                PagedList<Category> pagedList = new PagedList<>();
+//                                pagedList.setResults(new ArrayList<>());
+//                                categories.setValue(Resource.success(pagedList));}
+//                            else
+//                                categories.setValue(Resource.success(pagedListResource.getData()));
+//                            break;
+//                        default:
+//                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, categories);
+//                    }
+//                });
+//    }
+//
+//    public LiveData<Resource<PagedList<Category>>> getCategories() {
+//        setCategories();
+//        return categories;
+//    }
+//    private void setCategories() {
+//        if (categories == null)
+//            categories = new MutableLiveData<>();
+//        repository.getCategories(null, categoriesPerPage, "name", "asc")
+//                .observeForever(pagedListResource -> {
+//                    switch (pagedListResource.getStatus()) {
+//                        case SUCCESS:
+//                            if (pagedListResource.getData().size() == 0) {
+//                                List<Category> pagedList = new ArrayList<>();
+//                                categories.setValue(Resource.success(pagedList));
+//                            } else
+//                                categories.setValue(Resource.success(pagedListResource.getData()));
+//                            break;
+//                        default:
+//                            switchResourceStatus(pagedListResource.getStatus(), pagedListResource, PagedList.class, categories);
+//                    }
+//                });
+//    }
+
+//    public LiveData<Resource<List<Category>>> getCategories() {
+//        setCategories();
+//        return categories;
+//    }
+
+//    public LiveData<Resource<Category>> getCategoryById(@NonNull Integer id) {
+//        return repository.getCategoryById(id);
+//    }
 
 
     //-------------------------------------------------------------------------------
@@ -321,7 +441,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                 .observeForever(pagedListResource -> {
                     switch (pagedListResource.getStatus()) {
                         case SUCCESS:
-                            Log.d("ALL", "setFavouritesRoutines: "+ pagedListResource.getData().size());
+                            Log.d("ALL", "setFavouritesRoutines: " + pagedListResource.getData().size());
                             if (pagedListResource.getData().size() == 0) {
                                 List<Routine> pagedList = new ArrayList<>();
                                 favouritesRoutines.setValue(Resource.success(pagedList));
@@ -342,7 +462,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<Integer> getNumberOfFavouritesUserRoutines() {
         numberOfFavouritesUserRoutines.setValue(0);
         favouritesRoutines.observeForever(pagedListResource -> {
-            switch (pagedListResource.getStatus()){
+            switch (pagedListResource.getStatus()) {
                 case SUCCESS:
                     numberOfFavouritesUserRoutines.setValue(pagedListResource.getData().size());
                     break;
@@ -357,11 +477,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         return numberOfFavouritesUserRoutines;
     }
 
-    public LiveData<Resource<Void>> addRoutineToFavourites(@NonNull Integer id){
+    public LiveData<Resource<Void>> addRoutineToFavourites(@NonNull Integer id) {
         return repository.addToFavourites(id);
     }
 
-    public LiveData<Resource<Void>> removeRoutineFromFavourites(@NonNull Integer id){
+    public LiveData<Resource<Void>> removeRoutineFromFavourites(@NonNull Integer id) {
         return repository.removeFromFavourites(id);
     }
 

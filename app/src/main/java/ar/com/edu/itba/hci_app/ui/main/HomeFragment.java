@@ -89,6 +89,7 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
             Log.d("DUFFY", "eeeeeeeeee");
         });
 
+
         Log.d("LOADING", "BEFORE");
 
         viewModel.getDailyRoutine().observe(requireActivity(), routineResource -> {

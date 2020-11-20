@@ -183,6 +183,7 @@ public class RoutineRepository extends BaseRepository {
                 exerciseModel.getType(), exerciseModel.getRepetitions(), exerciseModel.getOrder());
     }
 
+
     public LiveData<Resource<List<Routine>>> getRoutine(@Nullable String difficulty, @Nullable Integer page,
                                                         @Nullable Integer size, @Nullable String orderBy,
                                                         @Nullable String direction, @NotNull RoutinePagedListGetter selector) {
@@ -196,7 +197,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
-                        database.routineDao().deleteRoutines();
+                        database.routineDao().deleteRoutines(size,page*size);
                         CategoryEntity categoryEntity;
                         CreatorEntity creatorEntity;
                         for (int i = 0; i < entity.size(); i++) {
@@ -212,7 +213,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
-                        return ((entity == null) || (entity.size() == 0) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (entity.size() <= size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -223,7 +224,7 @@ public class RoutineRepository extends BaseRepository {
                     @NonNull
                     @Override
                     protected LiveData<List<RoutineEntity>> loadFromDb() {
-                        return database.routineDao().getRoutines();
+                        return database.routineDao().getRoutines(size,page*size);
                     }
 
                     @NonNull
@@ -258,7 +259,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineCurrentEntity> entity) {
-                        return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (entity.size() <= size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -304,7 +305,7 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldFetch(@Nullable List<RoutineFavEntity> entity) {
-                        return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                        return ((entity == null) || (entity.size() <= size) || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
                     }
 
                     @Override
@@ -326,6 +327,52 @@ public class RoutineRepository extends BaseRepository {
                 }.asLiveData();
         }
         throw new IllegalArgumentException("Bad api call in repo");
+    }
+
+    public LiveData<Resource<List<Routine>>> searchRoutines(@NonNull String query,@NonNull Integer page,@NonNull Integer size){
+        return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
+                routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
+                routinePagedList -> routinePagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
+                routinePagedList -> routinePagedList.getResults().stream().map(this::mapRoutineModelToDomain).collect(Collectors.toList())
+                ){
+
+
+            @Override
+            protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
+                entity.forEach(e->database.routineDao().delete(e));
+                database.routineDao().insertRoutine(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable PagedList<RoutineModel> model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<RoutineEntity>> loadFromDb() {
+                return database.routineDao().searchRoutines(query);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
+                return apiService.searchRoutines(query,page,size);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<List<Routine>>> getRoutine(@NonNull RoutinePagedListGetter selector){
+        return getRoutine(null,null,null,null,null,selector);
+    }
+
+    public LiveData<Resource<List<Routine>>> getRoutine(@NonNull Integer page, @NonNull Integer size,@NonNull RoutinePagedListGetter selector){
+        return getRoutine(null,page,size,null,null,selector);
     }
 
     public LiveData<Resource<List<Rating>>> getCurrentUserRatings(@Nullable Integer page,
@@ -720,12 +767,10 @@ public class RoutineRepository extends BaseRepository {
                 routineFavEntity -> null,
                 model -> null,
                 model -> null) {
-            int entityId = 0;
 
             @Override
             protected void saveCallResult(@NonNull RoutineFavEntity entity) {
-                entityId = entity.id;
-                database.routineDao().insertRoutineFav(entity);
+                database.routineDao().deleteRoutineFav(routineID);
             }
 
             @Override
@@ -741,8 +786,6 @@ public class RoutineRepository extends BaseRepository {
             @NonNull
             @Override
             protected LiveData<RoutineFavEntity> loadFromDb() {
-                if (entityId == 0)
-                    return AbsentLiveData.create();
                 return database.routineDao().getFavRoutine(routineID);
             }
 

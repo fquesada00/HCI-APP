@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ public class ListCategorySearchAdapter extends RecyclerView.Adapter<ListCategory
 
     private List<Category> list;
     private CategoryAdapterListener listener;
+    private Filter filter;
 
     public ListCategorySearchAdapter(List<Category> list, CategoryAdapterListener listener) {
         this.list = list;
@@ -55,7 +57,7 @@ public class ListCategorySearchAdapter extends RecyclerView.Adapter<ListCategory
         void bindData(Category category) {
             button.setText(category.getName());
             this.category = category;
-            button.setOnClickListener(view -> listener.onCategoryButtonClick(category.getId()));
+            button.setOnClickListener(view -> listener.onCategoryButtonClick(category));
 
         }
     }

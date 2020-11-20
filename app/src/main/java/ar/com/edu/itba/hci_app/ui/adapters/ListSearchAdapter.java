@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,13 +13,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.function.Function;
 
 import ar.com.edu.itba.hci_app.R;
+import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Routine;
 
 public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.RoutineViewHolder> {
 
     private List<Routine> list;
+
     private LayoutInflater layoutInflater;
     private Context context;
     private RoutineAdapterListener listener;
@@ -47,8 +51,17 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
         holder.bindData(list.get(position));
     }
 
+    public void setList(Function<?,List<Routine>> fun){
+        this.list = fun.apply(null);
+    }
+
     public void setList(List<Routine> list){
-        this.list = list;
+        this.list =list;
+    }
+
+
+    public List<Routine> getList(){
+        return list;
     }
 
     public class RoutineViewHolder extends RecyclerView.ViewHolder {
