@@ -1,8 +1,10 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -113,6 +115,16 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
 
         enfriamientoListAdapter = new ExerciseRoutineAdapter(enfriamientoList);
         enfriamientoRecyclerView.setAdapter(enfriamientoListAdapter);
+
+        view.findViewById(R.id.share_button).setOnClickListener(v -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        });
 
         return view;
     }
