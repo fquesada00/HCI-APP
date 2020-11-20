@@ -83,8 +83,7 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
         viewModel.getFavouritesRoutines().observe(requireActivity(), pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
-                    loadingScreen(ProgressBar.GONE, true);
-                    break;
+                    loadingScreen(ProgressBar.GONE, true);break;
                 default:
                     switchResourceStatus(pagedListResource.getStatus());
             }
@@ -106,48 +105,17 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
                 switchResourceStatus(n == -1 ? Status.ERROR : Status.LOADING);
         });
 
-        //TODO falta el de completadas y que cuando clickee cada boton, me mande a dobde deba
-    }
+        binding.createdRoutines.setOnClickListener(v -> {
+            viewModel.setSelectedRoutineList(viewModel.getCreatedRoutinesList().getValue());
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DisplayRoutinesFragment()).addToBackStack(null).commit();
+        });
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        binding.favouritesRoutines.setOnClickListener(v -> {
+                viewModel.setSelectedRoutineList(viewModel.getFavouritesRoutinesList().getValue());
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DisplayRoutinesFragment()).addToBackStack(null).commit();
+        });
 
-//        viewModel.getCurrentUserRoutines().observe(requireActivity(), pagedListResource -> {
-//            switch (pagedListResource.getStatus()) {
-//                case SUCCESS:
-//                    loadingScreen(ProgressBar.GONE, true);
-//                    break;
-//                default:
-//                    switchResourceStatus(pagedListResource.getStatus());
-//            }
-//        });
-//
-//        viewModel.getFavouritesRoutines().observe(requireActivity(), pagedListResource -> {
-//            switch (pagedListResource.getStatus()) {
-//                case SUCCESS:
-//                    loadingScreen(ProgressBar.GONE, true);
-//                    break;
-//                default:
-//                    switchResourceStatus(pagedListResource.getStatus());
-//            }
-//        });
-//
-//        viewModel.getNumberOfCurrentUserRoutines().observe(requireActivity(), n -> {
-//            if (n >= 0) {
-//                loadingScreen(ProgressBar.GONE, true);
-//                binding.createdRoutines.setText(n.toString() + " Rutinas creadas");
-//            } else
-//                switchResourceStatus(n == -1 ? Status.ERROR : Status.LOADING);
-//        });
-//
-//        viewModel.getNumberOfFavouritesUserRoutines().observe(requireActivity(), n -> {
-//            if (n >= 0) {
-//                loadingScreen(ProgressBar.GONE, true);
-//                binding.favouritesRoutines.setText(n.toString() + " Rutinas favoritas");
-//            } else
-//                switchResourceStatus(n == -1 ? Status.ERROR : Status.LOADING);
-//        });
+        //TODO falta el de completadas
     }
 
     @Override

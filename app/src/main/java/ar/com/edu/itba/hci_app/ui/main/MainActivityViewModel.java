@@ -163,9 +163,12 @@ public class MainActivityViewModel extends AndroidViewModel {
                         case SUCCESS:
                             if (pagedListResource.getData().size() == 0) {
                                 List<Routine> pagedList = new ArrayList<>();
+                                createdRoutinesList.setValue(pagedList);
                                 currentUserRoutines.setValue(Resource.success(pagedList));
-                            } else
+                            } else{
                                 currentUserRoutines.setValue(Resource.success(pagedListResource.getData()));
+                                createdRoutinesList.setValue(currentUserRoutines.getValue().getData());
+                            }
                             Log.d("current", "aca estoy viendo");
                             break;
                         default:
@@ -342,9 +345,12 @@ public class MainActivityViewModel extends AndroidViewModel {
                             Log.d("ALL", "setFavouritesRoutines: " + pagedListResource.getData().size());
                             if (pagedListResource.getData().size() == 0) {
                                 List<Routine> pagedList = new ArrayList<>();
+                                favouritesRoutinesList.setValue(pagedList);
                                 favouritesRoutines.setValue(Resource.success(pagedList));
-                            } else
+                            } else {
                                 favouritesRoutines.setValue(Resource.success(pagedListResource.getData()));
+                                favouritesRoutinesList.setValue(favouritesRoutines.getValue().getData());
+                            }
                             break;
                         default:
                             switchResourceStatus(pagedListResource.getStatus(), pagedListResource, List.class, favouritesRoutines);
@@ -389,6 +395,19 @@ public class MainActivityViewModel extends AndroidViewModel {
         selectedRoutineList.setValue(list);
     }
 
+    public MutableLiveData<List<Routine>> getCreatedRoutinesList() {
+        return createdRoutinesList;
+    }
+
+    public MutableLiveData<List<Routine>> getFavouritesRoutinesList() {
+        return favouritesRoutinesList;
+    }
+
+
+    public MutableLiveData<List<Routine>> getCompletedRoutinesList() {
+        return completedRoutinesList;
+    }
+
     public LiveData<List<Routine>> getSelectedRoutineList() {
         if (selectedRoutineList.getValue() == null) {
             selectedRoutineList.setValue(new ArrayList<>());
@@ -396,6 +415,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         }
         return selectedRoutineList;
     }
+
+    private MutableLiveData<List<Routine>> createdRoutinesList = new MutableLiveData<>();
+    private MutableLiveData<List<Routine>> favouritesRoutinesList= new MutableLiveData<>();
+    private MutableLiveData<List<Routine>> completedRoutinesList = new MutableLiveData<>();
+    private MutableLiveData<Integer> numberSelectedRoutineList = new MutableLiveData<>();
 
 
 }
