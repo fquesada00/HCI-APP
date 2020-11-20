@@ -4,91 +4,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.RoutineDescriptionFragment">
+    tools:context=".ui.main.StatisticsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="15dp"
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="10dp"-->
+<!--        android:layout_marginTop="15dp"-->
 
-        android:orientation="vertical">
+<!--        android:orientation="vertical">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/back"
-            android:text="Volver"
-            android:textSize="16sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:drawableStart="@drawable/back"-->
+<!--            android:text="Volver"-->
+<!--            android:textSize="16sp" />-->
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <FrameLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="Rutina Seleccionada"
-                android:textColor="@color/black"
-                android:textSize="30sp" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="start"-->
+<!--                android:text="Rutina Seleccionada"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="30sp" />-->
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="3dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/full_favorite"
-                android:tint="@color/black" />
-        </FrameLayout>
+<!--            <ImageButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginTop="3dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:src="@drawable/full_favorite"-->
+<!--                android:tint="@color/black" />-->
+<!--        </FrameLayout>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Descripcion"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Descripcion"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="24sp" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="721dp"
-        android:layout_marginHorizontal="10dp"
-        android:background="@drawable/border">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="721dp"-->
+<!--        android:layout_marginHorizontal="10dp"-->
+<!--        android:background="@drawable/border">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
 
-            <Button
-                android:id="@+id/comenzar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorPrimary"
-                android:text="Comenzar" />
-            <include layout="@layout/fragment_series_description"></include>
+<!--            <Button-->
+<!--                android:id="@+id/comenzar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginHorizontal="50dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@color/colorPrimary"-->
+<!--                android:text="Comenzar" />-->
 
-            <include layout="@layout/fragment_series_description"></include>
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/series_routine_recycler_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-            <include layout="@layout/fragment_series_description"></include>
-
-            <include layout="@layout/fragment_series_description"></include>
-
-            <include layout="@layout/fragment_series_description"></include>
-
-
-
-        </LinearLayout>
-    </ScrollView>
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
 
 
 </LinearLayout>
