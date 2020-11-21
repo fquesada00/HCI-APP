@@ -40,6 +40,8 @@ import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
+    public int i = 1;
+
     //TODO que el login haga un getUser y cargue en room, y aca se fetchea de ahi,
     //asi nos ahorramos dos repos
 
@@ -136,6 +138,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public MainActivityViewModel(Application application, RoutineRepository repository) {
         super(application);
+        routineURL = new Routine();
         this.repository = repository;
     }
 
@@ -288,9 +291,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
 
     public LiveData<Resource<List<Routine>>> getRoutines(GetRoutinesEnum routinesEnum) {
-        routines.addSource(allRoutinesLiveData,l->{
-            routines.setValue(l.getValue());
-        });
+//        routines.addSource(allRoutinesLiveData,l->{
+//            routines.setValue(l.getValue());
+//        });
         if (currentGetter != routinesEnum) {
             isLastRoutinePage = false;
             routinePage = 0;
@@ -837,15 +840,13 @@ public class MainActivityViewModel extends AndroidViewModel {
         return isLastRoutine;
     }
 
-    private Routine routineURL;
+    public Routine routineURL;
 
     public void setRoutineURL(Routine r){
         routineURL = r;
+        Log.d("ROUTINE", "setRoutineURL: "+routineURL.getId());
     }
 
-    public Routine getRoutineURL(){
-        return routineURL;
-    }
 //    public List<Cycle> getRoutineCycles() {
 //        return routineCycles.getValue().getData();
 //    }
@@ -858,6 +859,22 @@ public class MainActivityViewModel extends AndroidViewModel {
         calentamientoList.setValue(new ArrayList<>());
         principalList.setValue(new ArrayList<>());
         enfriamientoList.setValue(new ArrayList<>());
+    }
+
+    public List<Exercise> routineExercisesList;
+
+    public void setRoutineExercisesList(){
+        routineExercisesList = new ArrayList<>();
+        routineExercisesList.addAll(calentamientoList.getValue());
+        Log.d("DUFFY", "setRoutineExercisesListCalentamiento: "+routineExercisesList.get(0).getName());
+        for(Exercise exercise : principalList.getValue()){
+            if(exercise.getId() != -1)
+                routineExercisesList.add(exercise);
+        }
+        routineExercisesList.addAll(enfriamientoList.getValue());
+        Log.d("DUFFY", "setRoutineExercisesListSize: " + routineExercisesList.size());
+        for(Exercise ex : routineExercisesList)
+            Log.d("DUFFY", "setRoutineExercisesList: "+ex.getName());
     }
 }
 

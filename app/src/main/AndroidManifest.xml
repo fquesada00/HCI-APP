@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HCIAPP">
 
-        <activity android:name=".DispatcherActivity" android:theme="@style/SplashTheme">
+        <activity android:name=".DispatcherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +26,12 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http" android:host="www.localhost:8080" android:pathPrefix="/routines/"/>
+                <data android:scheme="http" android:host="www.fitbo.com" android:pathPrefix="/routines/"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustPan"  android:theme="@style/SplashTheme"/>
+        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.auth.AuthActivity" />
-        <activity android:name=".ui.routine.DisplayRoutineActivity" />
+        <activity android:name=".ui.routine.DisplayRoutineActivity"/>
     </application>
 
 </manifest>

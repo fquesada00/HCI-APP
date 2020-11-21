@@ -1,13 +1,13 @@
 package ar.com.edu.itba.hci_app.domain;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import ar.com.edu.itba.hci_app.network.api.model.CategoryModel;
-import ar.com.edu.itba.hci_app.network.api.model.CreatorModel;
 
-public class Routine implements Comparable<Routine>{
+
+public class Routine implements Comparable<Routine>, Serializable {
 
     public Routine(String difficulty, Creator creator, Date dateCreated, Double averageRating, String name, boolean isPublic, int id, String detail, Category category) {
         this.difficulty = difficulty;

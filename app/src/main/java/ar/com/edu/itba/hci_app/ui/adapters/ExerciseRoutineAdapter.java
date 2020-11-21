@@ -1,4 +1,4 @@
-package ar.com.edu.itba.hci_app.ui.main;
+package ar.com.edu.itba.hci_app.ui.adapters;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
