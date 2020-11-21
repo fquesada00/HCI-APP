@@ -30,8 +30,22 @@ public class ExerciseEntity {
     @ColumnInfo(name = "order")
     public Integer order;
 
+    @Override
+    public String toString() {
+        return "ExerciseEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", detail='" + detail + '\'' +
+                ", type='" + type + '\'' +
+                ", duration=" + duration +
+                ", repetitions=" + repetitions +
+                ", order=" + order +
+                ", cycleId=" + cycleId +
+                '}';
+    }
+
     @ColumnInfo(name = "cycleId")
-    public Integer cycleId;
+    public int cycleId;
 
 
     public ExerciseEntity(@NonNull Integer id, String name, String detail, String type, Integer duration, Integer repetitions, Integer order, Integer cycleId) {

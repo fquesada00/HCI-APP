@@ -1,5 +1,7 @@
 package ar.com.edu.itba.hci_app.repository;
 
+import android.util.Log;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,6 +88,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType, ModelType> {
                                 // which may not be updated with latest results received from network.
                                 result.addSource(loadFromDb(),
                                         newData -> {
+                                            Log.d("DEVUELVO", "fetchFromNetwork: " + newData.toString());
                                             DomainType domain = (newData != null) ?
                                                     mapEntityToDomain.apply(newData) :
                                                     mapModelToDomain.apply(model);

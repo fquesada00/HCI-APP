@@ -88,7 +88,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         view = super.onCreateView(inflater, container, savedInstanceState);
-        viewModel.setCurrentGetter(GetRoutinesEnum.ALL);
+//        viewModel.setCurrentGetter(GetRoutinesEnum.ALL);
 
         recyclerView = view.findViewById(R.id.search_recycle_view);
         list = new ArrayList<>();

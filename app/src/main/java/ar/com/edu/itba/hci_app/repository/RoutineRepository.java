@@ -746,14 +746,14 @@ public class RoutineRepository extends BaseRepository {
                                                                 @Nullable Integer size, @Nullable String orderBy,
                                                                 @Nullable String direction) {
         return new NetworkBoundResource<List<Exercise>, List<ExerciseEntity>, PagedList<ExerciseModel>>(executors,
-                exerciseEntities -> exerciseEntities.stream().map(e ->mapExerciseEntityToDomain(e)).collect(Collectors.toList()),
+                exerciseEntities -> exerciseEntities.stream().map(this::mapExerciseEntityToDomain).collect(Collectors.toList()),
                 exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(exerciseModel -> mapExerciseModelToEntity(exerciseModel, cycleID)).collect(Collectors.toList()),
                 exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(e->mapExerciseModelToDomain(e,cycleID)).collect(Collectors.toList())) {
 
             @Override
             protected void saveCallResult(@NonNull List<ExerciseEntity> entity) {
-                database.exerciseDao().deleteFromCycle(cycleID);
-                database.exerciseDao().insert(entity);
+//                database.exerciseDao().deleteFromCycle(cycleID);
+//                database.exerciseDao().insert(entity);
             }
 
             @Override
@@ -764,12 +764,16 @@ public class RoutineRepository extends BaseRepository {
 
             @Override
             protected boolean shouldPersist(@Nullable PagedList<ExerciseModel> model) {
-                return true;
+                return false;
             }
 
             @NonNull
             @Override
             protected LiveData<List<ExerciseEntity>> loadFromDb() {
+                database.exerciseDao().getCycleExercises(cycleID).observeForever(v->{
+                    Log.d("LOADDB", "loadFromDb: " + v.toString());
+                });
+//                Log.d("LOADDB", "loadFromDb: " + (database.exerciseDao().getCycleExercises(cycleID).getValue() == null ? null :  database.exerciseDao().getCycleExercises(cycleID).getValue().toString())+ " with id " + cycleID);
                 return database.exerciseDao().getCycleExercises(cycleID);
             }
 

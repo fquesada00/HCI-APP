@@ -168,4 +168,10 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         MyApplication myApplication = (MyApplication) requireActivity().getApplication();
         return myApplication.getRoutineRepository();
     }
+
+    @Override
+    public void onDestroyView() {
+        viewModel.resetData(getViewLifecycleOwner());
+        super.onDestroyView();
+    }
 }

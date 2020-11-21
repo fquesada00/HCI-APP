@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
@@ -133,7 +136,8 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
     @Override
     public void onRoutineButtonClick(Routine routine) {
 
-        List<List<Exercise>> list = new ArrayList<>();
+        ArrayList<List<Exercise>> list = new ArrayList<>(150);
+
 
         AtomicInteger pos = new AtomicInteger(-1);
 
@@ -201,63 +205,76 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
         MyApplication application = (MyApplication) requireActivity().getApplication();
         RoutineRepository repository = application.getRoutineRepository();
 
-        repository.getCycleExercises(19, 10,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
-            switch (v.getStatus()){
-                case SUCCESS:
-                    Log.d("API 10","size: "+v.getData().size());
-                    break;
-            }
-        });
+//        repository.getCycleExercises(19, 10,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    Log.d("API 10","size: "+v.getData().size());
+//                    break;
+//            }
+//        });
 
-        repository.getCycleExercises(19, 11,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
-            switch (v.getStatus()){
-                case SUCCESS:
-                    Log.d("API 11","size: "+v.getData().size());
-                    break;
-            }
-        });
+//        repository.getCycleExercises(1, 4,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    Log.d("API 4","size: "+v.getData().size());
+//                    break;
+//                default:
+//                    break;
+//            }
+//        });
+//
+//        repository.getCycleExercises(1, 3,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    Log.d("API 3","size: "+v.getData().size());
+//                    break;
+//                default:break;
+//            }
+//        });
+//
+//        repository.getCycleExercises(1, 2,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    Log.d("API 2","size: "+v.getData().size());
+//                    break;
+//                default:
+//                    break;
+//            }
+//        });
+//
+//        repository.getCycleExercises(1, 1,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
+//            switch (v.getStatus()){
+//                case SUCCESS:
+//                    Log.d("API 1","size: "+v.getData().size());
+//                    break;
+//                default:
+//                    break;
+//            }
+//        });
 
-        repository.getCycleExercises(19, 12,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
-            switch (v.getStatus()){
-                case SUCCESS:
-                    Log.d("API 12","size: "+v.getData().size());
-                    break;
-            }
-        });
-
-        repository.getCycleExercises(19, 13,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
-            switch (v.getStatus()){
-                case SUCCESS:
-                    Log.d("API 13","size: "+v.getData().size());
-                    break;
-            }
-        });
-
-        repository.getCycleExercises(19, 14,  null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v ->{
-            switch (v.getStatus()){
-                case SUCCESS:
-                    Log.d("API 14","size: "+v.getData().size());
-                    break;
-            }
-        });
-
-
-        repository.getRoutineCycles(routine.getId(), routine.getDifficulty(), null, Integer.MAX_VALUE, null, null)
+        AtomicInteger atomic = new AtomicInteger(-1);
+        MutableLiveData<Integer> placeholder = new MutableLiveData<>(0);
+        repository.getRoutineCycles(routine.getId(), routine.getDifficulty(), null, Integer.MAX_VALUE, "order", "asc")
                 .observe(getViewLifecycleOwner(), v -> {
                     switch (v.getStatus()) {
                         case SUCCESS:
                             topCycles.set(v.getData().size());
+                            list.ensureCapacity(topCycles.get());
+                            v.getData().sort((e1,e2)-> Integer.compare(e1.getOrder(), e2.getOrder()));
                             for (Cycle cycle : v.getData()) {
+//                                if(atomic.get() < cycle.getId())
+//                                    atomic.set(cycle.getId());
                                 Log.d("SIZE","s: "+v.getData().size());
                                 map.put(cycle.getId(), cycle.getOrder() - 1);
-                                list.add(cycle.getOrder() - 1, new ArrayList<>());
+                                list.add(cycle.getOrder()-1, new ArrayList<>());
                                 if (!cycle.getName().equals("Enfriamiento") &&
                                         !cycle.getName().equals("Calentamiento"))
                                     list.get(cycle.getOrder() - 1).add(
                                             new Exercise(1, cycle.getName(), -1, null
                                                     , null, cycle.getRepetitions(), -1, cycle.getId()));
-                                Log.d("FRANQ","SERA EL REPO? HM "+cycle.getId());
-                                repository.getCycleExercises(routine.getId(), cycle.getId(), null, Integer.MAX_VALUE, null, null)
+                                Log.d("FRANQ","SERA EL REPO? HM "+cycle.getId() + " mapeado a " + map.get(cycle.getId()));
+                                AtomicInteger atom = new AtomicInteger(cycle.getId());
+                                repository.getCycleExercises(routine.getId(),atom.get(), null, Integer.MAX_VALUE, null, null)
                                         .observe(getViewLifecycleOwner(), p -> {
                                             switch (p.getStatus()) {
                                                 case SUCCESS:
@@ -270,7 +287,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                                                             viewModel.setCalentamientoList(list.get(map.get(p.getData().get(0).getCycleId())));
                                                             break;
                                                         default:
-                                                            if (map.get(p.getData().get(0).getCycleId()) == map.get(topCycles.get() - 1)) {
+                                                            if (map.get(p.getData().get(0).getCycleId()) == topCycles.get() - 1) {
                                                                 viewModel.setEnfriamientoList(list.get(map.get(p.getData().get(0).getCycleId())));
                                                             } else
                                                                 viewModel.setPrincipalList(list.get(map.get(p.getData().get(0).getCycleId())));
@@ -283,6 +300,16 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                             break;
                     }
                 });
+
+        placeholder.observe(getViewLifecycleOwner(),v->{
+//            if(topCycles.get() != 0 && v >= topCycles.get()){
+//                viewModel.setCalentamientoList(list.get(0));
+//                for (int i = 1; i < list.size()-1; i++){
+//                    viewModel.setPrincipalList(list.get(i));
+//                }
+//                viewModel.setEnfriamientoList(list.get(list.size()-1));
+//            }
+        });
 
 //        viewModel.getRoutineCycles(routine.getId(), routine.getDifficulty(), null, Integer.MAX_VALUE, null, null).observe(getViewLifecycleOwner(), v -> {
 //            switch (v.getStatus()){

@@ -271,6 +271,13 @@ public class MainActivityViewModel extends AndroidViewModel {
     private int categoriesPerPage = 10;
 
 
+    private GetRoutinesEnum currentGetter = GetRoutinesEnum.ALL;
+    private boolean isLastRoutinePage = false;
+    private int routinePage = 0;
+
+    private static final  int PAGE_SIZE = 10;
+
+    private String query;
     private final List<Routine> allRoutines = new ArrayList<>();
 
     private final MutableLiveData<LiveData<Resource<List<Routine>>>> allRoutinesLiveData = new MutableLiveData<>();
@@ -701,7 +708,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private Resource<Map<Integer,List<Exercise>>> auxmap = Resource.success(new HashMap<>());
 
-    private Resource<Map<Integer, List<Exercise>>> auxmap;
+//    private Resource<Map<Integer, List<Exercise>>> auxmap;
 
     private Map<Integer, Exercise> cycleSection = new HashMap<>();
 
@@ -834,4 +841,14 @@ public class MainActivityViewModel extends AndroidViewModel {
 //        return routineCycles.getValue().getData();
 //    }
 
+
+    public void resetData(LifecycleOwner owner){
+        calentamientoList.removeObservers(owner);
+        principalList.removeObservers(owner);
+        enfriamientoList.removeObservers(owner);
+        calentamientoList.setValue(new ArrayList<>());
+        principalList.setValue(new ArrayList<>());
+        enfriamientoList.setValue(new ArrayList<>());
+    }
 }
+

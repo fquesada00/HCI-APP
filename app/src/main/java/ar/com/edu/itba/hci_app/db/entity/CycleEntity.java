@@ -41,4 +41,17 @@ public class CycleEntity {
         this.repetitions = repetitions;
         this.routine = routine;
     }
+
+    @Override
+    public String toString() {
+        return "CycleEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", detail='" + detail + '\'' +
+                ", type='" + type + '\'' +
+                ", order=" + order +
+                ", repetitions=" + repetitions +
+                ", routine=" + routine +
+                '}';
+    }
 }

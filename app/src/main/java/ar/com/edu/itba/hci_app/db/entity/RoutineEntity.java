@@ -43,4 +43,19 @@ public class RoutineEntity {
         this.category = category;
         this.creator = creator;
     }
+
+    @Override
+    public String toString() {
+        return "RoutineEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", detail='" + detail + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", averageRating=" + averageRating +
+                ", isPublic=" + isPublic +
+                ", difficulty='" + difficulty + '\'' +
+                ", category=" + category +
+                ", creator=" + creator +
+                '}';
+    }
 }
