@@ -31,8 +31,6 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
 
     private static HomeFragment homeFragment;
 
-    private View view;
-
     private RecyclerView homeRecyclerView;
     private List<Routine> list;
     private ListRoutineHomeAdapter listHomeAdapter;
@@ -76,7 +74,20 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
+        homeRecyclerView = view.findViewById(R.id.home_routine_recycler_view);
+        list = new ArrayList<>();
+        homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        listHomeAdapter = new ListRoutineHomeAdapter(list,getContext());
+        homeRecyclerView.setAdapter(listHomeAdapter);
+
+        recommendedRecyclerView = view.findViewById(R.id.home_routine_recommended_recycler_view);
+        recommendedList = new ArrayList<>();
+        recommendedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        listRecommendedAdapter = new ListRoutineHomeAdapter(recommendedList,getContext());
+        recommendedRecyclerView.setAdapter(listRecommendedAdapter);
+
         homeFragment = this;
 
         Log.d("FRAGMENTO", ""+viewModel);
@@ -141,25 +152,6 @@ public class HomeFragment extends BaseFragment<MainActivityViewModel, FragmentHo
         });
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = super.onCreateView(inflater, container, savedInstanceState);
-
-        homeRecyclerView = view.findViewById(R.id.home_routine_recycler_view);
-        list = new ArrayList<>();
-        homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        listHomeAdapter = new ListRoutineHomeAdapter(list,getContext());
-        homeRecyclerView.setAdapter(listHomeAdapter);
-
-        recommendedRecyclerView = view.findViewById(R.id.home_routine_recommended_recycler_view);
-        recommendedList = new ArrayList<>();
-        recommendedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        listRecommendedAdapter = new ListRoutineHomeAdapter(recommendedList,getContext());
-        recommendedRecyclerView.setAdapter(listRecommendedAdapter);
-
-        return view;
-    }
 
     @Override
     public Class<MainActivityViewModel> getViewModel() {
