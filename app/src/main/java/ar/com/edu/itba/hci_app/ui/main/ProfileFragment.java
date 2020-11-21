@@ -63,7 +63,7 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
         binding.progressBar.setVisibility(progressBarStatus);
         binding.favouritesRoutines.setEnabled(btnEnable);
         binding.createdRoutines.setEnabled(btnEnable);
-        binding.completedRoutines.setEnabled(btnEnable);
+
     }
 
     @Override

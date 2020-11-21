@@ -124,13 +124,7 @@
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:gravity="center"
-                    android:text="@string/difficulty_button" />
+
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
