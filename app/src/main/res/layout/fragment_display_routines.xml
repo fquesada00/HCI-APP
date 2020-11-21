@@ -20,6 +20,6 @@
         android:textAlignment="center"
         android:text="@string/no_hay_rutinas"
         android:textSize="25sp"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         />
 </LinearLayout>

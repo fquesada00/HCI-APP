@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.HomeFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:clickable="true"
+                    android:layout_weight="48">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/image1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="true"
+
+                        android:singleLine="true"
+                        android:text="@string/rutina_de_hoy"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_height="0dp"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_weight="48"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/image1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="true"
+                        android:singleLine="true"
+                        android:text="@string/rutinas_creadas"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/rutinas_por_rating"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_routine_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/rutinas_por_dificultad"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="@string/difficulty_button" />
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_routine_recommended_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

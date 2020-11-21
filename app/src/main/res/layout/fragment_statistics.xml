@@ -46,7 +46,7 @@
                 android:layout_marginEnd="40dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_baseline_share_24"
-                android:tint="@color/black" />
+ />
 
             <ImageButton
                 android:id="@+id/favourite_btn"
@@ -56,7 +56,7 @@
                 android:layout_marginTop="3dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_baseline_favorite_border_24"
-                android:tint="@color/black" />
+/>
         </FrameLayout>
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/descripcion"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:text="@string/calentamiento"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
 
                     <TextView
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:text="@string/ejer_cant"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
                 </FrameLayout>
 
@@ -136,14 +136,14 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:text="@string/ejercitacion_principal"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
                 </FrameLayout>
 
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:text="@string/enfriamiento"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
 
                     <TextView
@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:text="@string/ejer_cant"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
                 </FrameLayout>
 
