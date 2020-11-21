@@ -4,8 +4,9 @@
     package="ar.com.edu.itba.hci_app">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -15,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HCIAPP">
-
+        <activity android:name=".ui.rating.RateRoutineActivity"></activity>
         <activity android:name=".DispatcherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,15 +24,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter android:label="view_routine_id_intent">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http" android:host="www.fitbo.com" android:pathPrefix="/routines/"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.fitbo.com"
+                    android:pathPrefix="/routines/"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.auth.AuthActivity" />
-        <activity android:name=".ui.routine.DisplayRoutineActivity"/>
+        <activity android:name=".ui.routine.DisplayRoutineActivity" />
     </application>
 
 </manifest>

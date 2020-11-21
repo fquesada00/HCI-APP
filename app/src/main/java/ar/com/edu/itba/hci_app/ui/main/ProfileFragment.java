@@ -116,6 +116,10 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DisplayRoutinesFragment()).addToBackStack(null).commit();
         });
 
+        binding.configuration.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).addToBackStack(null).commit();
+        });
+
         //TODO falta el de completadas
     }
 

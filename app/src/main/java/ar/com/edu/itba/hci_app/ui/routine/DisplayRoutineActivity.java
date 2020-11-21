@@ -2,7 +2,6 @@ package ar.com.edu.itba.hci_app.ui.routine;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -13,18 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
-import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.ActivityDisplayRoutineBinding;
 import ar.com.edu.itba.hci_app.domain.Exercise;
 import ar.com.edu.itba.hci_app.domain.Routine;
-import ar.com.edu.itba.hci_app.repository.RoutineRepository;
-import ar.com.edu.itba.hci_app.ui.base.ViewModelFactory;
-import ar.com.edu.itba.hci_app.ui.main.MainActivityViewModel;
+import ar.com.edu.itba.hci_app.ui.rating.RateRoutineActivity;
 
 public class DisplayRoutineActivity extends AppCompatActivity {
 
@@ -65,6 +60,16 @@ public class DisplayRoutineActivity extends AppCompatActivity {
         btn = findViewById(R.id.continuar);
         btn.setOnClickListener(v -> {
             actualExercise++;
+            if(actualExercise == totalExercises){
+
+                Intent intent = new Intent(this, RateRoutineActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ROUTINE", routine);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+                return;
+            }
             changeButtons();
         });
         TextView textView = findViewById(R.id.back_text_view);
@@ -89,6 +94,10 @@ public class DisplayRoutineActivity extends AppCompatActivity {
     }
 
     private void changeButtons() {
+        if(actualExercise == totalExercises){
+            finish();
+            return;
+        }
         TextView textView = findViewById(R.id.ej_actual);
         Log.d("DUFYYYY", "changeButtons: " + exercises.get(actualExercise).getName());
         textView.setText(exercises.get(actualExercise).getName());
