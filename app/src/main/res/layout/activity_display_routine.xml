@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/fitbo"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="30sp"
                     android:textStyle="bold|italic" />
             </LinearLayout>
@@ -102,7 +102,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/duration_left"
-                        android:textColor="@color/black"
+                        android:padding="20dp"
+                        android:background="@drawable/border"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:layout_marginTop="30dp"
                         android:textSize="20sp" />
 
@@ -117,7 +119,7 @@
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/border"
-                android:backgroundTint="@color/colorTextWhite">
+                android:textColor="?android:attr/textColorPrimary">
 
                 <TextView
                     android:id="@+id/ej_actual"
@@ -126,7 +128,7 @@
                     android:layout_gravity="start|center"
                     android:layout_marginStart="10dp"
                     android:text="@string/ejercicio_actual"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp" />
 
                 <TextView
@@ -136,7 +138,7 @@
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="10dp"
                     android:text="@string/duration"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp" />
             </FrameLayout>
 
@@ -166,7 +168,7 @@
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="10dp"
                     android:text="@string/duration"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp" />
             </FrameLayout>
 
@@ -186,7 +188,7 @@
                     android:layout_gravity="start|center"
                     android:layout_marginStart="10dp"
                     android:text="@string/ejercicio_sig_sig"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp" />
 
                 <TextView
@@ -196,7 +198,7 @@
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="10dp"
                     android:text="@string/duration"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp" />
             </FrameLayout>
 
@@ -214,7 +216,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:text="@string/continuar" />
 
                 <!--        <androidx.cardview.widget.CardView-->

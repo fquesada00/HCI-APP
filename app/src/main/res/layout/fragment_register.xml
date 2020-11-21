@@ -20,6 +20,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="115dp"
             android:text="@string/name"
+            android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginTop="16dp"
             android:text="@string/email"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginTop="16dp"
             android:text="@string/password"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +82,7 @@
             style="@style/TextLabelDefault"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginStart="32dp"
             android:layout_marginTop="18dp"
             android:text="@string/username"
@@ -121,6 +123,7 @@
             android:layout_marginTop="150dp"
             android:layout_marginEnd="32dp"
             android:text="@string/register_now"
+            android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register_now"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
             app:layout_constraintEnd_toEndOf="parent"
