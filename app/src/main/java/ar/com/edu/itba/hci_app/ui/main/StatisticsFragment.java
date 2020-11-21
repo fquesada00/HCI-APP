@@ -82,7 +82,7 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
             calentamientoListAdapter.notifyDataSetChanged();
         });
 
-        viewModel.getPrincipalList().observe(getViewLifecycleOwner(), v ->{
+        viewModel.getPrincipalList().observe(getViewLifecycleOwner(), v -> {
             principalList.clear();
             principalList.addAll(v);
             principalListAdapter.notifyDataSetChanged();
@@ -124,12 +124,12 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         principalListAdapter = new ExerciseRoutineAdapter(principalList);
         principalRecyclerView.setAdapter(principalListAdapter);
 
-     //   principalRecyclerView.setNestedScrollingEnabled(false);
+        //   principalRecyclerView.setNestedScrollingEnabled(false);
 
         enfriamientoRecyclerView = view.findViewById(R.id.exercise_routine_recycler_view);
         enfriamientoList = new ArrayList<>();
         enfriamientoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-      //  enfriamientoRecyclerView.setNestedScrollingEnabled(false);
+        //  enfriamientoRecyclerView.setNestedScrollingEnabled(false);
 
 //        enfriamientoList.add(new Exercise(1, "Prueba 1", 1, null, null, 1, 1));
 //        enfriamientoList.add(new Exercise(1, "Prueba 2", 1, null, null, 1, 1));
@@ -141,7 +141,7 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             String s = Integer.toString(viewModel.routineURL.getId());
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.fitbo.com/routines/" + s );
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.fitbo.com/routines/" + s);
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
@@ -153,8 +153,8 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
             bundle.putSerializable("ROUTINE", viewModel.routineURL);
             intent.putExtras(bundle);
 
-            for(Exercise ex : viewModel.routineExercisesList)
-                Log.d("DUFFYYY", "onCreateView: "+ex.getName());
+            for (Exercise ex : viewModel.routineExercisesList)
+                Log.d("DUFFYYY", "onCreateView: " + ex.getName());
             Bundle bundle1 = new Bundle();
             bundle1.putSerializable("ROUTINE_EXERCISES", (Serializable) viewModel.routineExercisesList);
             intent.putExtras(bundle1);
@@ -162,12 +162,17 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         });
 
         binding.favouriteBtn.setOnClickListener(v -> {
-            if(!favourite)
+            if (!favourite)
                 binding.favouriteBtn.setBackgroundResource(R.drawable.full_favorite);
             else
                 binding.favouriteBtn.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
             favourite = !favourite;
         });
+
+        String s = "x" + viewModel.calentamientoRepetitions;
+        binding.calentamientoReps.setText(s);
+        s = "x" + viewModel.enfriamientoRepetitions;
+        binding.enfriamientoReps.setText(s);
 
         return view;
     }

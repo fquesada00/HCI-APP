@@ -66,6 +66,8 @@
 
 
             <TextView
+                android:clickable="true"
+                android:id="@+id/back_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/back"
@@ -79,33 +81,34 @@
                 android:src="@drawable/image1" />
 
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                app:cardBackgroundColor="@color/black"
-                app:cardCornerRadius="400dp">
+<!--            <androidx.cardview.widget.CardView-->
+<!--                app:cardElevation="0dp"-->
+<!--                android:id="@+id/card"-->
+<!--                android:layout_width="75dp"-->
+<!--                android:layout_height="75dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="50dp"-->
+<!--                app:cardCornerRadius="400dp">-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="400dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="70dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    app:cardCornerRadius="400dp">-->
 
                     <TextView
-                        android:id="@+id/card_time"
+                        android:id="@+id/card_timer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/duration_left"
                         android:textColor="@color/black"
+                        android:layout_marginTop="30dp"
                         android:textSize="20sp" />
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-            </androidx.cardview.widget.CardView>
+<!--            </androidx.cardview.widget.CardView>-->
 
             <FrameLayout
                 android:id="@+id/actual_container"
@@ -204,12 +207,6 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="10dp">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:text="@string/pausar" />
 
 
                 <Button

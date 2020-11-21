@@ -277,6 +277,11 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                                     list.get(cycle.getOrder() - 1).add(
                                             new Exercise(1, cycle.getName(), -1, null
                                                     , null, cycle.getRepetitions(), -1, cycle.getId()));
+                                if(cycle.getName().equals("Enfriamiento")){
+                                    viewModel.setEnfriamientoRepetitions(cycle.getRepetitions());
+                                }else if(cycle.getName().equals("Calentamiento")){
+                                    viewModel.setCalentamientoRepetitions(cycle.getRepetitions());
+                                }
                                 Log.d("FRANQ","SERA EL REPO? HM "+cycle.getId() + " mapeado a " + map.get(cycle.getId()));
                                 AtomicInteger atom = new AtomicInteger(cycle.getId());
                                 repository.getCycleExercises(routine.getId(),atom.get(), null, Integer.MAX_VALUE, null, null)
