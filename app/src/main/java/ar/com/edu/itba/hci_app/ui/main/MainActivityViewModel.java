@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -115,6 +116,11 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private String difficultyDirection = "desc";
 
+
+    public MainActivityViewModel(Application app){
+        super(app);
+
+    }
 
     public MainActivityViewModel(Application application, RoutineRepository repository) {
         super(application);
@@ -429,9 +435,14 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setPrincipalList(List<Exercise> principalList) {
-        if (this.principalList.getValue() != null)
-            this.principalList.getValue().clear();
-        this.principalList.setValue(principalList);
+        if(this.principalList.getValue() == null)
+            this.principalList.setValue(new ArrayList<>());
+        List<Exercise> list = this.principalList.getValue();
+        list.addAll(principalList);
+        this.principalList.setValue(list);
+//        if (this.principalList.getValue() != null)
+//            this.principalList.getValue().clear();
+//        this.principalList.setValue(principalList);
         Log.d("VISTA", "Principal size " + this.principalList.getValue().size());
     }
 
@@ -485,11 +496,14 @@ public class MainActivityViewModel extends AndroidViewModel {
                     if (v.getData().size() == 0) {
                         List<Exercise> list = new ArrayList<>();
                         cycleExercises.setValue(Resource.success(list));
-                    } else
+                    } else {
+                        Log.d("COUNTER", "EN LISTA DE EJS" + " cyckleid: " + cycleID);
                         cycleExercises.setValue(Resource.success(v.getData()));
+                    }
+
                     break;
                 default:
-                    switchResourceStatus(v.getStatus(), v, List.class, cycleExercises);
+                    //switchResourceStatus(v.getStatus(), v, List.class, cycleExercises);
             }
         });
 
@@ -506,11 +520,13 @@ public class MainActivityViewModel extends AndroidViewModel {
                 case SUCCESS:
                     if (v.getData().size() == 0)
                         cycles.setValue(Resource.success(new ArrayList<>()));
-                    else
+                    else {
                         cycles.setValue(Resource.success(v.getData()));
+                        Log.d("COUNTER", "EN LISTA DE CYCLES routineid: " + routineID);
+                    }
                     break;
                 default:
-                    switchResourceStatus(v.getStatus(), v, List.class, cycles);
+                    //switchResourceStatus(v.getStatus(), v, List.class, cycles);
             }
         });
 
@@ -519,11 +535,13 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private MutableLiveData<Resource<List<List<Exercise>>>> routineExercises = new MutableLiveData<>();
 
-    private MutableLiveData<Resource<List<Cycle>>> routineCycles = new MutableLiveData<>();
+//    private MutableLiveData<Resource<List<Cycle>>> routineCycles = new MutableLiveData<>();
 
     private Map<String, Integer> basicsIds = new HashMap<>();
 
     private MutableLiveData<Resource<Map<Integer, List<Exercise>>>> routineExercisesMap = new MutableLiveData<>();
+
+    private Resource<Map<Integer, List<Exercise>>> auxmap;
 
     private Map<Integer, Exercise> cycleSection = new HashMap<>();
 
@@ -533,6 +551,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public MutableLiveData<Resource<List<List<Exercise>>>> temp = new MutableLiveData<>();
 
+    private int cyclecounter;
+
     private void setRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
                                      @Nullable Integer size, @Nullable String orderBy,
                                      @Nullable String direction) {
@@ -541,37 +561,37 @@ public class MainActivityViewModel extends AndroidViewModel {
         this.getRoutineCycles(routineID, difficulty, page, size, orderBy, direction).observeForever(v -> {
             switch (v.getStatus()) {
                 case SUCCESS:
-                    if (routineID != lastRoutineId) {
-                        routineCycles.setValue(Resource.success(new ArrayList<>()));
-                        routineExercises.setValue(Resource.success(new ArrayList<>()));
-                        routineExercisesMap.setValue(Resource.success(new HashMap<>()));
-                    }
-                    lastRoutineId = routineID;
+                    cyclecounter = 0;
+                    counter.setValue(0);
                     for (int i = 0; i < v.getData().size(); i++) {
+                        cyclecounter++;
                         if (v.getData().get(i).getName().equals(ENFRIAMIENTO))
                             basicsIds.put(ENFRIAMIENTO, v.getData().get(i).getId());
                         else if (v.getData().get(i).getName().equals(CALENTAMIENTO))
                             basicsIds.put(CALENTAMIENTO, v.getData().get(i).getId());
-                        Log.d("SETEE", "cycleid: " + v.getData().get(i).getId());
-                        routineExercisesMap.getValue().getData().put(v.getData().get(i).getId(), new ArrayList<>());
-                        routineExercises.getValue().getData().add(new ArrayList<>());
-                        routineCycles.getValue().getData().add(v.getData().get(i));
+                        auxmap.getData().putIfAbsent(v.getData().get(i).getId(), new ArrayList<>());
                         if (basicsIds.getOrDefault(ENFRIAMIENTO, -1) != v.getData().get(i).getId() && basicsIds.getOrDefault(CALENTAMIENTO, -1) != v.getData().get(i).getId())
                             cycleSection.put(v.getData().get(i).getId(), new Exercise(1, v.getData().get(i).getName(), -1, null
                                     , null, v.getData().get(i).getRepetitions(), -1, v.getData().get(i).getId()));
-
                         this.getCycleExercises(routineID, v.getData().get(i).getId(), page, size, orderBy, direction).observeForever(b -> {
                             switch (b.getStatus()) {
                                 case SUCCESS:
+//                                    Log.d("CORTA","id: "+b.getData().get(0).getCycleId());
+                                    if (b.getData() == null || b.getData().size() == 0 || auxmap.getData().get(b.getData().get(0).getCycleId()) == null)
+                                        return;
+                                    if (!auxmap.getData().get(b.getData().get(0).getCycleId()).isEmpty())
+                                        return;
+//                                    auxmap.getData().get(b.getData().get(0).getCycleId()).clear();
+                                    if (basicsIds.getOrDefault(ENFRIAMIENTO, -2) != b.getData().get(0).getCycleId() &&
+                                            basicsIds.getOrDefault(CALENTAMIENTO,-2) != b.getData().get(0).getCycleId())
+                                        auxmap.getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
+                                    auxmap.getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
 
-                                    if (b.getData() == null || b.getData().size() == 0)
-                                        throw new IllegalArgumentException("Not enough exercises");
-                                    Log.d("SETEE", "id: " + b.getData().get(0).getCycleId());
-                                    routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).clear();
-                                    if (basicsIds.get(ENFRIAMIENTO) != b.getData().get(0).getCycleId() &&
-                                            basicsIds.get(CALENTAMIENTO) != b.getData().get(0).getCycleId())
-                                        routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
-                                    routineExercisesMap.getValue().getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
+                                    counter.setValue(counterR.getValue().incrementAndGet());
+                                    Log.d("COUNTER", "EN OBSERVER");
+                                    Log.d("MAPA", "AUX MAP: " + auxmap.getData().toString());
+
+                                    routineExercisesMap.postValue(auxmap);
                                     break;
                                 default:
                                     //TODO
@@ -587,36 +607,67 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private Integer lastRoutineId = -1;
 
+    public void resetTemp(LifecycleOwner lifecycleOwner){
+        temp.removeObservers(lifecycleOwner);
+        routineExercises.removeObservers(lifecycleOwner);
+        routineExercisesMap.removeObservers(lifecycleOwner);
+        counter.removeObservers(lifecycleOwner);
+        temp = new MutableLiveData<>();
+        routineExercisesMap = new MutableLiveData<>();
+        routineExercises = new MutableLiveData<>();
+        auxmap = Resource.success(new HashMap<>());
+        counter = new MutableLiveData<>(0);
+        counterR.setValue(new AtomicInteger(0));
+        Log.d("RESET TEMP","e: "+counter.getValue());
+    }
+
     public MutableLiveData<Resource<List<List<Exercise>>>> getRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
                                                                                @Nullable Integer size, @Nullable String orderBy,
                                                                                @Nullable String direction) {
 
+        routineExercisesMap.setValue(Resource.success(new HashMap<>()));
+        auxmap = Resource.success(new HashMap<>());
         setRoutineExercises(routineID, difficulty, page, size, orderBy, direction);
         routineExercisesMap.observeForever(v -> {
             switch (v.getStatus()) {
                 case SUCCESS:
-                    int i = 0;
-                    for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
-                        routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+                    routineExercises.setValue(Resource.success(new ArrayList<>()));
+                    Log.d("CONDICION", "e: "+v.getData().isEmpty() +" 2da: "+counterR.getValue().get() + " otro val: "+cyclecounter);
+                    if (!v.getData().isEmpty() && counterR.getValue().get() == cyclecounter) {
+                        Log.d("MAPA", "MAPA: " + routineExercisesMap.getValue().getData().toString());
+                        int i = 0;
+
+                        //TODO ORDENAR CALENTAMIENTO -> PPCAL -> ENFRIAMIENTO
+                        for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
+                            routineExercises.getValue().getData().add(i, new ArrayList<>());
+                            routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
+                            Log.d("LISTA DE EJS","LIST: "+entry.getValue().toString());
+                        }
+                        for (int j = 0; j < routineExercises.getValue().getData().size(); j++) {
+                            Log.d("ITEM", "CYCLE ID: " + routineExercises.getValue().getData().get(j).get(0).getCycleId());
+                            for (int k = 0; k < routineExercises.getValue().getData().get(j).size(); k++)
+                                Log.d("ITEM LIST", "ELEMENTO: " + routineExercises.getValue().getData().get(j).get(k).getId());
+                        }
+                        counterR.setValue(new AtomicInteger(0));
+                        routineExercisesMap.setValue(Resource.success(new HashMap<>()));
+                        auxmap = Resource.success(new HashMap<>());
+                        temp.postValue(routineExercises.getValue());
                     }
-                    temp.setValue(routineExercises.getValue());
                     break;
                 default:
             }
         });
         return routineExercises;
-//        if (routineExercisesMap.getValue() != null && routineExercisesMap.getValue().getData() != null && !routineExercisesMap.getValue().getData().isEmpty()) {
-//            for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
-//                routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
-//            }
-//        }
-//
-//        return routineExercises;
     }
 
+    private MutableLiveData<AtomicInteger> counterR = new MutableLiveData<>(new AtomicInteger(0));
 
-    public List<Cycle> getRoutineCycles() {
-        return routineCycles.getValue().getData();
+    private MutableLiveData<Integer> counter = new MutableLiveData<>(0);
+
+    private MutableLiveData<Integer> isLastRoutine = new MutableLiveData<>();
+
+    public LiveData<Integer> getIsLastRoutine() {
+        return isLastRoutine;
     }
 
     private Routine routineURL;
@@ -628,5 +679,9 @@ public class MainActivityViewModel extends AndroidViewModel {
     public Routine getRoutineURL(){
         return routineURL;
     }
+//    public List<Cycle> getRoutineCycles() {
+//        return routineCycles.getValue().getData();
+//    }
+
 
 }
