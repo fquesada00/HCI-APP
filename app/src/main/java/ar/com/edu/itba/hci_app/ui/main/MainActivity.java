@@ -8,26 +8,33 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 
+import android.app.Application;
 import android.os.Bundle;
 
 
 import android.util.Log;
 import android.view.MenuItem;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.LinkedList;
 
+import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.ActivityMainBinding;
+import ar.com.edu.itba.hci_app.repository.RoutineRepository;
+import ar.com.edu.itba.hci_app.ui.base.ViewModelFactory;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private LinkedList<Fragment> fragments;
+
+    private MainActivityViewModel viewModel;
 
     private final BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
             fragments.push(fragment);
 
-            while (getSupportFragmentManager().getBackStackEntryCount() >= 1){
+            while (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
                 getSupportFragmentManager().popBackStackImmediate();
             }
 
@@ -75,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_SignIn);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MyApplication app = (MyApplication) getApplication();
+        ViewModelProvider.NewInstanceFactory factory = new ViewModelFactory(app.getRoutineRepository(), getApplication());
+        viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
+
+
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setLogo(R.drawable.app_logo);
 //        getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -116,8 +129,7 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().getItem(3).setChecked(value);
         } else if (fragment.getClass().toString().equals(ProfileFragment.class.toString())) {
             bottomNavigationView.getMenu().getItem(4).setChecked(value);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Wrong class in change");
         }
     }
@@ -125,8 +137,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+
         if (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
-                getSupportFragmentManager().popBackStack();
+//            viewModel.resetTemp(this);
+//            Log.d("ACTIVITY", "e: " + viewModel.temp.getValue().getData().size());
+//            for (int i = 0; i < viewModel.temp.getValue().getData().size(); i++) {
+//                for (int j = 0; j < viewModel.temp.getValue().getData().get(i).size(); j++)
+//                    Log.d("ACTIVITY", "item: " + viewModel.temp.getValue().getData().get(i).get(j).getId());
+//            }
+            getSupportFragmentManager().popBackStack();
             return;
         }
 
@@ -137,12 +156,10 @@ public class MainActivity extends AppCompatActivity {
             fragments.push(HomeFragment.getHomeFragment());
             change(fragments.peek(), true);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
-        }
-        else if (count == 1){
+        } else if (count == 1) {
             fragments.pop();
             finish();
-        }
-        else {
+        } else {
             change(fragments.pop(), false);
             change(fragments.peek(), true);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
