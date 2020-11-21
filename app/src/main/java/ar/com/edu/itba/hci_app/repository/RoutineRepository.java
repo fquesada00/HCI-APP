@@ -928,7 +928,7 @@ public class RoutineRepository extends BaseRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<Rating>> addRating(@NonNull Integer routineID, RatingModel rating) {
+    public LiveData<Resource<Rating>> addRating(@NonNull Integer routineID, Rating rating) {
         return new NetworkBoundResource<Rating, RatingEntity, RatingModel>(executors,
                 this::mapRatingEntityToDomain,
                 this::mapRatingModelToEntity,
@@ -960,7 +960,11 @@ public class RoutineRepository extends BaseRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<RatingModel>> createCall() {
-                return apiService.addRatingToRoutine(routineID, rating);
+                Routine r = rating.getRoutine();
+                CategoryModel categoryModel = new CategoryModel(r.getName(),r.getId(),r.getDetail());
+                CreatorModel creatorModel = new CreatorModel(r.getCreator().getDateLastActive(),r.getCreator().getDateCreated(),r.getCreator().getGender(),r.getCreator().getAvatarUrl(),r.getCreator().getId(),r.getCreator().getUsername());
+                RoutineModel routineModel = new RoutineModel(r.getDifficulty(),creatorModel,r.getDateCreated(),r.getAverageRating(),r.getName(),r.isIsPublic(),r.getId(),r.getDetail(),categoryModel);
+                return apiService.addRatingToRoutine(routineID, new RatingModel(rating.getDate(),rating.getScore(),routineModel,rating.getReview(),rating.getId()));
             }
         }.asLiveData();
     }
@@ -972,6 +976,8 @@ public class RoutineRepository extends BaseRepository {
         ) {
             @Override
             protected void saveCallResult(@NonNull RoutineEntity entity) {
+                if(entity == null)
+                    return;
                 database.routineDao().delete(entity);
             }
 
@@ -998,6 +1004,7 @@ public class RoutineRepository extends BaseRepository {
             }
         }.asLiveData();
     }
+
 
 
 }

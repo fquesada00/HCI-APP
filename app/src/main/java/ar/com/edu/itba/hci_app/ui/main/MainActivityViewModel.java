@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Cycle;
 import ar.com.edu.itba.hci_app.domain.Exercise;
+import ar.com.edu.itba.hci_app.domain.Rating;
 import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.network.Resource;
 import ar.com.edu.itba.hci_app.network.Status;
@@ -41,6 +42,15 @@ import static ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter.F
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
+
+    MutableLiveData<Routine> routineLiveData = new MutableLiveData<>();
+
+    public void setRoutineLiveData(Routine r){
+        routineLiveData.setValue(r);
+    }
+    public LiveData<Routine> getRoutineLiveData(){
+        return routineLiveData;
+    }
 
     public int i = 1;
 
@@ -966,5 +976,30 @@ public class MainActivityViewModel extends AndroidViewModel {
     public void setCalentamientoRepetitions(int n) {
         calentamientoRepetitions = n;
     }
+
+    public LiveData<Resource<Void>> addFavouriteRoutine(int id){
+        return repository.addToFavourites(id);
+    }
+
+    public LiveData<Resource<Void>> removeFavouriteRoutine(int id){
+        return repository.removeFromFavourites(id);
+    }
+
+    MutableLiveData<Resource<List<Routine>>> favs = new MutableLiveData<>();
+    public LiveData<Resource<List<Routine>>> getFavorites(){
+//        if(favs.getValue() == null)
+        repository.getRoutinesNoSave(null,null,null,null,null,FAVOURITES).observeForever(resource -> {
+            switch (resource.getStatus()){
+                case SUCCESS:
+                    favs.setValue(resource);
+                    break;
+            }
+        });
+        return favs;
+    }
+
+
 }
+
+
 

@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.ActivityMainBinding;
+import ar.com.edu.itba.hci_app.domain.Routine;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 import ar.com.edu.itba.hci_app.ui.base.ViewModelFactory;
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 throw new NullPointerException("Bottom navigation bar");
             }
 
-            if (fragments.contains(fragment)) {
+            if (fragments != null && fragments.contains(fragment)) {
                 fragments.remove(fragment);
             }
 
@@ -84,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
         ViewModelProvider.NewInstanceFactory factory = new ViewModelFactory(app.getRoutineRepository(), getApplication());
         viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
 
+        if (getIntent().getExtras() != null) {
+            Routine routine = (Routine) getIntent().getExtras().getSerializable("ROUTINE");
+            if (routine != null)
+                viewModel.setRoutineLiveData(routine);
+        }
 
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setLogo(R.drawable.app_logo);
@@ -104,14 +110,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         //asi se conserva el fragmento al rotar la pantalla, etc
-        if (savedInstanceState == null) {
-            fragments = new LinkedList<>();
-            fragments.push(HomeFragment.getHomeFragment());
-            if (fragments.peek() == null) {
-                throw new NullPointerException("Creating main activity");
-            }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
+//        if (savedInstanceState == null) {
+        fragments = new LinkedList<>();
+        fragments.push(HomeFragment.getHomeFragment());
+        if (fragments.peek() == null) {
+            throw new NullPointerException("Creating main activity");
         }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragments.peek()).commit();
+//        }
     }
 
 

@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Objects;
 
 
-public class Routine implements Comparable<Routine> {
 
 public class Routine implements Comparable<Routine>, Serializable {
 

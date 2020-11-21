@@ -8,6 +8,11 @@ import ar.com.edu.itba.hci_app.network.api.model.RoutineModel;
 
 public class Rating {
 
+    public Rating(Double score, String review)
+    {
+        this.score = score;
+        this.review = review;
+    }
 
     public Rating(Date date, Double score, Routine routine, String review, int id) {
         this.date = date;

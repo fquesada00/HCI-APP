@@ -161,11 +161,32 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
             startActivity(intent);
         });
 
+        viewModel.getFavouritesRoutines().observe(getViewLifecycleOwner(),resource -> {
+            switch (resource.getStatus()){
+                case SUCCESS:
+                    binding.favouriteBtn.setBackgroundResource(R.drawable.full_favorite);
+                    favourite = true;
+            }
+        });
+
         binding.favouriteBtn.setOnClickListener(v -> {
-            if (!favourite)
-                binding.favouriteBtn.setBackgroundResource(R.drawable.full_favorite);
-            else
-                binding.favouriteBtn.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
+            if (!favourite) {
+                viewModel.addFavouriteRoutine(viewModel.routineURL.getId()).observe(getViewLifecycleOwner(), rvoid -> {
+                    switch (rvoid.getStatus()) {
+                        case SUCCESS:
+                            binding.favouriteBtn.setBackgroundResource(R.drawable.full_favorite);
+                    }
+                });
+
+            } else {
+                viewModel.removeFavouriteRoutine(viewModel.routineURL.getId()).observe(getViewLifecycleOwner(), rvoid -> {
+                    switch (rvoid.getStatus()) {
+                        case SUCCESS:
+                            binding.favouriteBtn.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
+                    }
+                });
+
+            }
             favourite = !favourite;
         });
 

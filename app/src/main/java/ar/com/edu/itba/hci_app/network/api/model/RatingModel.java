@@ -5,6 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 public class RatingModel {
+	public RatingModel(Date date, Double score, RoutineModel routine, String review, int id) {
+		this.date = date;
+		this.score = score;
+		this.routine = routine;
+		this.review = review;
+		this.id = id;
+	}
 
 	public void setDate(Date date) {
 		this.date = date;

@@ -88,7 +88,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType, ModelType> {
                                 // which may not be updated with latest results received from network.
                                 result.addSource(loadFromDb(),
                                         newData -> {
-                                            Log.d("DEVUELVO", "fetchFromNetwork: " + newData.toString());
+//                                            Log.d("DEVUELVO", "fetchFromNetwork: " + newData.toString());
                                             DomainType domain = (newData != null) ?
                                                     mapEntityToDomain.apply(newData) :
                                                     mapModelToDomain.apply(model);

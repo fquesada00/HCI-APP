@@ -5,6 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 public class CreatorModel {
+	public CreatorModel(Date dateLastActive, Date dateCreated, String gender, String avatarUrl, int id, String username) {
+		this.dateLastActive = dateLastActive;
+		this.dateCreated = dateCreated;
+		this.gender = gender;
+		this.avatarUrl = avatarUrl;
+		this.id = id;
+		this.username = username;
+	}
 
 	@SerializedName("dateLastActive")
 	private Date dateLastActive;

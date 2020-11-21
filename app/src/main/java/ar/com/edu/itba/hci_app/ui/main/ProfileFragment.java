@@ -1,5 +1,6 @@
 package ar.com.edu.itba.hci_app.ui.main;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,7 +70,6 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         viewModel.getCurrentUserRoutines().observe(requireActivity(), pagedListResource -> {
             switch (pagedListResource.getStatus()) {
                 case SUCCESS:
@@ -77,6 +77,15 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
                     break;
                 default:
                     switchResourceStatus(pagedListResource.getStatus());
+            }
+        });
+
+        MyApplication application = (MyApplication) requireActivity().getApplication();
+        application.getUserRepository().getCurrentUser().observe(getViewLifecycleOwner(),r->{
+            switch (r.getStatus()){
+                case SUCCESS:
+                    binding.textView9.setText(r.getData().getUsername());
+                    break;
             }
         });
 

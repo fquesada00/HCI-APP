@@ -92,7 +92,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        viewModel.getRoutineLiveData().observe(getViewLifecycleOwner(), this::onRoutineButtonClick);
         viewModel.getSelectedRoutineList().observe(requireActivity(), v -> {
             list.clear();
             list.addAll(v);

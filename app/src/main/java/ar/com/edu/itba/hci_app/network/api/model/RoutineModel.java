@@ -6,6 +6,18 @@ import java.util.Date;
 
 public class RoutineModel {
 
+	public RoutineModel(String difficulty, CreatorModel creator, Date dateCreated, Double averageRating, String name, boolean isPublic, int id, String detail, CategoryModel category) {
+		this.difficulty = difficulty;
+		this.creator = creator;
+		this.dateCreated = dateCreated;
+		this.averageRating = averageRating;
+		this.name = name;
+		this.isPublic = isPublic;
+		this.id = id;
+		this.detail = detail;
+		this.category = category;
+	}
+
 	@SerializedName("difficulty")
 	private String difficulty;
 
