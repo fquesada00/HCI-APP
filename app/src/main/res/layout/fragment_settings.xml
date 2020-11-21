@@ -61,6 +61,7 @@
 <!--            android:layout_gravity="end|center"/>-->
 <!--    </LinearLayout>-->
     <Button
+        android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -70,6 +71,7 @@
         android:text="@string/cerrar_sesion" />
 
     <Button
+        android:id="@+id/delete_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
