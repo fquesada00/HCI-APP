@@ -72,7 +72,27 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         view = super.onCreateView(inflater, container, savedInstanceState);
+
+        viewModel.getCalentamientoList().observe(getViewLifecycleOwner(), v -> {
+            calentamientoList.clear();
+            calentamientoList.addAll(v);
+            calentamientoListAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.getPrincipalList().observe(getViewLifecycleOwner(), v ->{
+            principalList.clear();
+            principalList.addAll(v);
+            principalListAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.getEnfriamientoList().observe(getViewLifecycleOwner(), v -> {
+            enfriamientoList.clear();
+            enfriamientoList.addAll(v);
+            enfriamientoListAdapter.notifyDataSetChanged();
+        });
+
         calentamientoRecyclerView = view.findViewById(R.id.exercise_routine_recycler_view1);
         calentamientoList = new ArrayList<>();
         calentamientoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -130,29 +150,6 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        viewModel.getCalentamientoList().observe(getViewLifecycleOwner(), v -> {
-            calentamientoList.clear();
-            calentamientoList.addAll(v);
-            calentamientoListAdapter.notifyDataSetChanged();
-        });
-
-        viewModel.getPrincipalList().observe(getViewLifecycleOwner(), v ->{
-            principalList.clear();
-            principalList.addAll(v);
-            principalListAdapter.notifyDataSetChanged();
-        });
-
-        viewModel.getEnfriamientoList().observe(getViewLifecycleOwner(), v -> {
-            enfriamientoList.clear();
-            enfriamientoList.addAll(v);
-            enfriamientoListAdapter.notifyDataSetChanged();
-        });
-
-    }
 
     @Override
     public Class<MainActivityViewModel> getViewModel() {
