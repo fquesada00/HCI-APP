@@ -1,4 +1,4 @@
-package ar.com.edu.itba.hci_app.ui.main;
+package ar.com.edu.itba.hci_app.ui.adapters;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import java.util.List;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.domain.Exercise;
 
-public class ExerciseRoutineAdapter extends RecyclerView.Adapter<ExerciseRoutineAdapter.ExerciseViewHolder>{
+public class ExerciseRoutineAdapter extends RecyclerView.Adapter<ExerciseRoutineAdapter.ExerciseViewHolder> {
 
     private List<Exercise> list;
 
@@ -24,13 +24,13 @@ public class ExerciseRoutineAdapter extends RecyclerView.Adapter<ExerciseRoutine
 
     @NonNull
     @Override
-    public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_frame,null,false);
+    public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_frame, null, false);
         return new ExerciseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         holder.bindData(list.get(position));
     }
 
@@ -47,23 +47,26 @@ public class ExerciseRoutineAdapter extends RecyclerView.Adapter<ExerciseRoutine
         TextView name;
         TextView duration;
 
-        public ExerciseViewHolder(View view){
+        public ExerciseViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.exercise_name);
             duration = view.findViewById(R.id.exercise_length);
         }
 
-        void bindData(Exercise exercise){
+        void bindData(Exercise exercise) {
+            String s;
+            if (exercise.getDuration() != 0)
+                s = exercise.getDuration() + "s";
+            else
+                s = "x" + exercise.getRepetitions();
+            duration.setText(s);
 
-            String aux = "x" + String.valueOf(exercise.getRepetitions());
-            duration.setText(aux);
-
-            if(exercise.getId() == -1) {
+            if (exercise.getId() == -1) {
                 name.setText(exercise.getName());
-                name.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
-            }
-
-            else {
+                name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+                s = "x" + exercise.getRepetitions();
+                duration.setText(s);
+            } else {
                 String aux2 = "\t" + exercise.getName();
                 name.setText(aux2);
             }

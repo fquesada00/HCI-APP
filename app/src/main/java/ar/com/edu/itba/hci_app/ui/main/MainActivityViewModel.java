@@ -42,6 +42,8 @@ import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
+    public int i = 1;
+
     //TODO que el login haga un getUser y cargue en room, y aca se fetchea de ahi,
     //asi nos ahorramos dos repos
 
@@ -839,8 +841,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         auxmap = Resource.success(new HashMap<>());
         counter = new MutableLiveData<>(0);
         counterR.setValue(new AtomicInteger(0));
-        currentGetter=GetRoutinesEnum.ALL;
-//        currentFilter=FilterEnum.None;
         Log.d("RESET TEMP", "e: " + counter.getValue());
     }
 
@@ -893,15 +893,13 @@ public class MainActivityViewModel extends AndroidViewModel {
         return isLastRoutine;
     }
 
-    private Routine routineURL;
+    public Routine routineURL;
 
     public void setRoutineURL(Routine r) {
         routineURL = r;
+        Log.d("ROUTINE", "setRoutineURL: " + routineURL.getId());
     }
 
-    public Routine getRoutineURL() {
-        return routineURL;
-    }
 //    public List<Cycle> getRoutineCycles() {
 //        return routineCycles.getValue().getData();
 //    }
@@ -914,6 +912,59 @@ public class MainActivityViewModel extends AndroidViewModel {
         calentamientoList.setValue(new ArrayList<>());
         principalList.setValue(new ArrayList<>());
         enfriamientoList.setValue(new ArrayList<>());
+    }
+
+    public List<Exercise> routineExercisesList;
+
+    public void setRoutineExercisesList() {
+        routineExercisesList = new ArrayList<>();
+        for (int i = 0; i < calentamientoRepetitions; i++)
+            routineExercisesList.addAll(calentamientoList.getValue());
+        Log.d("DUFFY", "setRoutineExercisesListCalentamiento: " + routineExercisesList.get(0).getName());
+        List<Exercise> temp = new ArrayList<>();
+
+        int lastRepetitions = -1;
+        for(int i = 0 ; i < principalList.getValue().size() ; i++){
+            if(principalList.getValue().get(i).getId() == -1 ||
+                    (i+1) == principalList.getValue().size()){
+                for(int j = 0 ; j < lastRepetitions ; j++)
+                    routineExercisesList.addAll(temp);
+                temp.clear();
+                lastRepetitions = principalList.getValue().get(i).getRepetitions();
+            }else{
+                temp.add(principalList.getValue().get(i));
+            }
+        }
+
+
+
+//        for (Exercise exercise : principalList.getValue()) {
+//            if (exercise.getId() == -1) {
+//                for(int i = 0 ; i < exercise.getRepetitions() ; i++)
+//                    routineExercisesList.addAll(temp);
+//                temp.clear();
+//            }else{
+//                temp.add(exercise);
+//            }
+//        }
+
+        for(int i = 0 ; i < enfriamientoRepetitions ; i++)
+            routineExercisesList.addAll(enfriamientoList.getValue());
+        routineExercisesList.addAll(enfriamientoList.getValue());
+        Log.d("DUFFY", "setRoutineExercisesListSize: " + routineExercisesList.size());
+        for (Exercise ex : routineExercisesList)
+            Log.d("DUFFY", "setRoutineExercisesList: " + ex.getName());
+    }
+
+    public int calentamientoRepetitions;
+    public int enfriamientoRepetitions;
+
+    public void setEnfriamientoRepetitions(int n) {
+        enfriamientoRepetitions = n;
+    }
+
+    public void setCalentamientoRepetitions(int n) {
+        calentamientoRepetitions = n;
     }
 }
 

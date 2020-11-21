@@ -18,6 +18,7 @@ import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.databinding.FragmentSeriesDescriptionBinding;
 import ar.com.edu.itba.hci_app.domain.Exercise;
 import ar.com.edu.itba.hci_app.repository.RoutineRepository;
+import ar.com.edu.itba.hci_app.ui.adapters.ExerciseRoutineAdapter;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 public class SeriesDescriptionFragment extends BaseFragment<MainActivityViewModel, FragmentSeriesDescriptionBinding, RoutineRepository> {

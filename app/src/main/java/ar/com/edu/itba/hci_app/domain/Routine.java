@@ -5,10 +5,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import ar.com.edu.itba.hci_app.network.api.model.CategoryModel;
-import ar.com.edu.itba.hci_app.network.api.model.CreatorModel;
 
 public class Routine implements Comparable<Routine> {
+
+public class Routine implements Comparable<Routine>, Serializable {
 
     @Override
     public String toString() {

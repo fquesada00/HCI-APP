@@ -45,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_home:
                     fragment = HomeFragment.getHomeFragment();
                     break;
-                case R.id.nav_statistics:
-                    fragment = StatisticsFragment.getStatisticsFragment();
-                    break;
                 case R.id.nav_search:
                     fragment = SearchFragment.getSearchFragment();
                     break;
@@ -121,14 +118,12 @@ public class MainActivity extends AppCompatActivity {
     private void change(Fragment fragment, Boolean value) {
         if (fragment.getClass().toString().equals(HomeFragment.class.toString())) {
             bottomNavigationView.getMenu().getItem(0).setChecked(value);
-        } else if (fragment.getClass().toString().equals(StatisticsFragment.class.toString())) {
-            bottomNavigationView.getMenu().getItem(1).setChecked(value);
         } else if (fragment.getClass().toString().equals(SearchFragment.class.toString())) {
-            bottomNavigationView.getMenu().getItem(2).setChecked(value);
+            bottomNavigationView.getMenu().getItem(1).setChecked(value);
         } else if (fragment.getClass().toString().equals(NotificationsFragment.class.toString())) {
-            bottomNavigationView.getMenu().getItem(3).setChecked(value);
+            bottomNavigationView.getMenu().getItem(2).setChecked(value);
         } else if (fragment.getClass().toString().equals(ProfileFragment.class.toString())) {
-            bottomNavigationView.getMenu().getItem(4).setChecked(value);
+            bottomNavigationView.getMenu().getItem(3).setChecked(value);
         } else {
             throw new IllegalArgumentException("Wrong class in change");
         }

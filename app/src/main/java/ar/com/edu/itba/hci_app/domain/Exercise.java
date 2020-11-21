@@ -1,9 +1,10 @@
 package ar.com.edu.itba.hci_app.domain;
 
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Exercise {
+public class Exercise implements Serializable {
     public int getCycleId() {
         return cycleId;
     }

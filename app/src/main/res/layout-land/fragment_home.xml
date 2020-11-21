@@ -24,14 +24,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="100">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/relativeLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:clickable="true">
+                    android:clickable="true"
+                    android:layout_weight="48">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -58,14 +60,10 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/relativeLayout2"
                     android:layout_width="wrap_content"
+                    android:layout_weight="48"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="20dp"
@@ -73,10 +71,12 @@
 
                     <ImageView
                         android:id="@+id/imageView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:scaleType="fitXY"
                         android:src="@drawable/image1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,7 +91,7 @@
                         android:text="@string/rutinas_creadas"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/imageView2"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

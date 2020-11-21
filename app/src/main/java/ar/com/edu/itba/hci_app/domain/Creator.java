@@ -3,10 +3,11 @@ package ar.com.edu.itba.hci_app.domain;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Creator {
+public class Creator implements Serializable {
 
     private Date dateLastActive;
 
