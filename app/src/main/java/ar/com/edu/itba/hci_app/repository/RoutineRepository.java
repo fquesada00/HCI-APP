@@ -169,9 +169,9 @@ public class RoutineRepository extends BaseRepository {
         return new Cycle(cycleModel.getName(), cycleModel.getId(), cycleModel.getDetail(), cycleModel.getType(), cycleModel.getRepetitions(), cycleModel.getOrder());
     }
 
-    private Exercise mapExerciseEntityToDomain(ExerciseEntity exerciseEntity,int cycleId) {
+    private Exercise mapExerciseEntityToDomain(ExerciseEntity exerciseEntity) {
         return new Exercise(exerciseEntity.duration, exerciseEntity.name, exerciseEntity.id, exerciseEntity.detail, exerciseEntity.type,
-                exerciseEntity.repetitions, exerciseEntity.order,cycleId);
+                exerciseEntity.repetitions, exerciseEntity.order,exerciseEntity.cycleId);
     }
 
     private ExerciseEntity mapExerciseModelToEntity(ExerciseModel exerciseModel, int cycleID) {
@@ -683,7 +683,8 @@ public class RoutineRepository extends BaseRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<CycleEntity> entity) {
-                return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                return true;
+//                return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
             }
 
             @Override
@@ -745,7 +746,7 @@ public class RoutineRepository extends BaseRepository {
                                                                 @Nullable Integer size, @Nullable String orderBy,
                                                                 @Nullable String direction) {
         return new NetworkBoundResource<List<Exercise>, List<ExerciseEntity>, PagedList<ExerciseModel>>(executors,
-                exerciseEntities -> exerciseEntities.stream().map(e ->mapExerciseEntityToDomain(e,cycleID)).collect(Collectors.toList()),
+                exerciseEntities -> exerciseEntities.stream().map(e ->mapExerciseEntityToDomain(e)).collect(Collectors.toList()),
                 exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(exerciseModel -> mapExerciseModelToEntity(exerciseModel, cycleID)).collect(Collectors.toList()),
                 exerciseModelPagedList -> exerciseModelPagedList.getResults().stream().map(e->mapExerciseModelToDomain(e,cycleID)).collect(Collectors.toList())) {
 
@@ -757,7 +758,8 @@ public class RoutineRepository extends BaseRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<ExerciseEntity> entity) {
-                return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
+                return true;
+//                return ((entity == null) || entity.size() == 0 || rateLimit.shouldFetch(RATE_LIMITER_ALL_KEY));
             }
 
             @Override
@@ -781,7 +783,7 @@ public class RoutineRepository extends BaseRepository {
 
     public LiveData<Resource<Exercise>> getExerciseByID(@NonNull Integer routineID, @NonNull Integer cycleID, @NonNull Integer exerciseID) {
         return new NetworkBoundResource<Exercise, ExerciseEntity, ExerciseModel>(executors,
-                e->mapExerciseEntityToDomain(e,cycleID),
+                e->mapExerciseEntityToDomain(e),
                 exerciseModel -> mapExerciseModelToEntity(exerciseModel, cycleID),
                 e->mapExerciseModelToDomain(e,cycleID)) {
 

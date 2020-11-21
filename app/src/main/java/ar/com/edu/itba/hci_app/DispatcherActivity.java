@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -79,6 +80,17 @@ public class    DispatcherActivity extends AppCompatActivity {
         else
             binding.loggedText.setVisibility(View.GONE);
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData(); //data es el id de la rutina
+        if (data != null) {
+            if (appPreferences.getAuthToken() != null) {
+                //TODO LO MANDO A LA RUTINA
+            }
+            else {
+                //TODO LO MANDO AL LOGIN
+            }
+        }
     }
 
 

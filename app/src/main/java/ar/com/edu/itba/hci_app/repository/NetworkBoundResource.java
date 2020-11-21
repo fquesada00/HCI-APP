@@ -71,10 +71,10 @@ public abstract class NetworkBoundResource<DomainType, EntityType, ModelType> {
                             DomainType domain = (newData != null) ?
                                     mapEntityToDomain.apply(newData) :
                                     null;
-                            setValue(Resource.error(response.getError(), domain));
+                            setValue(Resource.error(response.getError().getDescription(), domain));
                         }
                 );
-            } else /*if (response.getData() != null)*/ {
+            } else/* if (response.getData() != null)*/ {
                 ModelType model = processResponse(response);
                 if (shouldPersist(model)) {
                     appExecutors.diskIO().execute(() -> {
