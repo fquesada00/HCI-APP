@@ -61,4 +61,6 @@
     <string name="rutina_titulo">A QUEMAR</string>
     <string name="rutina_autor">Por Octavio Serpe</string>
     <string name="drawable_center">Centro Dibujable</string>
+    <string name="confirme_su_mail">Confirme su Mail</string>
+    <string name="inserte_el_c_digo">Inserte el código</string>
 </resources>
