@@ -9,20 +9,16 @@
         android:layout_height="50dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true">
+        android:theme="?attr/actionBarTheme">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true">
 
             <ImageView
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -33,9 +29,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="FitBo"
+                android:text="@string/fitbo"
                 android:textColor="@color/black"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
 

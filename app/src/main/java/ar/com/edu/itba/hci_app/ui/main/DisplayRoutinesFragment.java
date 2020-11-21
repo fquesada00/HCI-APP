@@ -363,6 +363,24 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
 //                    }
 //                });
 
+        viewModel.temp.observe(getViewLifecycleOwner(), v->{
+            switch (v.getStatus()) {
+                case SUCCESS:
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
+                    break;
+                default:
+            }
+        });
+
+        viewModel.setRoutineURL(routine);
+
+
+
+
+
+
+
+
 
 //        List<Exercise> enfriamientoList = new ArrayList<>();
 //        enfriamientoList.add(new Exercise(1, "Prueba 1", 1, null, null, 1, 1));

@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textAlignment="center"
-        android:text="¡No encontramos rutinas para mostrarte!"
+        android:text="@string/no_hay_rutinas"
         android:textSize="25sp"
         android:textColor="@color/black"
         />

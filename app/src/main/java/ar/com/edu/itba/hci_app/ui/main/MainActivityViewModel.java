@@ -837,6 +837,15 @@ public class MainActivityViewModel extends AndroidViewModel {
         return isLastRoutine;
     }
 
+    private Routine routineURL;
+
+    public void setRoutineURL(Routine r){
+        routineURL = r;
+    }
+
+    public Routine getRoutineURL(){
+        return routineURL;
+    }
 //    public List<Cycle> getRoutineCycles() {
 //        return routineCycles.getValue().getData();
 //    }

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">HCI-APP</string>
     <string name="hello_home_fragment">home_fragment</string>
@@ -8,7 +9,6 @@
     <string name="second_activity">Go to second activity</string>
     <string name="auth_activity_btn">Go to auth activity</string>
     <string name="button">Button</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="don_t_have_an_account_register_now">Don\'t have an account? <b>Register Now</b></string>
     <string name="email">Email</string>
@@ -22,50 +22,45 @@
     <string name="username">Username</string>
     <string name="birthdate">Birthdate</string>
     <string name="title_activity_display_routine">DisplayRoutineActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Round World</string>
-    <string name="rutina_terminada">Rutina Terminada</string>
-    <string name="darle_un_rating">Darle un Rating</string>
-    <string name="confirmar">Confirmar</string>
-    <string name="inserte_el_c_digo">Inserte el código</string>
-    <string name="confirme_su_mail">Confirme su Mail</string>
-    <string name="cerrar_sesion">Cerrar Sesion</string>
-    <string name="eliminar_cuenta">Eliminar Cuenta</string>
+    <string name="hello_world">Hello Round World!</string>
+    <string name="rutina_terminada">Finished Routine</string>
+    <string name="darle_un_rating">Rate Me</string>
+    <string name="confirmar">Confirm</string>
+    <string name="cerrar_sesion">Log Out</string>
+    <string name="eliminar_cuenta">Delete Account</string>
     <string name="change_to_spanish">Change to Spanish</string>
     <string name="change_to_dark_mode">Change to Dark Mode</string>
-    <string name="ejercicio">Ejercicio</string>
+    <string name="ejercicio">Exercise</string>
     <string name="ejer_cant">x3</string>
-    <string name="volver">Volver</string>
-    <string name="rutina_seleccionada">Rutina Seleccionada</string>
-    <string name="descripcion">Descripcion</string>
-    <string name="calentamiento">Calentamiento</string>
-    <string name="ejercitacion_principal">Ejercitacion Principal</string>
-    <string name="enfriamiento">Enfriamiento</string>
-    <string name="comenzar">Comenzar</string>
-    <string name="nombre_user">MARTINA PALERMO</string>
+    <string name="volver">Back</string>
+    <string name="rutina_seleccionada">Selected Routine</string>
+    <string name="descripcion">Description</string>
+    <string name="calentamiento">Warm Up</string>
+    <string name="ejercitacion_principal">Main Exercises</string>
+    <string name="enfriamiento">Cool Down</string>
+    <string name="comenzar">Begin</string>
+    <string name="nombre_user">Abraham Lincoln</string>
     <string name="duration_left">20s</string>
-    <string name="ejercicio_actual">Ejercicio Actual</string>
+    <string name="ejercicio_actual">Exercise</string>
     <string name="duration">20s</string>
-    <string name="ejercicio_siguiente">Ejercicio Siguiente</string>
-    <string name="ejercicio_sig_sig">Ejercicio Sig Sig</string>
-    <string name="pausar">Pausar</string>
-    <string name="continuar">Continuar</string>
+    <string name="ejercicio_siguiente">Next Exercise</string>
+    <string name="ejercicio_sig_sig">Next Next Exercise</string>
+    <string name="pausar">Pause</string>
+    <string name="continuar">Continue</string>
     <string name="fitbo">FitBo</string>
-    <string name="no_hay_rutinas">¡No encontramos rutinas para mostrarte!</string>
-    <string name="rutina_de_hoy">Rutina de Hoy</string>
-    <string name="rutinas_creadas">Rutinas Creadas</string>
-    <string name="rutinas_por_rating">Rutinas por rating</string>
-    <string name="rutinas_por_dificultad">Rutinas por Dificultad</string>
+    <string name="no_hay_rutinas">No routines found!</string>
+    <string name="rutina_de_hoy">Today\'s Routine</string>
+    <string name="rutinas_creadas">Created Routines</string>
+    <string name="rutinas_por_rating">Routines by Rating</string>
+    <string name="rutinas_por_dificultad">Routines by Difficulty</string>
     <string name="difficulty_button">+ Diff</string>
     <string name="coaches">Coaches</string>
     <string name="profile_configuration">PROFILE_CONFIGURATION</string>
     <string name="name">Name</string>
-    <string name="rutina_titulo">A QUEMAR</string>
+    <string name="rutina_titulo">Burn Up</string>
     <string name="rutina_autor">By Octavio Serpe</string>
     <string name="drawable_center">Drawable Center</string>
     <string name="john_doe">John Doe</string>
-
+    <string name="inserte_el_c_digo">Insert the code</string>
+    <string name="confirme_su_mail">Confirm Email</string>
 </resources>

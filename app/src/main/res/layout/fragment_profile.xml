@@ -11,6 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="3dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_settings_50"
+            android:tint="@color/black" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="205dp"
@@ -41,15 +51,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <ProgressBar
+                android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/progress_bar"
-                android:visibility="gone"
                 android:layout_gravity="center"
-                />
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -59,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="MARTINA PALERMO"
+            android:text="@string/nombre_user"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -71,7 +80,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="35dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Button"
+            android:text="@string/button"
             android:textColor="@color/black"
             android:textSize="17sp" />
 
@@ -82,7 +91,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Button"
+            android:text="@string/button"
             android:textColor="@color/black"
             android:textSize="17sp" />
 
@@ -93,9 +102,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Button"
             android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/button"
             android:textColor="@color/black"
             android:textSize="17sp" />
     </LinearLayout>

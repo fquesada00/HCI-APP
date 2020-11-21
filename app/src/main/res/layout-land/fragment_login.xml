@@ -68,7 +68,7 @@
         android:layout_marginEnd="32dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/username"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,11 +131,14 @@
         style="@style/TextDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="92dp"
         android:text="@string/don_t_have_an_account_register_now"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_password"
+        app:layout_constraintVertical_bias="0.888" />
 
     <TextView
         android:id="@+id/textView3"
