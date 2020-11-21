@@ -30,4 +30,7 @@
     <string name="rutina_terminada">Rutina Terminada</string>
     <string name="darle_un_rating">Darle un Rating</string>
     <string name="confirmar">Confirmar</string>
+    <string name="inserte_el_c_digo">Inserte el código</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="confirme_su_mail">Confirme su Mail</string>
 </resources>

@@ -17,6 +17,7 @@ import ar.com.edu.itba.hci_app.network.api.model.CredentialsModel;
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
 import ar.com.edu.itba.hci_app.ui.auth.AuthActivity;
+import ar.com.edu.itba.hci_app.ui.main.HomeFragment;
 import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 
 

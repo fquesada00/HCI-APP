@@ -119,7 +119,8 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         view.findViewById(R.id.share_button).setOnClickListener(v -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.fitbo.com/id/routine_id");
+            String s = Integer.toString(viewModel.getRoutineURL().getId());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.fitbo.com/id/" + s);
             sendIntent.setType("text/plain");
 
             Intent shareIntent = Intent.createChooser(sendIntent, null);

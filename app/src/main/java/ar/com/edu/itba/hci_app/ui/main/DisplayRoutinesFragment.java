@@ -147,6 +147,8 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
             }
         });
 
+        viewModel.setRoutineURL(routine);
+
 
 
 
