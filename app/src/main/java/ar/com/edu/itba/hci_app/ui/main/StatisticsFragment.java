@@ -120,7 +120,7 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             String s = Integer.toString(viewModel.getRoutineURL().getId());
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://www.fitbo.com/id/" + s);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://localhos:8080/routines/" + s );
             sendIntent.setType("text/plain");
 
             Intent shareIntent = Intent.createChooser(sendIntent, null);
