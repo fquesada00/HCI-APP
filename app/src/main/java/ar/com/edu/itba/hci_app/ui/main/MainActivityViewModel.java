@@ -40,6 +40,8 @@ import ar.com.edu.itba.hci_app.repository.RoutineRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
+    public int i = 1;
+
     //TODO que el login haga un getUser y cargue en room, y aca se fetchea de ahi,
     //asi nos ahorramos dos repos
 
@@ -129,13 +131,14 @@ public class MainActivityViewModel extends AndroidViewModel {
     private String difficultyDirection = "desc";
 
 
-    public MainActivityViewModel(Application app){
+    public MainActivityViewModel(Application app) {
         super(app);
 
     }
 
     public MainActivityViewModel(Application application, RoutineRepository repository) {
         super(application);
+        routineURL = new Routine();
         this.repository = repository;
     }
 
@@ -275,7 +278,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     private boolean isLastRoutinePage = false;
     private int routinePage = 0;
 
-    private static final  int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 10;
 
     private String query;
     private final List<Routine> allRoutines = new ArrayList<>();
@@ -288,9 +291,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
 
     public LiveData<Resource<List<Routine>>> getRoutines(GetRoutinesEnum routinesEnum) {
-        routines.addSource(allRoutinesLiveData,l->{
-            routines.setValue(l.getValue());
-        });
+//        routines.addSource(allRoutinesLiveData,l->{
+//            routines.setValue(l.getValue());
+//        });
         if (currentGetter != routinesEnum) {
             isLastRoutinePage = false;
             routinePage = 0;
@@ -321,7 +324,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         LiveData<Resource<List<Routine>>> liveData;
         switch (currentGetter) {
             case ALL:
-                allRoutinesLiveData.setValue(repository.getRoutine(routinePage,PAGE_SIZE,ALL));
+                allRoutinesLiveData.setValue(repository.getRoutine(routinePage, PAGE_SIZE, ALL));
 //                liveData =repository.getRoutine(routinePage,PAGE_SIZE,ALL);
 //                repository.getRoutine(routinePage, PAGE_SIZE, ALL).observeForever(setRoutines());
 //                routines = (MutableLiveData<Resource<List<Routine>>>)Transformations.map(liveData,l-> {
@@ -347,7 +350,7 @@ public class MainActivityViewModel extends AndroidViewModel {
             case FAV:
                 break;
             case SEARCH:
-                allRoutinesLiveData.setValue(repository.searchRoutines(query,routinePage,PAGE_SIZE));
+                allRoutinesLiveData.setValue(repository.searchRoutines(query, routinePage, PAGE_SIZE));
 //                repository.searchRoutines(query, routinePage, PAGE_SIZE).observeForever(setRoutines());
 //                  routines = (MutableLiveData<Resource<List<Routine>>>)Transformations.map(repository.searchRoutines(query,routinePage,PAGE_SIZE),l-> l);
                 break;
@@ -600,7 +603,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setPrincipalList(List<Exercise> principalList) {
-        if(this.principalList.getValue() == null)
+        if (this.principalList.getValue() == null)
             this.principalList.setValue(new ArrayList<>());
         List<Exercise> list = this.principalList.getValue();
         list.addAll(principalList);
@@ -706,7 +709,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private MutableLiveData<Resource<Map<Integer, List<Exercise>>>> routineExercisesMap = new MutableLiveData<>();
 
-    private Resource<Map<Integer,List<Exercise>>> auxmap = Resource.success(new HashMap<>());
+    private Resource<Map<Integer, List<Exercise>>> auxmap = Resource.success(new HashMap<>());
 
 //    private Resource<Map<Integer, List<Exercise>>> auxmap;
 
@@ -750,7 +753,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                                         return;
 //                                    auxmap.getData().get(b.getData().get(0).getCycleId()).clear();
                                     if (basicsIds.getOrDefault(ENFRIAMIENTO, -2) != b.getData().get(0).getCycleId() &&
-                                            basicsIds.getOrDefault(CALENTAMIENTO,-2) != b.getData().get(0).getCycleId())
+                                            basicsIds.getOrDefault(CALENTAMIENTO, -2) != b.getData().get(0).getCycleId())
                                         auxmap.getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
                                     auxmap.getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
 
@@ -774,7 +777,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private Integer lastRoutineId = -1;
 
-    public void resetTemp(LifecycleOwner lifecycleOwner){
+    public void resetTemp(LifecycleOwner lifecycleOwner) {
         temp.removeObservers(lifecycleOwner);
         routineExercises.removeObservers(lifecycleOwner);
         routineExercisesMap.removeObservers(lifecycleOwner);
@@ -785,7 +788,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         auxmap = Resource.success(new HashMap<>());
         counter = new MutableLiveData<>(0);
         counterR.setValue(new AtomicInteger(0));
-        Log.d("RESET TEMP","e: "+counter.getValue());
+        Log.d("RESET TEMP", "e: " + counter.getValue());
     }
 
     public MutableLiveData<Resource<List<List<Exercise>>>> getRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
@@ -799,7 +802,7 @@ public class MainActivityViewModel extends AndroidViewModel {
             switch (v.getStatus()) {
                 case SUCCESS:
                     routineExercises.setValue(Resource.success(new ArrayList<>()));
-                    Log.d("CONDICION", "e: "+v.getData().isEmpty() +" 2da: "+counterR.getValue().get() + " otro val: "+cyclecounter);
+                    Log.d("CONDICION", "e: " + v.getData().isEmpty() + " 2da: " + counterR.getValue().get() + " otro val: " + cyclecounter);
                     if (!v.getData().isEmpty() && counterR.getValue().get() == cyclecounter) {
                         Log.d("MAPA", "MAPA: " + routineExercisesMap.getValue().getData().toString());
                         int i = 0;
@@ -808,7 +811,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                         for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
                             routineExercises.getValue().getData().add(i, new ArrayList<>());
                             routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
-                            Log.d("LISTA DE EJS","LIST: "+entry.getValue().toString());
+                            Log.d("LISTA DE EJS", "LIST: " + entry.getValue().toString());
                         }
                         for (int j = 0; j < routineExercises.getValue().getData().size(); j++) {
                             Log.d("ITEM", "CYCLE ID: " + routineExercises.getValue().getData().get(j).get(0).getCycleId());
@@ -837,27 +840,78 @@ public class MainActivityViewModel extends AndroidViewModel {
         return isLastRoutine;
     }
 
-    private Routine routineURL;
+    public Routine routineURL;
 
-    public void setRoutineURL(Routine r){
+    public void setRoutineURL(Routine r) {
         routineURL = r;
+        Log.d("ROUTINE", "setRoutineURL: " + routineURL.getId());
     }
 
-    public Routine getRoutineURL(){
-        return routineURL;
-    }
 //    public List<Cycle> getRoutineCycles() {
 //        return routineCycles.getValue().getData();
 //    }
 
 
-    public void resetData(LifecycleOwner owner){
+    public void resetData(LifecycleOwner owner) {
         calentamientoList.removeObservers(owner);
         principalList.removeObservers(owner);
         enfriamientoList.removeObservers(owner);
         calentamientoList.setValue(new ArrayList<>());
         principalList.setValue(new ArrayList<>());
         enfriamientoList.setValue(new ArrayList<>());
+    }
+
+    public List<Exercise> routineExercisesList;
+
+    public void setRoutineExercisesList() {
+        routineExercisesList = new ArrayList<>();
+        for (int i = 0; i < calentamientoRepetitions; i++)
+            routineExercisesList.addAll(calentamientoList.getValue());
+        Log.d("DUFFY", "setRoutineExercisesListCalentamiento: " + routineExercisesList.get(0).getName());
+        List<Exercise> temp = new ArrayList<>();
+
+        int lastRepetitions = -1;
+        for(int i = 0 ; i < principalList.getValue().size() ; i++){
+            if(principalList.getValue().get(i).getId() == -1 ||
+                    (i+1) == principalList.getValue().size()){
+                for(int j = 0 ; j < lastRepetitions ; j++)
+                    routineExercisesList.addAll(temp);
+                temp.clear();
+                lastRepetitions = principalList.getValue().get(i).getRepetitions();
+            }else{
+                temp.add(principalList.getValue().get(i));
+            }
+        }
+
+
+
+//        for (Exercise exercise : principalList.getValue()) {
+//            if (exercise.getId() == -1) {
+//                for(int i = 0 ; i < exercise.getRepetitions() ; i++)
+//                    routineExercisesList.addAll(temp);
+//                temp.clear();
+//            }else{
+//                temp.add(exercise);
+//            }
+//        }
+
+        for(int i = 0 ; i < enfriamientoRepetitions ; i++)
+            routineExercisesList.addAll(enfriamientoList.getValue());
+        routineExercisesList.addAll(enfriamientoList.getValue());
+        Log.d("DUFFY", "setRoutineExercisesListSize: " + routineExercisesList.size());
+        for (Exercise ex : routineExercisesList)
+            Log.d("DUFFY", "setRoutineExercisesList: " + ex.getName());
+    }
+
+    public int calentamientoRepetitions;
+    public int enfriamientoRepetitions;
+
+    public void setEnfriamientoRepetitions(int n) {
+        enfriamientoRepetitions = n;
+    }
+
+    public void setCalentamientoRepetitions(int n) {
+        calentamientoRepetitions = n;
     }
 }
 

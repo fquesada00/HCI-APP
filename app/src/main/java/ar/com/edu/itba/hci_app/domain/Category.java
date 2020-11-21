@@ -1,8 +1,9 @@
 package ar.com.edu.itba.hci_app.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Category {
+public class Category implements Serializable {
 
 
 	private String name;

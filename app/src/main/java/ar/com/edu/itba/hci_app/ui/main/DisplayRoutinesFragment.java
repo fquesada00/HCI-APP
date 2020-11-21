@@ -136,6 +136,9 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
     @Override
     public void onRoutineButtonClick(Routine routine) {
 
+        Log.d("ROUTINE", "onRoutineButtonClick: "+routine.getId());
+        viewModel.setRoutineURL(routine);
+
         ArrayList<List<Exercise>> list = new ArrayList<>(150);
 
 
@@ -159,6 +162,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                     }
                     Log.d("MAPA", "el: "+map.toString());
                     list();
+                    viewModel.setRoutineExercisesList();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
 
                 }
@@ -177,6 +181,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                     }
                     Log.d("MAPA", "el: "+map.toString());
                     list();
+                    viewModel.setRoutineExercisesList();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
 
                 }
@@ -186,7 +191,6 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
         viewModel.getCalentamientoList().observe(getViewLifecycleOwner(), v -> {
 
             if (v != null && v.size() != 0) {
-
                 cantCycles.getAndIncrement();
                 if (cantCycles.get() == topCycles.get()) {
                     for (List<Exercise> element : list) {
@@ -196,6 +200,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                     }
                     Log.d("MAPA", "el: "+map.toString());
                     list();
+                    viewModel.setRoutineExercisesList();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticsFragment()).addToBackStack(null).commit();
 
                 }
@@ -272,6 +277,11 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
                                     list.get(cycle.getOrder() - 1).add(
                                             new Exercise(1, cycle.getName(), -1, null
                                                     , null, cycle.getRepetitions(), -1, cycle.getId()));
+                                if(cycle.getName().equals("Enfriamiento")){
+                                    viewModel.setEnfriamientoRepetitions(cycle.getRepetitions());
+                                }else if(cycle.getName().equals("Calentamiento")){
+                                    viewModel.setCalentamientoRepetitions(cycle.getRepetitions());
+                                }
                                 Log.d("FRANQ","SERA EL REPO? HM "+cycle.getId() + " mapeado a " + map.get(cycle.getId()));
                                 AtomicInteger atom = new AtomicInteger(cycle.getId());
                                 repository.getCycleExercises(routine.getId(),atom.get(), null, Integer.MAX_VALUE, null, null)
@@ -372,7 +382,7 @@ public class DisplayRoutinesFragment extends BaseFragment<MainActivityViewModel,
             }
         });
 
-        viewModel.setRoutineURL(routine);
+
 
 
 

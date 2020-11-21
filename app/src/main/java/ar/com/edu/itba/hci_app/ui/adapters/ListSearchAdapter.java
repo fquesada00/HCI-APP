@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.function.Function;
 
+import ar.com.edu.itba.hci_app.MyApplication;
 import ar.com.edu.itba.hci_app.R;
 import ar.com.edu.itba.hci_app.domain.Category;
 import ar.com.edu.itba.hci_app.domain.Routine;
+import ar.com.edu.itba.hci_app.ui.main.MainActivityViewModel;
 
 public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.RoutineViewHolder> {
 
@@ -28,7 +30,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
     private Context context;
     private RoutineAdapterListener listener;
 
-    public ListSearchAdapter(List<Routine> list, Context context, RoutineAdapterListener listener){
+    public ListSearchAdapter(List<Routine> list, Context context, RoutineAdapterListener listener) {
         this.context = context;
         layoutInflater = LayoutInflater.from(this.context);
         this.list = list;
@@ -49,32 +51,34 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
 
     @Override
     public void onBindViewHolder(final ListSearchAdapter.RoutineViewHolder holder, int position) {
-        Log.d("HOLDER","HOLDER: "+position);
+        Log.d("HOLDER", "HOLDER: " + position);
         holder.bindData(list.get(position));
     }
 
-    public void setList(Function<?,List<Routine>> fun){
+    public void setList(Function<?, List<Routine>> fun) {
         this.list = fun.apply(null);
     }
 
-    public void setList(List<Routine> list){
-        this.list =list;
+    public void setList(List<Routine> list) {
+        this.list = list;
     }
 
 
-    public List<Routine> getList(){
+    public List<Routine> getList() {
         return list;
     }
 
     public class RoutineViewHolder extends RecyclerView.ViewHolder {
 
-//                ImageView imageView;
+        //                ImageView imageView;
         TextView creator, name, rating;
         CardView cardView;
         int color;
+        MainActivityViewModel viewModel;
 
         public RoutineViewHolder(View itemView) {
             super(itemView);
+
 //            imageView = itemView.findViewById(R.id.);
             creator = (TextView) itemView.findViewById(R.id.creator_routine);
             name = (TextView) itemView.findViewById(R.id.routine_title);
@@ -82,14 +86,14 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
 //            rating = itemView.findViewById(R.id.rating_bar);
         }
 
-        void bindData(Routine routine){
+        void bindData(Routine routine) {
             //TODO la rutina no tiene un drawable --> imageView.setImageDrawable(routine);
             creator.setText(routine.getDifficulty());
             name.setText(routine.getName());
             cardView.setOnClickListener(v -> {
                 cardView.setCardBackgroundColor(Color.BLUE);
                 listener.onRoutineButtonClick(routine);
-                Log.d("HOLDER","HOLDER: "+"eeee");
+                Log.d("HOLDER", "HOLDER: " + "eeee");
             });
 
 //            rating.setText(routine.getAverageRating().toString());
