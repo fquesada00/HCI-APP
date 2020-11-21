@@ -35,7 +35,7 @@ public class ProfileFragment extends BaseFragment<MainActivityViewModel, Fragmen
         return profileFragment;
     }
 
-    private ProfileFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 

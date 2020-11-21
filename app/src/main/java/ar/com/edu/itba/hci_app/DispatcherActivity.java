@@ -84,38 +84,38 @@ public class DispatcherActivity extends AppCompatActivity {
         } else {
             binding.loggedText.setVisibility(View.GONE);
 
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData(); //data es el id de la rutina
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            Uri data = intent.getData(); //data es el id de la rutina
 
 
-        if (data != null) {
-            if (appPreferences.getAuthToken() != null) {
-                //TODO LO MANDO A LA RUTINA
-                application.getRoutineRepository().getRoutineByID(Integer.valueOf(data.getLastPathSegment())).observe(this,routineResource -> {
-                    switch (routineResource.getStatus()){
-                        case SUCCESS:
-                            Intent intent1 = new Intent(this, MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("ROUTINE", routineResource.getData());
-                            intent1.putExtras(bundle);
-                            startActivity(intent1);
-                            finish();
-                            break;
-                    }
-                });
+            if (data != null) {
+                if (appPreferences.getAuthToken() != null) {
+                    //TODO LO MANDO A LA RUTINA
+                    application.getRoutineRepository().getRoutineByID(Integer.valueOf(data.getLastPathSegment())).observe(this, routineResource -> {
+                        switch (routineResource.getStatus()) {
+                            case SUCCESS:
+                                Intent intent1 = new Intent(this, MainActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("ROUTINE", routineResource.getData());
+                                intent1.putExtras(bundle);
+                                startActivity(intent1);
+                                finish();
+                                break;
+                        }
+                    });
 
-            }
-            else {
-                //TODO LO MANDO AL LOGIN
-                startActivity(new Intent(this,AuthActivity.class));
+                } else {
+                    //TODO LO MANDO AL LOGIN
+                    startActivity(new Intent(this, AuthActivity.class));
+                    finish();
+                }
+                startActivity(new Intent(this, AuthActivity.class));
                 finish();
+                return;
             }
-            startActivity(new Intent(this, AuthActivity.class));
-            finish();
-            return;
         }
+
+
     }
-
-
 }
