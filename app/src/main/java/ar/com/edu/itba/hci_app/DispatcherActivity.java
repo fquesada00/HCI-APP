@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import ar.com.edu.itba.hci_app.network.api.model.CredentialsModel;
 import ar.com.edu.itba.hci_app.network.api.model.RoutinePagedListGetter;
 import ar.com.edu.itba.hci_app.repository.BaseRepository;
 import ar.com.edu.itba.hci_app.ui.auth.AuthActivity;
+import ar.com.edu.itba.hci_app.ui.main.HomeFragment;
 import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 
 
@@ -79,6 +81,17 @@ public class    DispatcherActivity extends AppCompatActivity {
         else
             binding.loggedText.setVisibility(View.GONE);
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData(); //data es el id de la rutina
+        if (data != null) {
+            if (appPreferences.getAuthToken() != null) {
+                //TODO LO MANDO A LA RUTINA
+            }
+            else {
+                //TODO LO MANDO AL LOGIN
+            }
+        }
     }
 
 

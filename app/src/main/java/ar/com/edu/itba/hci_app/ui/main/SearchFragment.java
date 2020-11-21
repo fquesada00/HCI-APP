@@ -40,10 +40,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     private List<Routine> list;
     private ListSearchAdapter listSearchAdapter;
 
-    private View categoryView;
-    private RecyclerView categoryRecyclerView;
-    private List<Category> categoryList;
-    private ListCategorySearchAdapter categorySearchAdapter;
+    private static final int ROUTINES_TO_DISPLAY = Integer.MAX_VALUE;
 
     private static SearchFragment searchFragment;
 
@@ -90,20 +87,12 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //TODO FRAN CAMBIA LA LISTA A LIVE DATA ACA MISMO
-        list.add(new Routine("BAJA", null, null, 3.0, "BAJA", true, 0, null, null));
-        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
+//        list.add(new Routine("BAJA", null, null, 3.0, "BAJA", true, 0, null, null));
+//        list.add(new Routine("ALTA", null, null, 3.0, "ALTA", true, 0, null, null));
 
         listSearchAdapter = new ListSearchAdapter(list, getContext(), this::onRoutineButtonClick);
         recyclerView.setAdapter(listSearchAdapter);
         setHasOptionsMenu(true);
-
-//        categoryRecyclerView = view.findViewById(R.id.search_category_recycler_view);
-//        categoryList = new ArrayList<>();
-//        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-//
-//
-//        categorySearchAdapter = new ListCategorySearchAdapter(categoryList, this::onCategoryButtonClick );
-//        categoryRecyclerView.setAdapter(categorySearchAdapter);
 
         return view;
     }
@@ -122,18 +111,19 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewModel.setHomeFragmentRoutinesPerPage(ROUTINES_TO_DISPLAY);
 
-//        viewModel.getCategories().observe(requireActivity(), v -> {
-//            switch (v.getStatus()){
-//                case SUCCESS:
-//                    categoryList.clear();
-//                    categoryList.addAll(v.getData());
-//                    categorySearchAdapter.notifyDataSetChanged();
-//                    break;
-//                default:
-//                    switchResourceStatus(v.getStatus());
-//            }
-//        });
+        viewModel.getDifficultyRoutines().observe(getViewLifecycleOwner(), listResource -> {
+            switch (listResource.getStatus()){
+                case SUCCESS:
+                    list.clear();
+                    list.addAll(listResource.getData());
+                    listSearchAdapter.notifyDataSetChanged();
+                    break;
+                default:
+                    switchResourceStatus(listResource.getStatus());
+            }
+        });
 
 //        viewModel.getDifficultyRoutines().observe(requireActivity(), list -> {
 //            switch (list.getStatus()) {

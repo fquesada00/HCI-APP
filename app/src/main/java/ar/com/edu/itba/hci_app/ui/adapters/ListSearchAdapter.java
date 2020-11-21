@@ -2,6 +2,7 @@ package ar.com.edu.itba.hci_app.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
 
     @Override
     public void onBindViewHolder(final ListSearchAdapter.RoutineViewHolder holder, int position) {
+        Log.d("HOLDER","HOLDER: "+position);
         holder.bindData(list.get(position));
     }
 
@@ -74,6 +76,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Ro
             cardView.setOnClickListener(v -> {
                 cardView.setCardBackgroundColor(Color.BLUE);
                 listener.onRoutineButtonClick(routine);
+                Log.d("HOLDER","HOLDER: "+"eeee");
             });
 
 //            rating.setText(routine.getAverageRating().toString());

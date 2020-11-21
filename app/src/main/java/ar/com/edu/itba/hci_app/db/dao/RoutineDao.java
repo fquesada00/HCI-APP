@@ -63,6 +63,9 @@ public abstract class RoutineDao {
     @Query("SELECT * FROM routines WHERE creator_id = :id LIMIT :limit OFFSET :offset")
     public abstract LiveData<List<RoutineEntity>> getUserRoutines(int id,int limit, int offset);
 
+    @Query("SELECT * FROM routines WHERE name LIKE :query")
+    public abstract LiveData<List<RoutineEntity>> searchRoutines(String query);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertRoutine(RoutineEntity... routines);
 
@@ -117,6 +120,9 @@ public abstract class RoutineDao {
     @Query("DELETE FROM routines")
     public abstract void deleteRoutines();
 
+    @Query("DELETE FROM routines WHERE id in(SELECT id from routines LIMIT :limit OFFSET :offset)")
+    public abstract void deleteRoutines(int limit, int offset);
+
     @Query("DELETE FROM routinesFav")
     public abstract void deleteFavRoutines();
 
@@ -134,6 +140,9 @@ public abstract class RoutineDao {
 
     @Query("DELETE FROM ratings WHERE routine_id = :id")
     public abstract void deleteRoutineRatings(int id);
+
+    @Query("DELETE FROM routinesFav WHERE id = :id")
+    public abstract void deleteRoutineFav(int id);
 
 
 

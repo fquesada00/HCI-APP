@@ -30,6 +30,8 @@
     <string name="rutina_terminada">Rutina Terminada</string>
     <string name="darle_un_rating">Darle un Rating</string>
     <string name="confirmar">Confirmar</string>
+    <string name="inserte_el_c_digo">Inserte el código</string>
+    <string name="confirme_su_mail">Confirme su Mail</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="eliminar_cuenta">Eliminar Cuenta</string>
     <string name="change_to_spanish">Change to Spanish</string>

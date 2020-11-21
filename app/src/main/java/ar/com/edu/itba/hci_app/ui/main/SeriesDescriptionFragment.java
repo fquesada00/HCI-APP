@@ -52,9 +52,9 @@ public class SeriesDescriptionFragment extends BaseFragment<MainActivityViewMode
 
         exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         exerciseRecyclerView = view.findViewById(R.id.exercise_routine_recycler_view);
-        exerciseList.add(new Exercise(20,"Gluteo",1,null,null,1,1));
-        exerciseList.add(new Exercise(20,"Bicep",1,null,null,1,1));
-        exerciseList.add(new Exercise(20,"Tricep",1,null,null,1,1));
+//        exerciseList.add(new Exercise(20,"Gluteo",1,null,null,1,1));
+//        exerciseList.add(new Exercise(20,"Bicep",1,null,null,1,1));
+//        exerciseList.add(new Exercise(20,"Tricep",1,null,null,1,1));
 
         listExerciseAdapter = new ExerciseRoutineAdapter(exerciseList);
         exerciseRecyclerView.setAdapter(listExerciseAdapter);
