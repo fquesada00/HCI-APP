@@ -16,6 +16,8 @@ import androidx.lifecycle.Transformations;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -129,7 +131,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     private String difficultyDirection = "desc";
 
 
-    public MainActivityViewModel(Application app){
+    public MainActivityViewModel(Application app) {
         super(app);
 
     }
@@ -275,42 +277,50 @@ public class MainActivityViewModel extends AndroidViewModel {
     private boolean isLastRoutinePage = false;
     private int routinePage = 0;
 
-    private static final  int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 10;
 
     private String query;
+    private boolean search = false;
     private final List<Routine> allRoutines = new ArrayList<>();
+    private String[] filterList = {"dateCreated","averageRating","difficulty","categoryId",null};
+    private String[] direction = {"asc","desc"};
+    private FilterEnum currentFilter = FilterEnum.None;
+    private int filterDir;
 
     private final MutableLiveData<LiveData<Resource<List<Routine>>>> allRoutinesLiveData = new MutableLiveData<>();
 
     private
-    MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
+    MutableLiveData<Resource<List<Routine>>> routines = new MutableLiveData<>();
+    private MutableLiveData<Resource<List<Routine>>> mutableRoutineList = new MutableLiveData<>();
     //TODO getcategories
 
+    public void resetPaging(LifecycleOwner owner){
+        mutableRoutineList.removeObservers(owner);
+        mutableRoutineList = new MutableLiveData<>();
+        search = false;
+        isLastRoutinePage = false;
+        routinePage = 0;
+        currentGetter = GetRoutinesEnum.ALL;
+        currentFilter = FilterEnum.None;
+        filterDir = 0;
+        query = "";
+    }
 
     public LiveData<Resource<List<Routine>>> getRoutines(GetRoutinesEnum routinesEnum) {
-        routines.addSource(allRoutinesLiveData,l->{
-            routines.setValue(l.getValue());
-        });
-        if (currentGetter != routinesEnum) {
-            isLastRoutinePage = false;
-            routinePage = 0;
-            currentGetter = routinesEnum;
-            routines.setValue(Resource.loading(new ArrayList<>()));
-            allRoutines.clear();
-        }
+        currentGetter=routinesEnum;
         getMoreRoutines();
-        return routines;
+        return mutableRoutineList;
     }
 
     public LiveData<Resource<List<Routine>>> getRoutines(GetRoutinesEnum routinesEnum, String query2) {
         query = query2;
         isLastRoutinePage = false;
         routinePage = 0;
+        search = true;
         currentGetter = routinesEnum;
-        routines.setValue(Resource.loading(new ArrayList<>()));
-        allRoutines.clear();
+        mutableRoutineList.setValue(Resource.success(new ArrayList<>()));
         getMoreRoutines();
-        return routines;
+        return mutableRoutineList;
     }
 
     public void getMoreRoutines() {
@@ -318,44 +328,88 @@ public class MainActivityViewModel extends AndroidViewModel {
         if (isLastRoutinePage)
             return;
 
-        LiveData<Resource<List<Routine>>> liveData;
         switch (currentGetter) {
             case ALL:
-                allRoutinesLiveData.setValue(repository.getRoutine(routinePage,PAGE_SIZE,ALL));
-//                liveData =repository.getRoutine(routinePage,PAGE_SIZE,ALL);
-//                repository.getRoutine(routinePage, PAGE_SIZE, ALL).observeForever(setRoutines());
-//                routines = (MutableLiveData<Resource<List<Routine>>>)Transformations.map(liveData,l-> {
-//                    Log.d("SEARCH", "getMoreRoutines: switch " + l.getStatus());
-//                    switch (l.getStatus()){
-//                        case SUCCESS:
-//                            if(l.getData().size() < PAGE_SIZE)
-//                                isLastRoutinePage = true;
-//                            routinePage++;
-//                            List<Routine> aux;
-//                            aux = (allRoutines.stream().distinct().filter(e -> !l.getData().contains(e)).collect(Collectors.toList()));
-//                            allRoutines.clear();
-//                            allRoutines.addAll(aux);
-//                            allRoutines.addAll(l.getData());
-//                            return Resource.success(allRoutines);
-//                        case LOADING:
-//                            return Resource.loading(allRoutines);
-//                    }
-//                    throw new IllegalStateException("Error");
-//
-//                });
-                break;
-            case FAV:
+                repository.getRoutine(null,routinePage++, PAGE_SIZE,filterList[currentFilter.getVal()],direction[filterDir],ALL).observeForever(setRoutines());
                 break;
             case SEARCH:
-                allRoutinesLiveData.setValue(repository.searchRoutines(query,routinePage,PAGE_SIZE));
-//                repository.searchRoutines(query, routinePage, PAGE_SIZE).observeForever(setRoutines());
-//                  routines = (MutableLiveData<Resource<List<Routine>>>)Transformations.map(repository.searchRoutines(query,routinePage,PAGE_SIZE),l-> l);
+                Log.d("HOLA", "getMoreRoutines: busco search");
+                repository.searchRoutines(query,routinePage++,PAGE_SIZE).observeForever(setRoutines());
                 break;
-            case CURR:
-                break;
+//
         }
 
 
+    }
+
+    private Observer<Resource<List<Routine>>> setRoutines(){
+        return resource -> {
+            switch (resource.getStatus()) {
+                case SUCCESS:
+                    if(resource.getData().size() < PAGE_SIZE)
+                        isLastRoutinePage = true;
+                    if (mutableRoutineList.getValue() == null) {
+                        mutableRoutineList.postValue(resource);
+                        return;
+                    }
+
+
+                    Resource<List<Routine>> auxi = mutableRoutineList.getValue();
+                    List<Routine> r;
+                    if(search) {
+                        r = auxi.getData().stream().filter(e -> !resource.getData().contains(e)).collect(Collectors.toList());
+                        auxi.getData().clear();
+                        auxi.getData().addAll(r);
+                        auxi.getData().addAll(resource.getData());
+                    }
+                    else {
+                        r = resource.getData().stream().filter(e -> !auxi.getData().contains(e)).collect(Collectors.toList());
+                        auxi.getData().addAll(r);
+                        if (!search)
+                            auxi.getData().sort(filterDir == 0 ? getComparatorByFilter() : getComparatorByFilter().reversed());
+                        Log.d("HOLA", "setRoutines: seteo " + auxi.getData() + " y busco " + (currentGetter == GetRoutinesEnum.ALL ? "all" : "search)"));
+                    }
+                    mutableRoutineList.postValue(auxi);
+                    break;
+            }
+        };
+    }
+
+    private Comparator<? super Routine> getComparatorByFilter(){
+        return (Comparator<Routine>) (o1, o2) -> {
+            switch (currentFilter){
+                case CrationFilter:
+                    return o1.getDateCreated().compareTo(o2.getDateCreated());
+                case RatingFilter:
+                    return Double.compare(o1.getAverageRating(),o2.getAverageRating());
+                case CategoryFilter:
+                    return o1.getCategory().compareTo(o2.getCategory());
+                case DifficultyFilter:
+                    return o1.getDifficulty().compareTo(o2.getDifficulty());
+                default:
+                    return Integer.compare(o1.getId(),o2.getId());
+            }
+        };
+    }
+
+    public void setFilter(FilterEnum filter,LifecycleOwner owner){
+        resetTemp(owner);
+        if(currentFilter == filter)
+            toggleFilter();
+        else
+            currentFilter = filter;
+        mutableRoutineList.setValue(Resource.success(new ArrayList<>()));
+        routinePage = 0;
+        isLastRoutinePage = false;
+        currentGetter = GetRoutinesEnum.ALL;
+        getMoreRoutines();
+    }
+
+    public void toggleFilter(){
+        if(filterDir == 0)
+            filterDir = 1;
+        else
+            filterDir = 0;
     }
 
 //    public LiveData<Resource<List<Routine>>> searchRoutines(String query) {
@@ -370,25 +424,25 @@ public class MainActivityViewModel extends AndroidViewModel {
 //        routines.addSource((resourceLiveData = repository.searchRoutines(query, routinePage, PAGE_SIZE)), setRoutines(resourceLiveData));
 //    }
 
-    @NotNull
-    private Observer<Resource<List<Routine>>> setRoutines() {
-        return resource -> {
-            if (resource.getStatus() == Status.SUCCESS) {
-                if ((resource.getData().size() == 0) || (resource.getData().size() < PAGE_SIZE))
-                    isLastRoutinePage = true;
-                routinePage++;
-                List<Routine> aux;
-                aux = (allRoutines.stream().distinct().filter(e -> !resource.getData().contains(e)).collect(Collectors.toList()));
-                allRoutines.clear();
-                allRoutines.addAll(aux);
-                allRoutines.addAll(resource.getData());
-                Log.d("GETROUTINES", "getMoreRoutines: " + resource.getData().size());
-                routines.setValue(Resource.success(allRoutines));
-            } else if (resource.getStatus() == Status.LOADING) {
-//                routines.setValue(resource);
-            }
-        };
-    }
+//    @NotNull
+//    private Observer<Resource<List<Routine>>> setRoutines() {
+//        return resource -> {
+//            if (resource.getStatus() == Status.SUCCESS) {
+//                if ((resource.getData().size() == 0) || (resource.getData().size() < PAGE_SIZE))
+//                    isLastRoutinePage = true;
+//                routinePage++;
+//                List<Routine> aux;
+//                aux = (allRoutines.stream().distinct().filter(e -> !resource.getData().contains(e)).collect(Collectors.toList()));
+//                allRoutines.clear();
+//                allRoutines.addAll(aux);
+//                allRoutines.addAll(resource.getData());
+//                Log.d("GETROUTINES", "getMoreRoutines: " + resource.getData().size());
+//                routines.setValue(Resource.success(allRoutines));
+//            } else if (resource.getStatus() == Status.LOADING) {
+////                routines.setValue(resource);
+//            }
+//        };
+//    }
 
 //    public void toggleCategory(Category category){
 //        if(activeCategories.contains(category))
@@ -600,7 +654,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void setPrincipalList(List<Exercise> principalList) {
-        if(this.principalList.getValue() == null)
+        if (this.principalList.getValue() == null)
             this.principalList.setValue(new ArrayList<>());
         List<Exercise> list = this.principalList.getValue();
         list.addAll(principalList);
@@ -706,7 +760,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private MutableLiveData<Resource<Map<Integer, List<Exercise>>>> routineExercisesMap = new MutableLiveData<>();
 
-    private Resource<Map<Integer,List<Exercise>>> auxmap = Resource.success(new HashMap<>());
+    private Resource<Map<Integer, List<Exercise>>> auxmap = Resource.success(new HashMap<>());
 
 //    private Resource<Map<Integer, List<Exercise>>> auxmap;
 
@@ -750,7 +804,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                                         return;
 //                                    auxmap.getData().get(b.getData().get(0).getCycleId()).clear();
                                     if (basicsIds.getOrDefault(ENFRIAMIENTO, -2) != b.getData().get(0).getCycleId() &&
-                                            basicsIds.getOrDefault(CALENTAMIENTO,-2) != b.getData().get(0).getCycleId())
+                                            basicsIds.getOrDefault(CALENTAMIENTO, -2) != b.getData().get(0).getCycleId())
                                         auxmap.getData().get(b.getData().get(0).getCycleId()).add(cycleSection.get(b.getData().get(0).getCycleId()));
                                     auxmap.getData().get(b.getData().get(0).getCycleId()).addAll(b.getData());
 
@@ -774,7 +828,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private Integer lastRoutineId = -1;
 
-    public void resetTemp(LifecycleOwner lifecycleOwner){
+    public void resetTemp(LifecycleOwner lifecycleOwner) {
         temp.removeObservers(lifecycleOwner);
         routineExercises.removeObservers(lifecycleOwner);
         routineExercisesMap.removeObservers(lifecycleOwner);
@@ -785,7 +839,9 @@ public class MainActivityViewModel extends AndroidViewModel {
         auxmap = Resource.success(new HashMap<>());
         counter = new MutableLiveData<>(0);
         counterR.setValue(new AtomicInteger(0));
-        Log.d("RESET TEMP","e: "+counter.getValue());
+        currentGetter=GetRoutinesEnum.ALL;
+//        currentFilter=FilterEnum.None;
+        Log.d("RESET TEMP", "e: " + counter.getValue());
     }
 
     public MutableLiveData<Resource<List<List<Exercise>>>> getRoutineExercises(@NonNull Integer routineID, @Nullable String difficulty, @Nullable Integer page,
@@ -799,7 +855,7 @@ public class MainActivityViewModel extends AndroidViewModel {
             switch (v.getStatus()) {
                 case SUCCESS:
                     routineExercises.setValue(Resource.success(new ArrayList<>()));
-                    Log.d("CONDICION", "e: "+v.getData().isEmpty() +" 2da: "+counterR.getValue().get() + " otro val: "+cyclecounter);
+                    Log.d("CONDICION", "e: " + v.getData().isEmpty() + " 2da: " + counterR.getValue().get() + " otro val: " + cyclecounter);
                     if (!v.getData().isEmpty() && counterR.getValue().get() == cyclecounter) {
                         Log.d("MAPA", "MAPA: " + routineExercisesMap.getValue().getData().toString());
                         int i = 0;
@@ -808,7 +864,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                         for (Map.Entry<Integer, List<Exercise>> entry : routineExercisesMap.getValue().getData().entrySet()) {
                             routineExercises.getValue().getData().add(i, new ArrayList<>());
                             routineExercises.getValue().getData().get(i++).addAll(entry.getValue());
-                            Log.d("LISTA DE EJS","LIST: "+entry.getValue().toString());
+                            Log.d("LISTA DE EJS", "LIST: " + entry.getValue().toString());
                         }
                         for (int j = 0; j < routineExercises.getValue().getData().size(); j++) {
                             Log.d("ITEM", "CYCLE ID: " + routineExercises.getValue().getData().get(j).get(0).getCycleId());
@@ -839,11 +895,11 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private Routine routineURL;
 
-    public void setRoutineURL(Routine r){
+    public void setRoutineURL(Routine r) {
         routineURL = r;
     }
 
-    public Routine getRoutineURL(){
+    public Routine getRoutineURL() {
         return routineURL;
     }
 //    public List<Cycle> getRoutineCycles() {
@@ -851,7 +907,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 //    }
 
 
-    public void resetData(LifecycleOwner owner){
+    public void resetData(LifecycleOwner owner) {
         calentamientoList.removeObservers(owner);
         principalList.removeObservers(owner);
         enfriamientoList.removeObservers(owner);

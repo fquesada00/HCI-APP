@@ -67,5 +67,9 @@
     <string name="rutina_autor">By Octavio Serpe</string>
     <string name="drawable_center">Drawable Center</string>
     <string name="john_doe">John Doe</string>
-
+    <string name="verificar_mail">¿Ya estas registrado? <b>Verifica tu email</b></string>
+    <string name="filter1">Creation</string>
+    <string name="filter2">Rating</string>
+    <string name="filter3">Difficulty</string>
+    <string name="filter4">Category</string>
 </resources>

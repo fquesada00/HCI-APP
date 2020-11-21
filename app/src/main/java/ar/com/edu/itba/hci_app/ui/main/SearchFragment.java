@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -81,6 +82,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -89,6 +91,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         setHasOptionsMenu(true);
         view = super.onCreateView(inflater, container, savedInstanceState);
 //        viewModel.setCurrentGetter(GetRoutinesEnum.ALL);
+        viewModel.resetPaging(getViewLifecycleOwner());
 
         recyclerView = view.findViewById(R.id.search_recycle_view);
         list = new ArrayList<>();
@@ -102,13 +105,12 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
                     break;
                 case SUCCESS:
                     //TODO hide progressbar
-//                    list.clear();
-//                    list.addAll(listResource.getData());
+                    Log.d("HOLA", "onCreateView: seteo adapter" + listResource.getData());
                     listSearchAdapter.setList(listResource.getData());
                     listSearchAdapter.notifyDataSetChanged();
-                    if (list.size() > 10)
+//                    if (list.size() > 10)
 //                        recyclerView.scrollToPosition(list.size()-1);
-                        break;
+                    break;
             }
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -155,8 +157,8 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
 
-        }
 
 //        viewModel.getCategories().observe(requireActivity(), v -> {
 //            switch (v.getStatus()) {
@@ -200,7 +202,6 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
         super.onActivityCreated(savedInstanceState);
 
 
-
         searchFragment = this;
 //
 //        routineList.add(new Routine("BAJA", null, null, 3.0, "OCTAVIO", true, 0, null, null));
@@ -238,6 +239,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
             searchView.setIconifiedByDefault(false);
         }
 
+        
         SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -248,23 +250,7 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
 //                listSearchAdapter.notifyDataSetChanged();
 //                Log.d("SEARCH", "onQueryTextSubmit: " + query);
 //                Log.d("TEST", "onQueryTextSubmit: " + listSearchAdapter.getList().toString());
-                viewModel.getRoutines(GetRoutinesEnum.SEARCH,query).observe(getViewLifecycleOwner(), listResource -> {
-                    switch (listResource.getStatus()) {
-                        case LOADING:
-                            //TODO show progressbar
-                            break;
-                        case SUCCESS:
-                            //TODO hide progressbar
-//                    list.clear();
-//                    list.addAll(listResource.getData());
-                            Log.d("Search", "onQueryTextSubmit: success " + listResource.getData().toString());
-                            listSearchAdapter.setList(listResource.getData());
-                            listSearchAdapter.notifyDataSetChanged();
-                            if (list.size() > 10)
-//                        recyclerView.scrollToPosition(list.size()-1);
-                                break;
-                    }
-                });
+                viewModel.getRoutines(GetRoutinesEnum.SEARCH, query);
                 return false;
             }
 
@@ -274,6 +260,31 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
             }
         };
         searchView.setOnQueryTextListener(onQueryTextListener);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_dropdown1:
+                viewModel.setFilter(FilterEnum.CrationFilter,getViewLifecycleOwner());
+                return true;
+            case R.id.action_dropdown2:
+                viewModel.setFilter(FilterEnum.RatingFilter,getViewLifecycleOwner());
+                Log.d("filter", "onOptionsItemSelected: 2");
+                return true;
+            case R.id.action_dropdown3:
+                viewModel.setFilter(FilterEnum.DifficultyFilter,getViewLifecycleOwner());
+                Log.d("filter", "onOptionsItemSelected: 3");
+                return true;
+            case R.id.action_dropdown4:
+                viewModel.setFilter(FilterEnum.CategoryFilter,getViewLifecycleOwner());
+                Log.d("filter", "onOptionsItemSelected: 4");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

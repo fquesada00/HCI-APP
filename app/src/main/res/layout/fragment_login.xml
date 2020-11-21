@@ -127,7 +127,18 @@
         app:layout_constraintTop_toBottomOf="@+id/register_password" />
 
     <TextView
-        android:id="@+id/textViewRegisterNow"
+        android:id="@+id/VerifyEmail"
+        style="@style/TextDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:text="@string/verificar_mail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/RegisterNow"
         style="@style/TextDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

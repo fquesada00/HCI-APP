@@ -57,6 +57,11 @@ public abstract class RoutineDao {
     @Query("SELECT * FROM routines LIMIT :limit OFFSET :offset")
     public abstract LiveData<List<RoutineEntity>> getRoutines(int limit, int offset);
 
+    @Query("SELECT * FROM routines ORDER BY \n" +
+            "        CASE WHEN :dir = 1 THEN :value END ," +
+            "CASE WHEN :dir = 0 THEN :value END DESC LIMIT :limit OFFSET :offset")
+    public abstract LiveData<List<RoutineEntity>> getRoutines(int limit, int offset,String value,int dir);
+
     @Query("SELECT * FROM routinesFav LIMIT :limit OFFSET :offset")
     public abstract LiveData<List<RoutineFavEntity>> getUserFavs(int limit, int offset);
 

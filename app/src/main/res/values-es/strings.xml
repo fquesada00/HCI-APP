@@ -63,4 +63,9 @@
     <string name="drawable_center">Centro Dibujable</string>
     <string name="confirme_su_mail">Confirme su Mail</string>
     <string name="inserte_el_c_digo">Inserte el código</string>
+    <string name="verificar_mail">¿Ya estas registrado? <b>Verifica tu email</b></string>
+    <string name="filter1">Creacion</string>
+    <string name="filter2">Puntuacion</string>
+    <string name="filter3">Dificultad</string>
+    <string name="filter4">Categoria</string>
 </resources>

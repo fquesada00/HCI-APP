@@ -42,4 +42,8 @@ public class AuthViewModel extends AndroidViewModel {
         return userRepository.register(username,password,fullname,gender,birthdate,email);
 
     }
+
+    public LiveData<Resource<Void>> verifyEmail(String email,String code){
+       return userRepository.verifyEmail(email,code);
+    }
 }

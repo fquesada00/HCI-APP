@@ -63,4 +63,9 @@
     <string name="john_doe">John Doe</string>
     <string name="inserte_el_c_digo">Insert the code</string>
     <string name="confirme_su_mail">Confirm Email</string>
+    <string name="verificar_mail">Already Registered? <b>Verify Email</b></string>
+    <string name="filter1">Creation</string>
+    <string name="filter2">Rating</string>
+    <string name="filter3">Difficulty</string>
+    <string name="filter4">Category</string>
 </resources>

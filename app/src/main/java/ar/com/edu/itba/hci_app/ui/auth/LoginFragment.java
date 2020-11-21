@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -34,10 +35,24 @@ import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBinding, UserRepository> {
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private static LoginFragment fragment;
 
+    public static LoginFragment getInstance(){
+        if(fragment == null)
+            fragment = new LoginFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fragment = this;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         AppPreferences preferences = new AppPreferences(getContext());
         if (preferences.getAuthToken() != null && !preferences.getAuthToken().isEmpty()) {
@@ -104,14 +119,25 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
             }
         });
 
-        binding.textViewRegisterNow.setOnClickListener(v -> {
-            String data = binding.textViewRegisterNow.getText().toString();
+//        binding.RegisterNow.setOnClickListener(v -> {
+//            String data = binding.RegisterNow.getText().toString();
+//            SpannableString content = new SpannableString(data);
+//            content.setSpan(new UnderlineSpan(), 0, data.length(), 0);
+//            binding.RegisterNow.setText(content);
+//            binding.RegisterNow.setTextColor(Color.BLUE);
+//            NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_fragment_login_to_fragment_register);
+//        });
+
+        binding.VerifyEmail.setOnClickListener(v -> {
+            String data = binding.VerifyEmail.getText().toString();
             SpannableString content = new SpannableString(data);
             content.setSpan(new UnderlineSpan(), 0, data.length(), 0);
-            binding.textViewRegisterNow.setText(content);
-            binding.textViewRegisterNow.setTextColor(Color.BLUE);
-            NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_fragment_login_to_fragment_register);
+            binding.VerifyEmail.setText(content);
+            binding.VerifyEmail.setTextColor(Color.BLUE);
+            NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_fragment_login_to_verifyEmailFragment);
         });
+
+        return binding.getRoot();
     }
 
     @Override

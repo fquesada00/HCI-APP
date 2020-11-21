@@ -34,7 +34,7 @@ import ar.com.edu.itba.hci_app.repository.UserRepository;
 import ar.com.edu.itba.hci_app.ui.base.BaseFragment;
 
 
-public class RegisterFragment extends BaseFragment<AuthViewModel,FragmentRegisterBinding, UserRepository> {
+public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegisterBinding, UserRepository> {
 
 
     @Override
@@ -50,13 +50,19 @@ public class RegisterFragment extends BaseFragment<AuthViewModel,FragmentRegiste
             String email = binding.editTextTextEmailAddress.getText().toString();
             String gender = binding.spinner.getSelectedItem().toString();
             Date birthdate = new Date();
-
-            viewModel.register(username,password,fullName,gender,birthdate,email).observe(requireActivity(),userResource->{
-                if (userResource.getStatus() == Status.SUCCESS)
-                {
-                    Toast.makeText(getContext(),"User created",Toast.LENGTH_SHORT).show();
-                }else if( userResource.getStatus() != Status.LOADING)
-                    Toast.makeText(getContext(),"Failed",Toast.LENGTH_SHORT).show();
+            //TODO validar data
+            viewModel.register(username, password, fullName, gender, birthdate, email).observe(requireActivity(), userResource -> {
+                switch (userResource.getStatus()) {
+                    case SUCCESS:
+                        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, VerifyEmailFragment.getInstance()).commit();
+                        break;
+                    case ERROR:
+                        //TODO mostrar error
+                        break;
+                    case LOADING:
+                        //TODO mostrar loading
+                        break;
+                }
             });
         });
     }
@@ -68,12 +74,12 @@ public class RegisterFragment extends BaseFragment<AuthViewModel,FragmentRegiste
 
     @Override
     public FragmentRegisterBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentRegisterBinding.inflate(inflater,container,false);
+        return FragmentRegisterBinding.inflate(inflater, container, false);
     }
 
     @Override
     public UserRepository getFragmentRepository() {
-        MyApplication application = (MyApplication)getActivity().getApplication();
+        MyApplication application = (MyApplication) getActivity().getApplication();
         return application.getUserRepository();
     }
 }

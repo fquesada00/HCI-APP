@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_fragment_login_to_fragment_register"
             app:destination="@id/fragment_register" />
+        <action
+            android:id="@+id/action_fragment_login_to_verifyEmailFragment"
+            app:destination="@id/verifyEmailFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragment_register"
@@ -24,4 +27,8 @@
             android:id="@+id/action_fragment_register_to_fragment_login"
             app:destination="@id/fragment_login" />
     </fragment>
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="ar.com.edu.itba.hci_app.ui.auth.VerifyEmailFragment"
+        android:label="VerifyEmailFragment" />
 </navigation>

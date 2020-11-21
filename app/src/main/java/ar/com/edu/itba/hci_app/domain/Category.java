@@ -2,7 +2,7 @@ package ar.com.edu.itba.hci_app.domain;
 
 import java.util.Objects;
 
-public class Category {
+public class Category implements Comparable<Category>{
 
 
 	private String name;
@@ -40,5 +40,10 @@ public class Category {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	@Override
+	public int compareTo(Category o) {
+		return Integer.compare(this.id,o.getId());
 	}
 }

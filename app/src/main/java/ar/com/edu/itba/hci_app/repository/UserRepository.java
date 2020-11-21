@@ -20,6 +20,7 @@ import ar.com.edu.itba.hci_app.network.api.model.CredentialsModel;
 import ar.com.edu.itba.hci_app.network.api.model.TokenModel;
 import ar.com.edu.itba.hci_app.network.api.model.UserModel;
 import ar.com.edu.itba.hci_app.network.api.model.UserRegistrationModel;
+import ar.com.edu.itba.hci_app.network.api.model.VerificationCodeModel;
 
 public class UserRepository extends BaseRepository {
     private final ApiUserService apiService;
@@ -183,6 +184,37 @@ public class UserRepository extends BaseRepository {
             @Override
             protected LiveData<ApiResponse<UserModel>> createCall() {
                 return apiService.register(new UserRegistrationModel(password,birthdate,gender,fullname,email,username));
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<Void>> verifyEmail(String email, String code) {
+        return new NetworkBoundResource<Void,Void, Void>(executors,aVoid -> null, aVoid -> null, aVoid -> null)
+        {
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Void model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Void>> createCall() {
+                return apiService.verifyEmail(new VerificationCodeModel(email,code));
             }
         }.asLiveData();
     }

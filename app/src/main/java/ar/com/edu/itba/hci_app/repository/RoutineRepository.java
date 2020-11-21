@@ -200,18 +200,18 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
-                        database.routineDao().deleteRoutines(size,page*size);
-                        CategoryEntity categoryEntity;
-                        CreatorEntity creatorEntity;
-                        for (int i = 0; i < entity.size(); i++) {
-                            categoryEntity = entity.get(i).category;
-                            creatorEntity = entity.get(i).creator;
-                            database.categoryDao().delete(categoryEntity);
-                            database.categoryDao().insert(categoryEntity);
-                            database.userDao().delete(creatorEntity);
-                            database.userDao().insert(creatorEntity);
-                        }
-                        database.routineDao().insertRoutine(entity);
+//                        database.routineDao().deleteRoutines(size,page*size);
+//                        CategoryEntity categoryEntity;
+//                        CreatorEntity creatorEntity;
+//                        for (int i = 0; i < entity.size(); i++) {
+//                            categoryEntity = entity.get(i).category;
+//                            creatorEntity = entity.get(i).creator;
+//                            database.categoryDao().delete(categoryEntity);
+//                            database.categoryDao().insert(categoryEntity);
+//                            database.userDao().delete(creatorEntity);
+//                            database.userDao().insert(creatorEntity);
+//                        }
+//                        database.routineDao().insertRoutine(entity);
                     }
 
                     @Override
@@ -221,13 +221,19 @@ public class RoutineRepository extends BaseRepository {
 
                     @Override
                     protected boolean shouldPersist(@Nullable PagedList<RoutineModel> model) {
-                        return true;
+                        return false;
                     }
 
                     @NonNull
                     @Override
                     protected LiveData<List<RoutineEntity>> loadFromDb() {
-                        return database.routineDao().getRoutines(size,page*size);
+                        return AbsentLiveData.create();
+//                        int asc;
+//                        if(direction.equals("asc"))
+//                            asc = 1;
+//                        else
+//                            asc = 0;
+//                        return database.routineDao().getRoutines(size,page*size,direction,asc);
                     }
 
                     @NonNull
@@ -332,7 +338,7 @@ public class RoutineRepository extends BaseRepository {
         throw new IllegalArgumentException("Bad api call in repo");
     }
 
-    public LiveData<Resource<List<Routine>>> searchRoutines(@NonNull String query,@NonNull Integer page,@NonNull Integer size){
+    public LiveData<Resource<List<Routine>>> searchRoutines(@NonNull final String query,@NonNull Integer page,@NonNull Integer size){
         return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
                 routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
                 routinePagedList -> routinePagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
@@ -359,24 +365,15 @@ public class RoutineRepository extends BaseRepository {
             @NonNull
             @Override
             protected LiveData<List<RoutineEntity>> loadFromDb() {
-                LiveData<List<RoutineEntity>> el;
-                Log.d("SEARCH", "loadFromDb: searching " + query);
-                (el = database.routineDao().searchRoutines(query+"%")).observeForever(e->{
-                    Log.d("SEARCH", "loadFromDb: " + e.size());
-                });
-                return el;
+               String s = query.concat("%");
+               return database.routineDao().searchRoutines(s);
+
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedList<RoutineModel>>> createCall() {
-                LiveData<ApiResponse<PagedList<RoutineModel>>> rt;
-                (rt = apiService.searchRoutines(query,page,size)) .observeForever(e->{
-                    if(e.getData() != null)
-                        Log.d("SEARCH", "createCall: " + e.getData().getSize());
-                    Log.d("search", "createCall: sending" + query + " page " + page + " size " + size );
-                });
-                return rt;
+                return apiService.searchRoutines(query,page,size);
             }
         }.asLiveData();
     }
@@ -429,18 +426,18 @@ public class RoutineRepository extends BaseRepository {
 
                 }.asLiveData();
             case CURRENT:
-                return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
+                return new NetworkBoundResource<List<Routine>,List<RoutineCurrentEntity>,PagedList<RoutineModel>>(executors,
                         routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
-                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToCurrentEntity).collect(Collectors.toList()),
                         routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToDomain).collect(Collectors.toList())
                 ){
 
                     @Override
-                    protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
+                    protected void saveCallResult(@NonNull List<RoutineCurrentEntity> entity) {
                     }
 
                     @Override
-                    protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
+                    protected boolean shouldFetch(@Nullable List<RoutineCurrentEntity> entity) {
                         return true;
                     }
 
@@ -451,8 +448,8 @@ public class RoutineRepository extends BaseRepository {
 
                     @NonNull
                     @Override
-                    protected LiveData<List<RoutineEntity>> loadFromDb() {
-                        return database.routineDao().getRoutines();
+                    protected LiveData<List<RoutineCurrentEntity>> loadFromDb() {
+                        return database.routineDao().getCurrentRoutines();
                     }
 
                     @NonNull
@@ -464,18 +461,18 @@ public class RoutineRepository extends BaseRepository {
                 }.asLiveData();
 
             case FAVOURITES:
-                return new NetworkBoundResource<List<Routine>,List<RoutineEntity>,PagedList<RoutineModel>>(executors,
+                return new NetworkBoundResource<List<Routine>,List<RoutineFavEntity>,PagedList<RoutineModel>>(executors,
                         routineEntities -> routineEntities.stream().map(this::mapRoutineEntityToDomain).collect(Collectors.toList()),
-                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToEntity).collect(Collectors.toList()),
+                        routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToFavEntity).collect(Collectors.toList()),
                         routineModelPagedList -> routineModelPagedList.getResults().stream().map(this::mapRoutineModelToDomain).collect(Collectors.toList())
                 ){
 
                     @Override
-                    protected void saveCallResult(@NonNull List<RoutineEntity> entity) {
+                    protected void saveCallResult(@NonNull List<RoutineFavEntity> entity) {
                     }
 
                     @Override
-                    protected boolean shouldFetch(@Nullable List<RoutineEntity> entity) {
+                    protected boolean shouldFetch(@Nullable List<RoutineFavEntity> entity) {
                         return true;
                     }
 
@@ -486,8 +483,8 @@ public class RoutineRepository extends BaseRepository {
 
                     @NonNull
                     @Override
-                    protected LiveData<List<RoutineEntity>> loadFromDb() {
-                        return database.routineDao().getRoutines();
+                    protected LiveData<List<RoutineFavEntity>> loadFromDb() {
+                        return database.routineDao().getUserFavs();
                     }
 
                     @NonNull

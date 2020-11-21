@@ -29,7 +29,7 @@
                 <data android:scheme="http" android:host="www.localhost:8080" android:pathPrefix="/routines/"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustPan"  android:theme="@style/SplashTheme"/>
+        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustPan"  android:theme="@style/Theme.HCIAPP"/>
         <activity android:name=".ui.auth.AuthActivity" />
         <activity android:name=".ui.routine.DisplayRoutineActivity" />
     </application>
