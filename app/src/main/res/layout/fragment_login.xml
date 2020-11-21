@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/fitbo"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorTextDefault"
                     android:textSize="30sp"
                     android:textStyle="bold|italic" />
             </LinearLayout>
@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="115dp"
+        android:textColor="?android:attr/textColorPrimary"
         android:text="@string/email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,6 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:textColor="?android:attr/textColorPrimary"
         android:text="@string/password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
@@ -122,6 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:textColor="?android:attr/textColorPrimary"
         android:text="@string/forgot_your_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_password" />
@@ -145,6 +148,7 @@
         android:layout_marginBottom="32dp"
         android:text="@string/don_t_have_an_account_register_now"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

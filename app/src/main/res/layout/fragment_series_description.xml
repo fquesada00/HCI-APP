@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:text="Calentamiento"
-                android:textColor="@color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="20sp" />
 
             <TextView
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="x3"
-                android:textColor="@color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="20sp" />
         </FrameLayout>
 

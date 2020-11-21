@@ -19,45 +19,35 @@
             android:layout_gravity="end"
             android:layout_marginTop="3dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_baseline_settings_50"
-            android:tint="@color/black" />
+            android:src="@drawable/ic_baseline_settings_50" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginHorizontal="50dp">
+            android:layout_marginHorizontal="50dp"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="start">
+                android:layout_gravity="start"
+                android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card"
                     android:layout_width="205dp"
                     android:layout_height="205dp"
                     android:layout_gravity="center"
-
-                    app:cardBackgroundColor="@color/black"
                     app:cardCornerRadius="400dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
                         android:layout_gravity="center"
-                        app:cardCornerRadius="400dp">
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_person_24" />
 
-                        <ImageView
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_gravity="center"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_baseline_person_24" />
-
-
-                    </androidx.cardview.widget.CardView>
 
                 </androidx.cardview.widget.CardView>
 
@@ -82,16 +72,18 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:text="@string/nombre_user"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="30sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <view
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
             </view>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,19 +98,9 @@
                     android:layout_marginTop="35dp"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="@string/button"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="17sp" />
 
-                <Button
-                    android:id="@+id/completed_routines"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:text="@string/button"
-                    android:textColor="@color/black"
-                    android:textSize="17sp" />
 
 
                 <Button
@@ -130,7 +112,7 @@
                     android:layout_marginBottom="10dp"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="@string/button"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="17sp" />
             </LinearLayout>
         </LinearLayout>

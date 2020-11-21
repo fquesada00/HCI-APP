@@ -29,7 +29,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/relativeLayout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:clickable="true"
@@ -37,7 +37,7 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scaleType="fitXY"
                         android:src="@drawable/image1"
@@ -59,10 +59,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_height="0dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/relativeLayout2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_weight="48"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -71,7 +76,7 @@
 
                     <ImageView
                         android:id="@+id/imageView2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scaleType="fitXY"
                         android:src="@drawable/image1"
@@ -123,7 +128,6 @@
                     android:text="@string/rutinas_por_dificultad"
                     android:textSize="25sp"
                     android:textStyle="bold" />
-
 
             </FrameLayout>
 

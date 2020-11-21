@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:text="@string/ejercicio"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp" />
 
     <View

@@ -4,7 +4,7 @@
     android:id="@+id/finished_routine_popup"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    android:background="@color/white">
+    android:background="@color/colorTextLabelDefault">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -34,7 +34,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/rutina_terminada"
-                android:textColor="@color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -45,7 +45,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/darle_un_rating"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -53,8 +53,7 @@
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="115dp"
-            android:layout_marginEnd="80dp"
+            android:layout_gravity="center"
             android:numStars="5"
             android:rating="3"
             android:stepSize="0.5" />

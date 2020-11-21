@@ -195,6 +195,10 @@ public class StatisticsFragment extends BaseFragment<MainActivityViewModel, Frag
         s = "x" + viewModel.enfriamientoRepetitions;
         binding.enfriamientoReps.setText(s);
 
+        binding.backBtn.setOnClickListener(v->{
+            getActivity().getSupportFragmentManager().popBackStack();
+        });
+
         return view;
     }
 
