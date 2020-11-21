@@ -89,7 +89,7 @@ public abstract class NetworkBoundResource<DomainType, EntityType, ModelType> {
                                             DomainType domain = (newData != null) ?
                                                     mapEntityToDomain.apply(newData) :
                                                     mapModelToDomain.apply(model);
-                                            setValue(Resource.success(domain));
+                                                setValue(Resource.success(domain));
                                         })
                         );
                     });

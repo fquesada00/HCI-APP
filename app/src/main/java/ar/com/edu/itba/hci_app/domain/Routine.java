@@ -7,7 +7,7 @@ import java.util.Objects;
 import ar.com.edu.itba.hci_app.network.api.model.CategoryModel;
 import ar.com.edu.itba.hci_app.network.api.model.CreatorModel;
 
-public class Routine {
+public class Routine implements Comparable<Routine>{
 
     public Routine(String difficulty, Creator creator, Date dateCreated, Double averageRating, String name, boolean isPublic, int id, String detail, Category category) {
         this.difficulty = difficulty;
@@ -90,6 +90,11 @@ public class Routine {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public int compareTo(Routine o) {
+        return Integer.compare(this.id, o.id);
     }
 }
 

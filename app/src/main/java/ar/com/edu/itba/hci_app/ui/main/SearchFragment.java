@@ -230,11 +230,11 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_search, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search_button1).getActionView();
 
         if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().getComponentName()));
             searchView.setIconifiedByDefault(false);
         }
 
@@ -242,10 +242,10 @@ public class SearchFragment extends BaseFragment<MainActivityViewModel, Fragment
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                viewModel.setSearchActive(true);
-                list.clear();
-                listSearchAdapter.setList(new ArrayList<>());
-                listSearchAdapter.notifyDataSetChanged();
+//                viewModel.setSearchActive(true);
+//                list.clear();
+//                listSearchAdapter.setList(new ArrayList<>());
+//                listSearchAdapter.notifyDataSetChanged();
 //                Log.d("SEARCH", "onQueryTextSubmit: " + query);
 //                Log.d("TEST", "onQueryTextSubmit: " + listSearchAdapter.getList().toString());
                 viewModel.getRoutines(GetRoutinesEnum.SEARCH,query).observe(getViewLifecycleOwner(), listResource -> {
