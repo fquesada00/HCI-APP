@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_search:
                     fragment = SearchFragment.getSearchFragment();
                     break;
-                case R.id.nav_notifications:
-                    fragment = NotificationsFragment.getNotificationsFragment();
-                    break;
                 case R.id.nav_profile:
                     fragment = ProfileFragment.getProfileFragment();
                     break;
@@ -120,10 +117,8 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().getItem(0).setChecked(value);
         } else if (fragment.getClass().toString().equals(SearchFragment.class.toString())) {
             bottomNavigationView.getMenu().getItem(1).setChecked(value);
-        } else if (fragment.getClass().toString().equals(NotificationsFragment.class.toString())) {
-            bottomNavigationView.getMenu().getItem(2).setChecked(value);
         } else if (fragment.getClass().toString().equals(ProfileFragment.class.toString())) {
-            bottomNavigationView.getMenu().getItem(3).setChecked(value);
+            bottomNavigationView.getMenu().getItem(2).setChecked(value);
         } else {
             throw new IllegalArgumentException("Wrong class in change");
         }

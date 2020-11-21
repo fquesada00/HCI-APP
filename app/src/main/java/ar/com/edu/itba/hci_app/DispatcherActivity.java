@@ -21,7 +21,7 @@ import ar.com.edu.itba.hci_app.ui.main.HomeFragment;
 import ar.com.edu.itba.hci_app.ui.main.MainActivity;
 
 
-public class    DispatcherActivity extends AppCompatActivity {
+public class DispatcherActivity extends AppCompatActivity {
 
     /*
         TODO
@@ -33,7 +33,7 @@ public class    DispatcherActivity extends AppCompatActivity {
          -agregar idioma ingles
          -el tema de la personalizacion con funcionamiento es el punto 3 de arriba (PREGUNTAR!!!!!)
      */
- 
+
     @SuppressLint("StaticFieldLeak")
     private static Button secondActBtn = null;
     private AppCompatActivity act;
@@ -63,35 +63,41 @@ public class    DispatcherActivity extends AppCompatActivity {
         getRoutines.setOnClickListener(v -> application.getUserRepository().login(new CredentialsModel("johndoe", "1234567890")).observe(this, tokenResource -> {
 
             if (tokenResource.getStatus() == Status.SUCCESS) {
-                Log.d("LOGIN", "onCreate: "+ tokenResource.getData());
+                Log.d("LOGIN", "onCreate: " + tokenResource.getData());
 
                 appPreferences.setAuthToken(tokenResource.getData());
                 application.getRoutineRepository().getRoutine(null, null, null, null, null, RoutinePagedListGetter.ALL)
                         .observe(act, pagedListResource -> {
                             if (pagedListResource.getStatus() == Status.SUCCESS) {
                                 Toast.makeText(getApplicationContext(), pagedListResource.getData().toString(), Toast.LENGTH_SHORT).show();
-                            } else if(pagedListResource.getStatus() != Status.LOADING)
+                            } else if (pagedListResource.getStatus() != Status.LOADING)
                                 Toast.makeText(getApplicationContext(), "GET FAILED", Toast.LENGTH_SHORT).show();
                         });
-            }else if(tokenResource.getStatus() != Status.LOADING)
-                Toast.makeText(getApplicationContext(),"Failed Login",Toast.LENGTH_SHORT).show();
+            } else if (tokenResource.getStatus() != Status.LOADING)
+                Toast.makeText(getApplicationContext(), "Failed Login", Toast.LENGTH_SHORT).show();
         }));
-        if(appPreferences.getAuthToken() != null)
+        if (appPreferences.getAuthToken() != null) {
             binding.loggedText.setVisibility(View.VISIBLE);
-        else
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        } else {
             binding.loggedText.setVisibility(View.GONE);
-
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData(); //data es el id de la rutina
-        if (data != null) {
-            if (appPreferences.getAuthToken() != null) {
-                //TODO LO MANDO A LA RUTINA
-            }
-            else {
-                //TODO LO MANDO AL LOGIN
-            }
+            startActivity(new Intent(this, AuthActivity.class));
+            finish();
+            return;
         }
+//
+//        Intent intent = getIntent();
+//        String action = intent.getAction();
+//        Uri data = intent.getData(); //data es el id de la rutina
+//        if (data != null) {
+//            if (appPreferences.getAuthToken() != null) {
+//                //TODO LO MANDO A LA RUTINA
+//            } else {
+//                //TODO LO MANDO AL LOGIN
+//            }
+//        }
     }
 
 
